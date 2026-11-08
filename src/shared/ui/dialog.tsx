@@ -4,6 +4,7 @@ import { XIcon } from 'lucide-react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 
 import { Button } from './button';
+import { PaletteContext } from './palette-context';
 
 function Dialog({
     ...props
@@ -52,13 +53,15 @@ function DialogContent({
     showCloseButton?: boolean;
     closeLabel?: string;
 }) {
+    const palette = React.useContext(PaletteContext);
     return (
         <DialogPortal data-slot="dialog-portal">
             <DialogOverlay />
             <DialogPrimitive.Content
                 data-slot="dialog-content"
                 className={cn(
-                    'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-[var(--radius-popover)] border bg-popover p-6 text-popover-foreground shadow-lg sm:max-w-lg',
+                    'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] max-h-[calc(100dvh-2rem)] gap-4 overflow-y-auto overscroll-contain rounded-[var(--radius-popover)] border bg-popover p-6 text-popover-foreground shadow-[var(--shadow-disclosure)] [overflow-wrap:anywhere] sm:max-w-lg',
+                    palette,
                     className,
                 )}
                 {...props}
@@ -67,7 +70,7 @@ function DialogContent({
                 {showCloseButton && (
                     <DialogPrimitive.Close
                         data-slot="dialog-close"
-                        className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+                        className="absolute top-2 right-2 inline-flex size-8 items-center justify-center rounded-[var(--radius-control)] text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&_svg]:pointer-events-none [&_svg]:size-4"
                     >
                         <XIcon />
                         <span className="sr-only">{closeLabel}</span>
@@ -82,10 +85,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
     return (
         <div
             data-slot="dialog-header"
-            className={cn(
-                'flex flex-col gap-2 text-center sm:text-left',
-                className,
-            )}
+            className={cn('flex flex-col gap-2 pr-6 text-left', className)}
             {...props}
         />
     );
@@ -127,7 +127,10 @@ function DialogTitle({
     return (
         <DialogPrimitive.Title
             data-slot="dialog-title"
-            className={cn('text-lg leading-none font-semibold', className)}
+            className={cn(
+                'pr-6 text-[length:var(--font-size-title)] leading-[var(--line-height-title)] font-medium',
+                className,
+            )}
             {...props}
         />
     );

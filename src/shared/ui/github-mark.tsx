@@ -1,9 +1,16 @@
 /** GitHub brand mark via Simple Icons (CC0); GitHub trademark. */
-export function GitHubMark() {
+export function GitHubMark({
+    className,
+    size = 14,
+}: {
+    className?: string;
+    size?: number;
+}) {
     return (
         <svg
-            width="14"
-            height="14"
+            className={className}
+            width={size}
+            height={size}
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"

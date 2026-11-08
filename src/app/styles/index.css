@@ -86,4 +86,14 @@
         outline: 2px solid var(--orange-ink);
         outline-offset: 5px;
     }
+
+    html {
+        scrollbar-color: var(--rule) var(--paper);
+        caret-color: var(--orange-ink);
+    }
+
+    ::selection {
+        background: var(--soft-orange);
+        color: var(--ink);
+    }
 }

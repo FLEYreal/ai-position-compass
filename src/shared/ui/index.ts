@@ -15,7 +15,16 @@ export {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
+    DropdownMenuPortal,
+    DropdownMenuGroup,
     DropdownMenuItem,
+    DropdownMenuCheckboxItem,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSub,
+    DropdownMenuSubTrigger,
+    DropdownMenuSubContent,
+    DropdownMenuShortcut,
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from './dropdown-menu';
@@ -32,3 +41,4 @@ export { GitHubMark } from './github-mark';
 export { Collage } from './collage';
 export { AxisIcon } from './axis-icon';
 export type { AxisId } from './axis-presentation';
+export { UiPalette } from './ui-palette';

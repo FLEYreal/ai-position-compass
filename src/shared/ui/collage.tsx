@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Pause, Play } from 'lucide-react';
 import type { Language } from '@/shared/config';
+import { cn } from '@/shared/lib';
 import { Mask } from './mascot';
 import { PaperClip } from './paper-clip';
 import apollo from './collage-assets/apollo.jpg';
@@ -44,10 +45,12 @@ export function Collage({
     variant = 'home',
     language = 'en',
     caption,
+    className,
 }: {
     variant?: 'home' | 'result';
     language?: Language;
     caption?: string;
+    className?: string;
 }) {
     const stageRef = useRef<HTMLElement>(null);
     const [visible, setVisible] = useState(false);
@@ -80,9 +83,9 @@ export function Collage({
         :   'A smiling mask, paperclips, a punched card, and archival photographs.';
     const home = variant === 'home';
     return (
-        <figure ref={stageRef} className="relative m-0 w-full">
+        <figure ref={stageRef} className={cn('relative m-0 w-full', className)}>
             <div
-                className="relative isolate aspect-[1.04] w-full"
+                className="pointer-events-none relative isolate aspect-[1.04] w-full"
                 role="img"
                 aria-label={imageLabel}
             >
@@ -185,31 +188,36 @@ export function Collage({
                 >
                     <Mask className={`w-full ${photoFilter}`} />
                 </div>
-                <svg
-                    className="pointer-events-none absolute top-[8%] right-0 -z-10 h-[88%] w-[88%] rotate-[17deg] text-foreground opacity-30"
-                    viewBox="0 0 420 420"
+                <div
                     aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
                 >
-                    <ellipse
-                        cx="210"
-                        cy="210"
-                        rx="180"
-                        ry="75"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth=".7"
-                    />
-                    <ellipse
-                        cx="210"
-                        cy="210"
-                        rx="180"
-                        ry="75"
-                        transform="rotate(57 210 210)"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth=".7"
-                    />
-                </svg>
+                    <svg
+                        className="pointer-events-none absolute top-[8%] right-0 h-[88%] w-[88%] rotate-[17deg] text-foreground opacity-30"
+                        viewBox="0 0 420 420"
+                        aria-hidden="true"
+                    >
+                        <ellipse
+                            cx="210"
+                            cy="210"
+                            rx="180"
+                            ry="75"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth=".7"
+                        />
+                        <ellipse
+                            cx="210"
+                            cy="210"
+                            rx="180"
+                            ry="75"
+                            transform="rotate(57 210 210)"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth=".7"
+                        />
+                    </svg>
+                </div>
                 <span
                     aria-hidden="true"
                     data-playing={playing}
@@ -259,7 +267,7 @@ export function Collage({
                     />
                 </div>
             </div>
-            <figcaption className="mt-[13px] flex min-h-5 items-center justify-between gap-3">
+            <figcaption className="relative z-20 mt-[13px] flex min-h-5 items-center justify-between gap-3">
                 <span className="font-mono text-[length:var(--font-size-technical)] text-muted-foreground">
                     {caption}
                 </span>

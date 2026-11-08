@@ -7,6 +7,11 @@ import {
     useLocation,
 } from 'react-router';
 import '../src/app/styles/index.css';
+import { siteIconLinks } from '../src/app/config/site-icons';
+
+// React Router consumes this route-module export.
+// eslint-disable-next-line react-refresh/only-export-components
+export const links = () => siteIconLinks(import.meta.env.BASE_URL);
 
 export default function Root() {
     const { pathname } = useLocation();

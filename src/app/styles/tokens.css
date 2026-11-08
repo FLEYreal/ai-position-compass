@@ -18,6 +18,7 @@
     --print-shadow: #453c2e;
     --print-highlight: #f0e2d1;
     --photo-paper: #f0ece1;
+    --shadow-disclosure: 0 12px 34px #16130e26;
 
     /* Distinct, neutral camp palettes: ink and surface pairs. */
     --camp-accelerationists-ink: #6a332a;

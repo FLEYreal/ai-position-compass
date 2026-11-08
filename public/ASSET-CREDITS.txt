@@ -18,3 +18,7 @@ https://commons.wikimedia.org/wiki/File:Blue-punch-card-front-horiz.png
 Mask, bent-wire paperclips and cut-paper geometry were authored for the design prototype.
 The GitHub mark comes from Simple Icons, CC0; GitHub retains trademark rights.
 https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
+
+The original favicon artwork is copied unchanged from the design prototype.
+Browser, Apple touch, app, maskable and monochrome pinned-tab derivatives are
+generated from that SVG by scripts/generate-icons.mjs.

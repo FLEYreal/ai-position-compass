@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from 'cn';
+import { cn } from '@/shared/lib';
 import { Slot } from 'radix-ui';
 
 const buttonVariants = cva(
-    "inline-flex shrink-0 items-center justify-center gap-2 rounded-[var(--radius-button)] text-[length:var(--font-size-button)] font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-[5px] focus-visible:outline-[var(--orange-ink)] disabled:pointer-events-none disabled:bg-muted disabled:text-muted-foreground disabled:opacity-100 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+    "inline-flex shrink-0 items-center justify-center gap-2 rounded-[var(--radius-button)] text-[length:var(--font-size-button)] font-semibold whitespace-nowrap motion-safe:transition-colors focus-visible:outline-2 focus-visible:outline-offset-[5px] focus-visible:outline-ring disabled:pointer-events-none disabled:bg-muted disabled:text-muted-foreground disabled:opacity-100 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     {
         variants: {
             variant: {
                 default:
-                    'bg-primary text-primary-foreground hover:bg-[var(--primary-hover-color)] active:translate-y-px',
+                    'bg-primary text-primary-foreground hover:bg-[var(--primary-hover-color)] hover:brightness-[1.04] active:translate-y-px',
                 destructive:
                     'bg-destructive text-background hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40',
                 outline:
@@ -17,7 +17,7 @@ const buttonVariants = cva(
                 secondary:
                     'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
-                link: 'text-[var(--orange-ink)] underline-offset-4 hover:underline',
+                link: 'text-ring underline-offset-4 hover:underline',
             },
             size: {
                 default: 'min-h-[52px] px-[23px] py-[13px]',
@@ -40,6 +40,7 @@ const buttonVariants = cva(
 
 function Button({
     className,
+    type = 'button',
     variant = 'default',
     size = 'default',
     asChild = false,
@@ -52,6 +53,7 @@ function Button({
 
     return (
         <Comp
+            type={asChild ? undefined : type}
             data-slot="button"
             data-variant={variant}
             data-size={size}

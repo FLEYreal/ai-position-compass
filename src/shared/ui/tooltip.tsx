@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { cn } from 'cn';
+import { cn } from '@/shared/lib';
 import { Tooltip as TooltipPrimitive } from 'radix-ui';
+import { PaletteContext } from './palette-context';
 
 function TooltipProvider({
     delayDuration = 200,
@@ -29,23 +30,25 @@ function TooltipTrigger({
 
 function TooltipContent({
     className,
-    sideOffset = 0,
+    sideOffset = 6,
     children,
     ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+    const palette = React.useContext(PaletteContext);
     return (
         <TooltipPrimitive.Portal>
             <TooltipPrimitive.Content
                 data-slot="tooltip-content"
                 sideOffset={sideOffset}
                 className={cn(
-                    'z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md border border-border bg-popover px-3 py-1.5 text-xs text-balance text-popover-foreground         ',
+                    'z-50 w-fit origin-(--radix-tooltip-content-transform-origin) max-w-[min(24rem,calc(100vw-2rem))] rounded-[var(--radius-hint)] border border-border bg-popover px-3 py-2 text-sm text-balance text-popover-foreground [overflow-wrap:anywhere]',
+                    palette,
                     className,
                 )}
                 {...props}
             >
                 {children}
-                <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-popover fill-popover" />
+                <TooltipPrimitive.Arrow className="fill-popover" />
             </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
     );
