@@ -3,7 +3,7 @@
 - The planner researches, prepares specifications/task briefs, and reviews reports. The worker implements assigned supporting work independently from repository context.
 - Task ownership is defined in `PLAN.md`. For owner-owned implementations/tests, agents may explain concepts, review, and identify bugs; solutions, edits, and additional tests require an explicit request. Do not implement reserved work to unblock another task.
 - The owner maintains `PLAN.md` and every section of `DEBT.md`; agents edit them only on explicit request. Suggest debt entries in reports. The planner maintains `MEMORY.md`; workers report handoff updates.
-- Workers may implement, add necessary dependencies, test, fix, commit, push feature branches, and open/update PRs within assigned scope. Only the owner merges PRs or authorizes publication. Never push directly to main/dev, force-push, rewrite shared history, or delete unmerged work.
+- Workers may implement, add necessary dependencies, test, fix, commit, and push to dev within assigned scope. Only the owner merges into main or authorizes publication. Never push directly to main, force-push, rewrite shared history, or delete unmerged work.
 
 # Canonical checkout and local context
 
@@ -16,8 +16,8 @@ All five files have one canonical copy in the original checkout. Feature worktre
 # Starting work
 
 1. Read AGENTS, this procedure, SPEC, the assigned PLAN entry, and relevant local context. Inspect Git status; preserve existing changes. After a long wait, reread shared context and check updated specifications.
-2. The owner establishes the remote and dev branch. Fetch current dev and create one feature branch/worktree per task; do not initialize shared branches without explicit instruction. From the original checkout, for example: `git worktree add -b feat/tooling ../worktrees/tooling origin/dev`.
-3. Link context before launching the worker. Run this example from the original checkout after the feature worktree exists. It checks all destinations before creating links and never overwrites them. Missing optional files are skipped; broken or non-file sources are errors.
+2. Fetch current dev and work on dev in the original checkout. Coordinate before switching branches or changing shared files. Additional worktrees are optional and require a separate branch; integrate their work into dev before removing them.
+3. If an additional worktree is used, link context before launching the worker. Run this example from the original checkout after the feature worktree exists. It checks all destinations before creating links and never overwrites them. Missing optional files are skipped; broken or non-file sources are errors.
 
 ```bash
 (
@@ -57,7 +57,7 @@ All five files have one canonical copy in the original checkout. Feature worktre
 
 # Git, review, and cleanup
 
-- main holds released/deployable code; dev integrates reviewed features. Feature PRs target dev. Use Conventional Commits and focused PRs.
-- Squash short-lived feature PRs into dev. Promote dev to main through an owner-merged release PR using a merge commit; bring main-only fixes back into dev through an owner-reviewed PR.
-- When dev advances, merge it into affected feature branches, resolve conflicts, rerun relevant checks, and report meaningful post-review changes. Worktrees share Git refs and machine resources; do not alter another checkout.
+- main holds released/deployable code; dev integrates reviewed features. Work directly on dev. Use Conventional Commits and focused changes.
+- Promote dev to main when complete through an owner-merged release PR using a merge commit; bring main-only fixes back into dev through an owner-reviewed PR.
+- If additional branches are used, incorporate dev changes, resolve conflicts, and rerun relevant checks. Worktrees share Git refs and machine resources; do not alter another checkout.
 - Keep waiting PR worktrees available for review fixes. After merge, confirm PR status, retained changes, and a clean worktree before cleanup. Squash merges may fail ancestry-based merged checks; never force-remove blindly.
