@@ -6,7 +6,7 @@ import {
     ScrollRestoration,
     useLocation,
 } from 'react-router';
-import './index.css';
+import '../src/app/styles/index.css';
 
 export default function Root() {
     const { pathname } = useLocation();

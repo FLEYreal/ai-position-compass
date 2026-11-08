@@ -2,14 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, test } from 'vitest';
 import Home from './home';
-import ResultPage from './result';
-import TestPage from './test';
+import ResultRoute from './result';
+import TestRoute from './test';
 import RedirectToEnglish from './redirect';
 
 const routes = [
     { path: '/:lang', element: <Home /> },
-    { path: '/:lang/test', element: <TestPage /> },
-    { path: '/:lang/result', element: <ResultPage /> },
+    { path: '/:lang/test', element: <TestRoute /> },
+    { path: '/:lang/result', element: <ResultRoute /> },
     { path: '/test', element: <RedirectToEnglish /> },
     { path: '/result', element: <RedirectToEnglish /> },
 ];

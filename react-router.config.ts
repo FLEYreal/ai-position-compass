@@ -4,7 +4,7 @@ import { cp, writeFile } from 'node:fs/promises';
 const base = process.env.PUBLIC_BASE_PATH || '/';
 
 export default {
-    appDirectory: 'src',
+    appDirectory: 'app',
     basename: base,
     ssr: false,
     prerender: [
