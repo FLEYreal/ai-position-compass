@@ -1,9 +1,7 @@
-import { Link, useParams } from 'react-router';
-import NotFound from './not-found';
+import { Link } from 'react-router';
+import type { Language } from '@/shared/config';
 
-export default function Home() {
-    const { lang } = useParams();
-    if (lang !== 'en' && lang !== 'ru') return <NotFound />;
+export default function Home({ lang }: { lang: Language }) {
     return (
         <main>
             <h1>AI Position Compass — {lang.toUpperCase()}</h1>
