@@ -233,3 +233,107 @@
 
     color-scheme: dark;
 }
+
+/* Shared stop-motion poses used by the archive illustrations. */
+@keyframes paper-poses {
+    0%,
+    100% {
+        rotate: -0.2deg;
+        translate: 0 0;
+    }
+    6.25% {
+        rotate: -0.05deg;
+        translate: 0 -0.5px;
+    }
+    12.5% {
+        rotate: 0.2deg;
+        translate: 0.5px -0.5px;
+    }
+    18.75% {
+        rotate: 0.35deg;
+        translate: 0.5px 0;
+    }
+    25% {
+        rotate: 0.1deg;
+        translate: 0 0.5px;
+    }
+    31.25% {
+        rotate: -0.15deg;
+        translate: -0.5px 0.5px;
+    }
+    37.5% {
+        rotate: -0.35deg;
+        translate: -0.5px 0;
+    }
+    43.75% {
+        rotate: -0.1deg;
+        translate: 0 -0.5px;
+    }
+    50% {
+        rotate: 0.15deg;
+        translate: 0.5px -1px;
+    }
+    56.25% {
+        rotate: 0.4deg;
+        translate: 1px -0.5px;
+    }
+    62.5% {
+        rotate: 0.2deg;
+        translate: 0.5px 0;
+    }
+    68.75% {
+        rotate: -0.05deg;
+        translate: 0 0.5px;
+    }
+    75% {
+        rotate: -0.3deg;
+        translate: -0.5px 1px;
+    }
+    81.25% {
+        rotate: -0.4deg;
+        translate: -1px 0.5px;
+    }
+    87.5% {
+        rotate: -0.15deg;
+        translate: -0.5px 0;
+    }
+    93.75% {
+        rotate: 0.1deg;
+        translate: 0 -0.5px;
+    }
+}
+@keyframes clip-poses {
+    0%,
+    100% {
+        rotate: -0.7deg;
+        translate: 0 0;
+    }
+    12.5% {
+        rotate: 0.4deg;
+        translate: 1px -2px;
+    }
+    25% {
+        rotate: 1.1deg;
+        translate: 0 -3px;
+    }
+    37.5% {
+        rotate: 0.25deg;
+        translate: -1px -2px;
+    }
+    50% {
+        rotate: -0.8deg;
+        translate: 0 0;
+    }
+    62.5% {
+        rotate: -0.2deg;
+        translate: 1px 2px;
+    }
+    75% {
+        rotate: 0.6deg;
+        translate: 0 3px;
+    }
+    87.5% {
+        rotate: 0.1deg;
+        translate: -1px 1px;
+    }
+}

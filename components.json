@@ -1,6 +1,6 @@
 {
     "$schema": "https://ui.shadcn.com/schema.json",
-    "style": "base-nova",
+    "style": "new-york",
     "rsc": false,
     "tsx": true,
     "tailwind": {
@@ -17,7 +17,7 @@
         "utils": "@/shared/lib",
         "ui": "@/shared/ui",
         "lib": "@/shared/lib",
-        "hooks": "@/hooks"
+        "hooks": "@/shared/lib"
     },
     "menuColor": "default",
     "menuAccent": "subtle",

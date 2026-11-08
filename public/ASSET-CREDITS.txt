@@ -1,0 +1,20 @@
+ARCHIVE ARTWORK CREDITS
+
+Images are stored locally and retain their original metadata.
+
+Upshot–Knothole Grable, 1953 — U.S. Department of Energy; public domain.
+https://commons.wikimedia.org/wiki/File:Upshot-Knothole_GRABLE.jpg
+
+Apollo 11 mission control, 1969 — NASA, image S69-39601.
+https://www.nasa.gov/wp-content/uploads/static/history/ap11ann/kippsphotos/apollo.html
+https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+Nuremberg courtroom, 1945 — U.S. Army Signal Corps; public domain.
+https://www.trumanlibrary.gov/photograph-records/2004-432
+
+IBM-style blue punched card — Gwern, Arnold Reinhold and Bech; public-domain dedication.
+https://commons.wikimedia.org/wiki/File:Blue-punch-card-front-horiz.png
+
+Mask, bent-wire paperclips and cut-paper geometry were authored for the design prototype.
+The GitHub mark comes from Simple Icons, CC0; GitHub retains trademark rights.
+https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
