@@ -1,6 +1,6 @@
 # Technical specification
 
-Product intent belongs to `PRODUCT.md`; visual rules belong to `DESIGN.md`. This file specifies application behavior and technical contracts. Execution procedures are in `WORKFLOW.md`; task sequencing and assignments are in `PLAN.md`.
+Product intent belongs to `PRODUCT.md`; visual rules belong to `DESIGN.md`. This file specifies application behavior and technical contracts. Agents must warn the owner before changing AGENTS.md, WORKFLOW.md, or SPEC.md, and must obtain owner review and explicit approval before committing on dev or main. See `WORKFLOW.md` for execution procedures and owner exceptions; task sequencing and assignments are in `PLAN.md`.
 
 ## Platform, privacy, and accessibility
 - Static GitHub Pages application with public source and an MIT licence; no backend.
