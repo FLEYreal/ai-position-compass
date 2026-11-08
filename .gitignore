@@ -36,3 +36,7 @@ dist-ssr
 /*.7z
 /*.tar
 /*.tar.*
+
+# React Router build output
+.react-router
+build
