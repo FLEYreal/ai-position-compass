@@ -20,6 +20,7 @@ jobs:
                   node-version-file: .node-version
                   cache: pnpm
             - run: pnpm install --frozen-lockfile
+            - run: python3 -m unittest discover -s .codex/hooks -p 'test_*.py'
             - run: pnpm format:check
             - run: pnpm icons:check
             - run: pnpm lint

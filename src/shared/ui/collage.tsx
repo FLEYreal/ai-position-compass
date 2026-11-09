@@ -4,6 +4,7 @@ import type { Language } from '@/shared/config';
 import { cn } from '@/shared/lib';
 import { Mask } from './mascot';
 import { PaperClip } from './paper-clip';
+import { EditorialPrint } from './editorial-print';
 import apollo from './collage-assets/apollo.jpg';
 import nuclear from './collage-assets/grable.jpg';
 import courtroom from './collage-assets/courtroom.jpg';
@@ -13,7 +14,6 @@ const paperMotion =
     'motion-safe:animate-[paper-poses_8s_steps(1,end)_infinite] [animation-play-state:paused]! data-[playing=true]:[animation-play-state:running]!';
 const clipMotion =
     'motion-safe:animate-[clip-poses_12s_steps(1,end)_infinite] [animation-play-state:paused]! data-[playing=true]:[animation-play-state:running]!';
-const photoFilter = '[filter:url(#editorial-cream-print)]';
 
 const listeners = new Set<() => void>();
 let fallbackPaused = false;
@@ -89,45 +89,13 @@ export function Collage({
                 role="img"
                 aria-label={imageLabel}
             >
-                <svg
-                    width="0"
-                    height="0"
-                    aria-hidden="true"
-                    className="absolute"
-                >
-                    <defs>
-                        <filter
-                            id="editorial-cream-print"
-                            colorInterpolationFilters="sRGB"
-                        >
-                            <feColorMatrix type="saturate" values=".45" />
-                            <feComponentTransfer>
-                                <feFuncR
-                                    type="linear"
-                                    slope=".67"
-                                    intercept=".27"
-                                />
-                                <feFuncG
-                                    type="linear"
-                                    slope=".65"
-                                    intercept=".235"
-                                />
-                                <feFuncB
-                                    type="linear"
-                                    slope=".64"
-                                    intercept=".18"
-                                />
-                            </feComponentTransfer>
-                        </filter>
-                    </defs>
-                </svg>
                 <div
                     aria-hidden="true"
-                    className="absolute top-[9%] left-[15%] h-[79%] w-[76%] -rotate-[11deg] rounded-[30%_45%_18%_33%] bg-[radial-gradient(var(--ink)_.9px,transparent_1.15px)] bg-size-[6.5px_6.5px] opacity-55"
+                    className="absolute top-[9%] left-[15%] h-[79%] w-[76%] transform-[rotate(-11deg)] rounded-[30%_45%_18%_33%] bg-[radial-gradient(var(--ink)_.9px,transparent_1.15px)] bg-size-[6.5px_6.5px] opacity-55"
                 />
                 <svg
                     data-playing={playing}
-                    className={`absolute top-[2%] left-[24%] h-[76%] w-[64%] rotate-[7deg] text-[var(--orange)] ${paperMotion} motion-safe:[animation-duration:12.8s]! motion-safe:[animation-delay:-3s]!`}
+                    className={`absolute top-[2%] left-[24%] h-[76%] w-[64%] transform-[rotate(7deg)] text-[var(--orange)] ${paperMotion} motion-safe:[animation-duration:12.8s]! motion-safe:[animation-delay:-3s]!`}
                     viewBox="0 0 400 430"
                     preserveAspectRatio="none"
                     aria-hidden="true"
@@ -139,61 +107,63 @@ export function Collage({
                 </svg>
                 <div
                     data-playing={playing}
-                    className={`absolute ${home ? 'top-[3%] left-[16%] h-[60%] w-[69%] rotate-[4deg]' : 'top-[5%] left-[18%] h-[46%] w-[66%] -rotate-[4deg]'} bg-[var(--photo-paper)] p-[5px] shadow-[0_4px_6px_#15120d26] ${paperMotion} motion-safe:[animation-delay:-1s]!`}
+                    className={`absolute ${home ? 'top-[3%] left-[16%] h-[60%] w-[69%] transform-[rotate(4deg)]' : 'top-[5%] left-[18%] h-[46%] w-[66%] transform-[rotate(-4deg)]'} bg-[var(--photo-paper)] p-[5px] shadow-[0_4px_6px_#15120d26] ${paperMotion} motion-safe:[animation-delay:-1s]!`}
                 >
-                    <img
-                        className={`h-full w-full object-cover ${photoFilter}`}
+                    <EditorialPrint
+                        className="h-full w-full"
                         src={home ? nuclear : apollo}
-                        alt=""
                     />
                     <span
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-[5px] bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
                     />
-                    <span className="absolute top-2 left-2 bg-[var(--photo-paper)] px-1 font-mono text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
-                        {home ? 'GRABLE · 1953' : 'MISSION CONTROL · 1969'}
+                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
+                        {home ? 'GRABLE · 1953' : 'APOLLO 11 · 1969'}
                     </span>
                 </div>
                 <div
                     data-playing={playing}
-                    className={`absolute ${home ? 'top-[58%] left-0 h-[32%] w-[64%] -rotate-[7deg]' : 'top-[51%] left-[5%] h-[41%] w-[61%] rotate-[7deg]'} bg-[var(--photo-paper)] p-[5px] shadow-[0_4px_6px_#15120d26] ${paperMotion} motion-safe:[animation-duration:9.6s]! motion-safe:[animation-delay:-4.2s]! motion-safe:[animation-direction:reverse]!`}
+                    className={`absolute ${home ? 'top-[58%] left-0 h-[32%] w-[64%] transform-[rotate(-7deg)]' : 'top-[51%] left-[5%] h-[41%] w-[61%] transform-[rotate(7deg)]'} bg-[var(--photo-paper)] p-[5px] shadow-[0_4px_6px_#15120d26] ${paperMotion} motion-safe:[animation-duration:9.6s]! motion-safe:[animation-delay:-4.2s]! motion-safe:[animation-direction:reverse]!`}
                 >
-                    <img
-                        className={`h-full w-full object-cover ${photoFilter}`}
+                    <EditorialPrint
+                        className="h-full w-full"
                         src={home ? apollo : courtroom}
-                        alt=""
                     />
                     <span
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-[5px] bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
                     />
+                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
+                        {home ? 'APOLLO 11 · 1969' : 'COURTROOM · 1945'}
+                    </span>
                 </div>
                 <div
                     data-playing={playing}
-                    className={`absolute bottom-[4%] left-[33%] w-[58%] rotate-[5deg] ${paperMotion} motion-safe:[animation-duration:10.4s]! motion-safe:[animation-delay:-6s]! motion-safe:[animation-direction:reverse]!`}
+                    className={`absolute bottom-[4%] left-[33%] w-[58%] transform-[rotate(5deg)] ${paperMotion} motion-safe:[animation-duration:10.4s]! motion-safe:[animation-delay:-6s]! motion-safe:[animation-direction:reverse]!`}
                 >
-                    <img
-                        className={`block w-full ${photoFilter}`}
-                        src={punchcard}
-                        alt=""
-                    />
+                    <EditorialPrint viewBox="0 0 2232 1004" src={punchcard} />
                     <span
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-0 bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
                     />
+                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
+                        IBM · PUNCHED CARD
+                    </span>
                 </div>
                 <div
                     data-playing={playing}
-                    className={`absolute ${home ? 'top-[31%] left-[37%] w-[63%] rotate-[8deg]' : 'top-[35%] left-[43%] w-[57%] -rotate-[6deg]'} ${paperMotion} motion-safe:[animation-duration:8.8s]! motion-safe:[animation-delay:-2.4s]!`}
+                    className={`absolute ${home ? 'top-[31%] left-[37%] w-[63%] transform-[rotate(8deg)]' : 'top-[35%] left-[43%] w-[57%] transform-[rotate(-6deg)]'} ${paperMotion} motion-safe:[animation-duration:8.8s]! motion-safe:[animation-delay:-2.4s]!`}
                 >
-                    <Mask className={`w-full ${photoFilter}`} />
+                    <EditorialPrint viewBox="0 0 340 340">
+                        <Mask className="h-full w-full" />
+                    </EditorialPrint>
                 </div>
                 <div
                     aria-hidden="true"
                     className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
                 >
                     <svg
-                        className="pointer-events-none absolute top-[8%] right-0 h-[88%] w-[88%] rotate-[17deg] text-foreground opacity-30"
+                        className="pointer-events-none absolute top-[8%] right-0 h-[88%] w-[88%] transform-[rotate(17deg)] text-foreground opacity-30"
                         viewBox="0 0 420 420"
                         aria-hidden="true"
                     >
@@ -221,12 +191,12 @@ export function Collage({
                 <span
                     aria-hidden="true"
                     data-playing={playing}
-                    className={`absolute top-[40%] left-[45%] h-[4%] w-[13%] -rotate-[37deg] bg-[#e6dfcbdb] shadow-[0_1px_2px_#19161129] ${paperMotion} motion-safe:[animation-duration:8.8s]! motion-safe:[animation-delay:-2.4s]!`}
+                    className={`absolute top-[40%] left-[45%] h-[4%] w-[13%] transform-[rotate(-37deg)] bg-[#e6dfcbdb] shadow-[0_1px_2px_#19161129] ${paperMotion} motion-safe:[animation-duration:8.8s]! motion-safe:[animation-delay:-2.4s]!`}
                 />
                 <span
                     aria-hidden="true"
                     data-playing={playing}
-                    className={`absolute top-[73%] right-[-1%] h-[4%] w-[13%] rotate-[62deg] bg-[#e6dfcbdb] shadow-[0_1px_2px_#19161129] ${paperMotion} motion-safe:[animation-duration:11.2s]! motion-safe:[animation-delay:-5s]!`}
+                    className={`absolute top-[73%] right-[-1%] h-[4%] w-[13%] transform-[rotate(62deg)] bg-[#e6dfcbdb] shadow-[0_1px_2px_#19161129] ${paperMotion} motion-safe:[animation-duration:11.2s]! motion-safe:[animation-delay:-5s]!`}
                 />
                 <svg
                     className="absolute top-[29%] left-[3%] w-[22px] opacity-65"
@@ -244,36 +214,42 @@ export function Collage({
                 </svg>
                 <div
                     data-playing={playing}
-                    className={`absolute top-[30%] left-[44%] z-10 w-[12%] rotate-[39deg] ${clipMotion}`}
+                    className={`absolute top-[30%] left-[44%] z-10 w-[12%] transform-[rotate(39deg)] ${clipMotion}`}
                 >
-                    <PaperClip
-                        className={`w-full overflow-visible ${photoFilter}`}
-                    />
+                    <EditorialPrint viewBox="0 0 76 158">
+                        <PaperClip className="h-full w-full overflow-visible" />
+                    </EditorialPrint>
                 </div>
                 <div
                     data-playing={playing}
-                    className={`absolute top-[80%] right-[3%] z-10 w-[12%] rotate-[65deg] ${clipMotion} motion-safe:[animation-duration:10.5s]! motion-safe:[animation-delay:-5.25s]!`}
+                    className={`absolute top-[80%] right-[3%] z-10 w-[12%] transform-[rotate(65deg)] ${clipMotion} motion-safe:[animation-duration:10.5s]! motion-safe:[animation-delay:-5.25s]!`}
                 >
-                    <PaperClip
-                        className={`w-full overflow-visible ${photoFilter}`}
-                    />
+                    <EditorialPrint viewBox="0 0 76 158">
+                        <PaperClip className="h-full w-full overflow-visible" />
+                    </EditorialPrint>
                 </div>
                 <div
                     data-playing={playing}
-                    className={`absolute top-[16%] right-[1%] z-10 w-[9%] rotate-[23deg] ${clipMotion} motion-safe:[animation-duration:14s]! motion-safe:[animation-delay:-8.75s]! motion-safe:[animation-direction:reverse]!`}
+                    className={`absolute top-[16%] right-[1%] z-10 w-[9%] transform-[rotate(23deg)] ${clipMotion} motion-safe:[animation-duration:14s]! motion-safe:[animation-delay:-8.75s]! motion-safe:[animation-direction:reverse]!`}
                 >
-                    <PaperClip
-                        className={`w-full overflow-visible ${photoFilter}`}
-                    />
+                    <EditorialPrint viewBox="0 0 76 158">
+                        <PaperClip className="h-full w-full overflow-visible" />
+                    </EditorialPrint>
                 </div>
             </div>
             <figcaption className="relative z-20 mt-[13px] flex min-h-5 items-center justify-between gap-3">
-                <span className="font-mono text-[length:var(--font-size-technical)] text-muted-foreground">
+                <span className="min-w-0 font-mono text-[length:var(--font-size-technical)] text-muted-foreground">
                     {caption}
+                    <span className="mt-1 block" data-slot="collage-sources">
+                        {home ?
+                            'GRABLE · 1953 / APOLLO 11 · 1969'
+                        :   'APOLLO 11 · 1969 / COURTROOM · 1945'}
+                        {' / IBM · PUNCHED CARD'}
+                    </span>
                 </span>
                 <button
                     type="button"
-                    className="ml-auto inline-flex min-h-8 items-center gap-1 text-xs text-muted-foreground underline decoration-dotted underline-offset-[3px] hover:text-foreground motion-reduce:hidden"
+                    className="ml-auto inline-flex min-h-8 shrink-0 items-center gap-1 text-xs text-muted-foreground underline decoration-dotted underline-offset-[3px] hover:text-foreground motion-reduce:hidden"
                     aria-label={
                         language === 'ru' ?
                             paused ?

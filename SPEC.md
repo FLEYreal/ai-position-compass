@@ -12,6 +12,7 @@ Product intent belongs to `PRODUCT.md`; visual rules belong to `DESIGN.md`. This
 ## Stack and application structure
 - pnpm, React, TypeScript, Vite, Tailwind, shadcn/ui with Radix primitives, and Zustand. Adapt component defaults to the accepted design.
 - Style components with Tailwind utilities, not vanilla CSS. Global CSS is reserved for design tokens, font imports, Tailwind configuration, and application-wide base styles.
+- When shadcn supplies a component for the required behavior, install and adapt its Radix version instead of improvising a substitute. Treat the prototype as a visual reference, not an architecture or copy-paste template. Preserve the accepted appearance and tokens; custom components compose existing primitives and own only genuinely custom presentation/behavior.
 - FSD v2.1, pages first: start with app/pages/shared, extract reused code only when needed, and import downward through slice public APIs. Structural guidance: `.agents/skills/feature-sliced-design/SKILL.md`.
 - React Router framework mode, `ssr: false`, with static prerendering. Routes are `/en/`, `/ru/`, and each language's `test` and singular `result` paths; `/` redirects to a supported language. Match router basename and Vite asset base to the GitHub Pages project path.
 - Browser-only APIs must not execute during prerendering. Production output must support direct links, correct-language HTML before hydration, base-path assets, and 404 recovery; a Vite development fallback is insufficient evidence.

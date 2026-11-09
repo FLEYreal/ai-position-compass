@@ -2,3 +2,5 @@
 /*.md
 /.agents/
 /pnpm-lock.yaml
+/.local/
+/src/pages/home/ui/*showcase*

@@ -1,4 +1,4 @@
-import type { IconNode } from 'lucide-react';
+import type { LucideIconNode } from 'lucide-react';
 
 // Lucide geometry, ISC / Feather MIT. See THIRD_PARTY_NOTICES.txt.
 export const axisNodes = {
@@ -349,5 +349,5 @@ export const axisNodes = {
             },
         ],
     ],
-} satisfies Record<string, IconNode>;
+} satisfies Record<string, LucideIconNode[]>;
 export type AxisId = keyof typeof axisNodes;

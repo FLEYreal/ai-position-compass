@@ -42,3 +42,10 @@ export { Collage } from './collage';
 export { AxisIcon } from './axis-icon';
 export type { AxisId } from './axis-presentation';
 export { UiPalette } from './ui-palette';
+
+export { Separator } from './separator';
+export { Progress } from './progress';
+export { QuestionProgress } from './question-progress';
+export { AxisScale } from './axis-scale';
+export { EditorialPrint } from './editorial-print';
+export { Input } from './input';

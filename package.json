@@ -13,7 +13,8 @@
         "format": "prettier --no-editorconfig --write .",
         "format:check": "prettier --no-editorconfig --check .",
         "icons:generate": "node scripts/generate-icons.mjs",
-        "icons:check": "node scripts/check-icons.mjs"
+        "icons:check": "node scripts/check-icons.mjs",
+        "hooks:install": "git config --local core.hooksPath .githooks"
     },
     "dependencies": {
         "@fontsource-variable/caveat": "^5.3.0",

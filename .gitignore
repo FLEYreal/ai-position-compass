@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+__pycache__/
+*.pyc
 
 # Editor directories and files
 .vscode/*
@@ -24,12 +26,16 @@ dist-ssr
 *.sw?
 
 # Agents & Markdowns
-/*.md
+*.md
 !/README.md
 !/AGENTS.md
 !/CLAUDE.md
 !/SPEC.md
 !/WORKFLOW.md
+
+# Local review material is never part of a feature commit.
+/.local/
+/src/pages/home/ui/*showcase*
 
 # Archives
 /*.zip
