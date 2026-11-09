@@ -59,7 +59,7 @@ export function SiteHeader({ language }: { language: Language }) {
                             asChild
                             variant="ghost"
                             size="icon"
-                            className="h-[30px] w-[30px] rounded-[2px] p-0 text-[11px] font-normal aria-[current=true]:bg-foreground aria-[current=true]:text-background max-[560px]:w-[27px]"
+                            className="h-[30px] w-[30px] rounded-[2px] p-0 text-[11px] font-normal aria-[current=true]:bg-foreground aria-[current=true]:text-background aria-[current=true]:hover:bg-foreground aria-[current=true]:hover:text-background dark:aria-[current=true]:hover:bg-foreground max-[560px]:w-[27px]"
                         >
                             <Link
                                 to={languagePath(next)}
