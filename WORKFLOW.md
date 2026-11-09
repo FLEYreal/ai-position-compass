@@ -7,7 +7,7 @@
 - The owner may commit and push directly to main or dev. Agents must not commit on main or dev until the owner has reviewed the exact changes and explicitly approved the commit.
 - Before editing AGENTS.md, WORKFLOW.md, or SPEC.md, warn the owner which files will change and why. Explicit owner instructions authorizing the edits remain sufficient; do not silently change these files.
 - Do not add a new Git-visible Markdown file, or remove its ignore protection, without explicit owner permission. Keep plans, audit/review notes, reports and handoffs in ignored local context. Existing approved tracked Markdown requirements remain in place; required third-party notices must be retained.
-- Showcases, component galleries, demonstrations, review fixtures and their integration code must stay local and uncommitted unless the owner explicitly approves including them. Ignore their files, leave any tracked integration hunk unstaged, and stage production files explicitly rather than using blanket staging.
+- Showcases, component galleries, demonstrations, review fixtures and their integration code must stay out of changes submitted to dev unless the owner explicitly approves including them. Keep local review copies and integration hunks unstaged by default, but visible for review; do not blanket-ignore source files by names such as showcase. Stage production paths explicitly and inspect the complete diff against dev before the owner pushes it for a PR.
 
 # Canonical checkout and local context
 
@@ -63,6 +63,7 @@ All five files have one canonical copy in the original checkout. Feature worktre
 # Git, review, and cleanup
 
 - main holds released/deployable code; dev integrates reviewed features. Feature PRs target dev. Use Conventional Commits and focused PRs.
+- Make one commit per fix or completed feature, including its directly related tests. Put independent fixes, features, and workflow changes in separate commits so each change can be reviewed on its own.
 - Squash short-lived feature PRs into dev. Promote dev to main through an owner-merged release PR using a merge commit; bring main-only fixes back into dev through an owner-reviewed PR.
 - When dev advances, merge it into affected feature branches, resolve conflicts, rerun relevant checks, and report meaningful post-review changes. Worktrees share Git refs and machine resources; do not alter another checkout.
 - Keep waiting PR worktrees available for review fixes. After merge, confirm PR status, retained changes, and a clean worktree before cleanup. Squash merges may fail ancestry-based merged checks; never force-remove blindly.

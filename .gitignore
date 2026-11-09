@@ -33,9 +33,8 @@ __pycache__/
 !/SPEC.md
 !/WORKFLOW.md
 
-# Local review material is never part of a feature commit.
+# Local review evidence and scratch files.
 /.local/
-/src/pages/home/ui/*showcase*
 
 # Archives
 /*.zip
