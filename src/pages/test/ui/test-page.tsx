@@ -3,10 +3,10 @@ import type { Language } from '@/shared/config';
 
 export default function TestPage({ lang }: { lang: Language }) {
     return (
-        <main>
+        <div>
             <h1>Test — {lang.toUpperCase()}</h1>
             <p>Questionnaire coming later.</p>
             <Link to={`/${lang}/`}>Home</Link>
-        </main>
+        </div>
     );
 }

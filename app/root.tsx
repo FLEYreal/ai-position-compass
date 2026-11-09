@@ -10,6 +10,7 @@ import '../src/app/styles/index.css';
 import { siteIconLinks } from '../src/app/config/site-icons';
 import { ThemeProvider } from '../src/app/providers/theme-provider';
 import { themeBootstrapScript } from '../src/shared/lib/theme';
+import { AppShell } from '../src/app/ui/app-shell';
 
 // React Router consumes this route-module export.
 // eslint-disable-next-line react-refresh/only-export-components
@@ -34,7 +35,9 @@ export default function Root() {
             </head>
             <body>
                 <ThemeProvider>
-                    <Outlet />
+                    <AppShell>
+                        <Outlet />
+                    </AppShell>
                 </ThemeProvider>
                 <ScrollRestoration />
                 <Scripts />
