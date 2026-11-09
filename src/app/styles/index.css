@@ -7,6 +7,9 @@
 @import '@fontsource-variable/caveat';
 @import './tokens.css';
 
+/* Include page presentation maps in .ts as well as rendered .tsx components. */
+@source '../../pages';
+
 @custom-variant dark (&:is(.dark *, [data-theme='dark'] *));
 
 @theme inline {
