@@ -8,6 +8,8 @@ import {
 } from 'react-router';
 import '../src/app/styles/index.css';
 import { siteIconLinks } from '../src/app/config/site-icons';
+import { ThemeProvider } from '../src/app/providers/theme-provider';
+import { themeBootstrapScript } from '../src/shared/lib/theme';
 
 // React Router consumes this route-module export.
 // eslint-disable-next-line react-refresh/only-export-components
@@ -17,9 +19,12 @@ export default function Root() {
     const { pathname } = useLocation();
     const language = /^\/ru(?:\/|$)/.test(pathname) ? 'ru' : 'en';
     return (
-        <html lang={language}>
+        <html lang={language} suppressHydrationWarning>
             <head>
                 <meta charSet="utf-8" />
+                <script
+                    dangerouslySetInnerHTML={{ __html: themeBootstrapScript }}
+                />
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1"
@@ -28,7 +33,9 @@ export default function Root() {
                 <Links />
             </head>
             <body>
-                <Outlet />
+                <ThemeProvider>
+                    <Outlet />
+                </ThemeProvider>
                 <ScrollRestoration />
                 <Scripts />
             </body>
