@@ -36,6 +36,21 @@ export function Ruler({
             aria-hidden="true"
             data-slot="ruler"
         >
+            {Array.from({ length: divisions + 1 }, (_, index) => (
+                <line
+                    key={index}
+                    x1={`${(index / divisions) * 100}%`}
+                    x2={`${(index / divisions) * 100}%`}
+                    y1={baseline - (index % majorEvery === 0 ? 10 : 4)}
+                    y2={baseline + (coordinate ? 4 : 0)}
+                    className={
+                        index % majorEvery === 0 ?
+                            'stroke-foreground'
+                        :   'stroke-border'
+                    }
+                    strokeWidth="1"
+                />
+            ))}
             <line
                 x1="0"
                 x2="100%"
@@ -53,21 +68,6 @@ export function Ruler({
                     fill="currentColor"
                 />
             )}
-            {Array.from({ length: divisions + 1 }, (_, index) => (
-                <line
-                    key={index}
-                    x1={`${(index / divisions) * 100}%`}
-                    x2={`${(index / divisions) * 100}%`}
-                    y1={baseline - (index % majorEvery === 0 ? 10 : 4)}
-                    y2={baseline + (coordinate ? 4 : 0)}
-                    className={
-                        index % majorEvery === 0 ?
-                            'stroke-foreground'
-                        :   'stroke-border'
-                    }
-                    strokeWidth="1"
-                />
-            ))}
             {labels.map((text, index) => (
                 <text
                     key={`${index}-${text}`}
