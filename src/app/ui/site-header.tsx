@@ -12,6 +12,10 @@ export function SiteHeader({ language }: { language: Language }) {
         resolvedTheme === 'light' ?
             t('Switch to dark theme', 'Включить тёмную тему')
         :   t('Switch to light theme', 'Включить светлую тему');
+    const themeTooltip =
+        resolvedTheme === 'light' ?
+            t('After hours', 'На закате')
+        :   t('Daylight', 'В разгар дня');
     function languagePath(next: Language) {
         // Preserve the route and shared result payload; unknown routes stay unknown.
         const path =
@@ -21,7 +25,7 @@ export function SiteHeader({ language }: { language: Language }) {
         return { pathname: path, search, hash };
     }
     return (
-        <header className="grid min-h-[76px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-foreground max-[560px]:min-h-[67px] max-[560px]:gap-2">
+        <header className="grid min-h-[76px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-border max-[560px]:min-h-[67px] max-[560px]:gap-2">
             <Link
                 to={`/${language}/`}
                 aria-label={t(
@@ -47,7 +51,7 @@ export function SiteHeader({ language }: { language: Language }) {
                 <div
                     role="group"
                     aria-label={t('Language', 'Язык')}
-                    className="flex gap-0.5 rounded-[6px] border border-border px-[5px] py-[3px] max-[560px]:px-[3px]"
+                    className="flex gap-0.75 rounded-[6px] border border-border px-[7px] py-[4px] max-[560px]:px-[3px]"
                 >
                     {(['en', 'ru'] as const).map((next) => (
                         <Button
@@ -55,7 +59,7 @@ export function SiteHeader({ language }: { language: Language }) {
                             asChild
                             variant="ghost"
                             size="icon"
-                            className="h-[33px] w-[33px] rounded-[2px] p-0 text-[11px] font-normal aria-[current=true]:bg-foreground aria-[current=true]:text-background max-[560px]:w-[27px]"
+                            className="h-[30px] w-[30px] rounded-[2px] p-0 text-[11px] font-normal aria-[current=true]:bg-foreground aria-[current=true]:text-background max-[560px]:w-[27px]"
                         >
                             <Link
                                 to={languagePath(next)}
@@ -84,7 +88,7 @@ export function SiteHeader({ language }: { language: Language }) {
                             :   <Sun className="size-[18px]" />}
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent>{themeLabel}</TooltipContent>
+                    <TooltipContent>{themeTooltip}</TooltipContent>
                 </Tooltip>
             </div>
         </header>
