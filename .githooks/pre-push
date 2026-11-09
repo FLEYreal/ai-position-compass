@@ -1,0 +1,8 @@
+#!/usr/bin/python3
+"""Block coding-agent pushes; leave the owner's terminal alone."""
+import os
+import sys
+
+if any(os.environ.get(name) for name in ('CODEX_THREAD_ID', 'CODEX_CI', 'CURSOR_AGENT', 'CLAUDECODE')):
+    print('Push blocked: agents work locally. The owner must review and push from their own terminal.', file=sys.stderr)
+    sys.exit(1)

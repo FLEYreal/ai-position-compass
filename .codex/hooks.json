@@ -1,14 +1,14 @@
 {
-    "description": "Protect shared branches during agent work.",
+    "description": "Keep agent work local; the owner pushes and merges.",
     "hooks": {
         "PreToolUse": [
             {
-                "matcher": "Bash|mcp__GitKraken__git_push|mcp__codex_apps__github_merge_pull_request|mcp__codex_apps__github_enable_auto_merge",
+                "matcher": "Bash|exec_command|mcp__.*(GitKraken|github).*(push|create_commit|create_ref|update_ref|update_file|delete_ref|create_branch|merge_pull_request|enable_auto_merge)",
                 "hooks": [
                     {
                         "type": "command",
                         "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/git_guard.py\"",
-                        "statusMessage": "Checking shared branch protections"
+                        "statusMessage": "Checking local-only agent workflow"
                     }
                 ]
             }

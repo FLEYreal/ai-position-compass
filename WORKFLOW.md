@@ -3,9 +3,11 @@
 - The planner researches, prepares specifications/task briefs, and reviews reports. The worker implements assigned supporting work independently from repository context.
 - Task ownership is defined in `PLAN.md`. For owner-owned implementations/tests, agents may explain concepts, review, and identify bugs; solutions, edits, and additional tests require an explicit request. Do not implement reserved work to unblock another task.
 - The owner maintains `PLAN.md` and every section of `DEBT.md`; agents edit them only on explicit request. Suggest debt entries in reports. The planner maintains `MEMORY.md`; workers report handoff updates.
-- Workers may implement, add necessary dependencies, test, fix, commit, push feature branches, and open/update PRs within assigned scope. Only the owner merges PRs or authorizes publication. Never push directly to main/dev, force-push, rewrite shared history, or delete unmerged work.
+- Workers may implement, add necessary dependencies, test, fix, and commit locally within assigned scope. Agents must never push, upload commits/files, or mutate remote branch refs through Git, GitHub APIs, connectors, or other tools. The owner reviews and verifies locally, approves the result, and pushes it. Only after that approval may an agent create/update a PR for the already-pushed diff, check CI, and address review feedback locally. Only the owner merges or authorizes publication. Never force-push, rewrite shared history, or delete unmerged work.
 - The owner may commit and push directly to main or dev. Agents must not commit on main or dev until the owner has reviewed the exact changes and explicitly approved the commit.
 - Before editing AGENTS.md, WORKFLOW.md, or SPEC.md, warn the owner which files will change and why. Explicit owner instructions authorizing the edits remain sufficient; do not silently change these files.
+- Do not add a new Git-visible Markdown file, or remove its ignore protection, without explicit owner permission. Keep plans, audit/review notes, reports and handoffs in ignored local context. Existing approved tracked Markdown requirements remain in place; required third-party notices must be retained.
+- Showcases, component galleries, demonstrations, review fixtures and their integration code must stay out of changes submitted to dev unless the owner explicitly approves including them. Keep local review copies and integration hunks unstaged by default, but visible for review; do not blanket-ignore source files by names such as showcase. Stage production paths explicitly and inspect the complete diff against dev before the owner pushes it for a PR.
 
 # Canonical checkout and local context
 
@@ -46,6 +48,7 @@ All five files have one canonical copy in the original checkout. Feature worktre
 ```
 
 4. Inspect worktree status and confirm no context links are staged. Keep dependencies and build output per worktree; never share node_modules symlinks. Install using the configured registry; follow session-level installation restrictions. Stop and report unavailable prerequisites instead of changing registry sources without permission.
+   Run `pnpm hooks:install` once per clone to activate the Git pre-push backstop. It refuses pushes from coding-agent processes while leaving the owner's normal terminal available. `.codex/hooks.json` also blocks pushes/API code writes at the tool boundary when its trusted project layer is loaded. Both are guardrails, not a sandbox against deliberate bypasses; never disable them or remove agent environment markers to push.
 5. Give each server a distinct port, for example `pnpm dev --port 5181 --strictPort`. Record checkout/branch/port in reports without embedding private home paths in public PRs. Do not stop another checkout's server. Validate the same worktree that implements the change.
 
 # Checks and reporting
@@ -60,6 +63,7 @@ All five files have one canonical copy in the original checkout. Feature worktre
 # Git, review, and cleanup
 
 - main holds released/deployable code; dev integrates reviewed features. Feature PRs target dev. Use Conventional Commits and focused PRs.
+- Make one commit per fix or completed feature, including its directly related tests. Put independent fixes, features, and workflow changes in separate commits so each change can be reviewed on its own.
 - Squash short-lived feature PRs into dev. Promote dev to main through an owner-merged release PR using a merge commit; bring main-only fixes back into dev through an owner-reviewed PR.
 - When dev advances, merge it into affected feature branches, resolve conflicts, rerun relevant checks, and report meaningful post-review changes. Worktrees share Git refs and machine resources; do not alter another checkout.
 - Keep waiting PR worktrees available for review fixes. After merge, confirm PR status, retained changes, and a clean worktree before cleanup. Squash merges may fail ancestry-based merged checks; never force-remove blindly.
