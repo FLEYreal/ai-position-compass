@@ -67,7 +67,7 @@ describe('axis scale', () => {
         expect(screen.getByRole('meter')).toHaveAttribute('value', '100');
     });
     test('does not represent an undefined coordinate as a zero score', () => {
-        render(
+        const { container } = render(
             <AxisScale
                 value={null}
                 label="Ecology"
@@ -78,7 +78,11 @@ describe('axis scale', () => {
         );
         expect(screen.queryByRole('meter')).not.toBeInTheDocument();
         expect(
-            screen.getByText('Ecology: Недостаточно данных'),
+            screen.getByRole('group', { name: 'Ecology' }),
         ).toBeInTheDocument();
+        expect(screen.getByText('Недостаточно данных')).toBeInTheDocument();
+        expect(container.querySelector('svg')).not.toBeInTheDocument();
+        expect(screen.getByText('Low harm')).toBeInTheDocument();
+        expect(screen.getByText('High harm')).toBeInTheDocument();
     });
 });

@@ -47,5 +47,6 @@ export { Separator } from './separator';
 export { Progress } from './progress';
 export { QuestionProgress } from './question-progress';
 export { AxisScale } from './axis-scale';
+export { AxisUndefined } from './axis-undefined';
 export { EditorialPrint } from './editorial-print';
 export { Input } from './input';

@@ -1,5 +1,6 @@
 import { cn } from '@/shared/lib';
 import { Ruler } from './ruler';
+import { AxisUndefined } from './axis-undefined';
 
 export function AxisScale({
     value,
@@ -7,7 +8,7 @@ export function AxisScale({
     lowLabel,
     highLabel,
     annotation,
-    undefinedLabel = 'Undefined',
+    undefinedLabel = 'Axis is undefined',
     className,
 }: {
     value: number | null;
@@ -34,29 +35,35 @@ export function AxisScale({
             </span>
             <div className="col-span-2 col-start-1 row-start-1 min-w-0 px-4 sm:col-span-1 sm:col-start-2">
                 {coordinate == null ?
-                    <p className="sr-only">
-                        {label}: {undefinedLabel}
-                    </p>
-                :   <meter
-                        className="sr-only"
-                        min="0"
-                        max="100"
-                        value={coordinate}
-                        aria-label={label}
-                        aria-valuetext={`${coordinate} / 100 · ${lowLabel} — ${highLabel}`}
-                    />
+                    <div
+                        className={cn(
+                            'flex h-[75px] items-end pb-4',
+                            annotation && 'h-[109px]',
+                        )}
+                    >
+                        <AxisUndefined
+                            label={label}
+                            message={undefinedLabel}
+                            className="w-full"
+                        />
+                    </div>
+                :   <>
+                        <meter
+                            className="sr-only"
+                            min="0"
+                            max="100"
+                            value={coordinate}
+                            aria-label={label}
+                            aria-valuetext={`${coordinate} / 100 · ${lowLabel} — ${highLabel}`}
+                        />
+                        <Ruler
+                            value={coordinate}
+                            variant="coordinate"
+                            labels={['0', '100']}
+                            annotation={annotation}
+                        />
+                    </>
                 }
-                <Ruler
-                    value={coordinate}
-                    variant="coordinate"
-                    labels={['0', '100']}
-                    annotation={coordinate == null ? undefined : annotation}
-                />
-                {coordinate == null && (
-                    <p className="text-center text-sm text-muted-foreground">
-                        {undefinedLabel}
-                    </p>
-                )}
             </div>
             <span className="col-start-2 row-start-2 min-w-0 text-right text-sm text-muted-foreground italic sm:col-start-3 sm:row-start-1 sm:pb-6 sm:text-left">
                 {highLabel}

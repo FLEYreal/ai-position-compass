@@ -3,7 +3,7 @@ import type { Language } from '@/shared/config';
 
 export default function Home({ lang }: { lang: Language }) {
     return (
-        <main>
+        <div>
             <h1>AI Position Compass — {lang.toUpperCase()}</h1>
             <nav aria-label="Pages">
                 <Link to={`/${lang}/test`}>Test</Link>
@@ -14,6 +14,6 @@ export default function Home({ lang }: { lang: Language }) {
                     {lang === 'en' ? 'Русский' : 'English'}
                 </Link>
             </nav>
-        </main>
+        </div>
     );
 }
