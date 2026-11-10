@@ -734,3 +734,24 @@ export const scoringConfig = {
     questions,
     camps,
 } as const;
+
+export function getQuestionCount(type?: ModelId) {
+    switch (type) {
+        case 'dev':
+            return devQuestions.length;
+        case 'core':
+            return coreQuestions.length;
+        case undefined:
+            return questions.length;
+        default: {
+            const _exhaustiveCheck: never = type;
+            throw new Error(`Unhandled type ${_exhaustiveCheck}`);
+        }
+    }
+}
+
+// Returns in minutes
+export function getCompletionTime(type?: ModelId) {
+    const secondsMultiplier = 15; // Estimation on how many seconds it takes a user to complete one question.
+    return Math.floor((getQuestionCount(type) * secondsMultiplier) / 60);
+}
