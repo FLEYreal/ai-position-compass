@@ -8,7 +8,7 @@ export function AxisScale({
     lowLabel,
     highLabel,
     annotation,
-    undefinedLabel = 'Axis is undefined',
+    undefinedLabel,
     className,
 }: {
     value: number | null;
@@ -16,7 +16,7 @@ export function AxisScale({
     lowLabel: string;
     highLabel: string;
     annotation?: string;
-    undefinedLabel?: string;
+    undefinedLabel: string;
     className?: string;
 }) {
     const coordinate =

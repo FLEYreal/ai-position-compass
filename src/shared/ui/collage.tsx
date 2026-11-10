@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Pause, Play } from 'lucide-react';
-import type { Language } from '@/shared/config';
 import { cn } from '@/shared/lib';
 import { Mask } from './mascot';
 import { PaperClip } from './paper-clip';
@@ -43,12 +42,18 @@ function togglePaused() {
 
 export function Collage({
     variant = 'home',
-    language = 'en',
+    messages,
     caption,
     className,
 }: {
     variant?: 'home' | 'result';
-    language?: Language;
+    messages: {
+        description: string;
+        resumeAction: string;
+        pauseAction: string;
+        resumeLabel: string;
+        pauseLabel: string;
+    };
     caption?: string;
     className?: string;
 }) {
@@ -77,17 +82,13 @@ export function Collage({
         };
     }, []);
     const playing = visible && !paused;
-    const imageLabel =
-        language === 'ru' ?
-            'Улыбающаяся маска, скрепки, перфокарта и архивные фотографии.'
-        :   'A smiling mask, paperclips, a punched card, and archival photographs.';
     const home = variant === 'home';
     return (
         <figure ref={stageRef} className={cn('relative m-0 w-full', className)}>
             <div
                 className="pointer-events-none relative isolate aspect-[1.04] w-full"
                 role="img"
-                aria-label={imageLabel}
+                aria-label={messages.description}
             >
                 <div
                     aria-hidden="true"
@@ -251,26 +252,14 @@ export function Collage({
                     type="button"
                     className="ml-auto inline-flex min-h-8 shrink-0 items-center gap-1 text-xs text-muted-foreground underline decoration-dotted underline-offset-[3px] hover:text-foreground motion-reduce:hidden"
                     aria-label={
-                        language === 'ru' ?
-                            paused ?
-                                'Продолжить анимацию иллюстрации'
-                            :   'Приостановить анимацию иллюстрации'
-                        : paused ?
-                            'Resume illustration animation'
-                        :   'Pause illustration animation'
+                        paused ? messages.resumeAction : messages.pauseAction
                     }
                     onClick={togglePaused}
                 >
                     {paused ?
                         <Play size={11} aria-hidden="true" />
                     :   <Pause size={11} aria-hidden="true" />}
-                    {paused ?
-                        language === 'ru' ?
-                            'Продолжить'
-                        :   'Play'
-                    : language === 'ru' ?
-                        'Пауза'
-                    :   'Pause'}
+                    {paused ? messages.resumeLabel : messages.pauseLabel}
                 </button>
             </figcaption>
         </figure>

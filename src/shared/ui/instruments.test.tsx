@@ -2,10 +2,32 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { AxisScale, QuestionProgress } from './index';
 
+const englishProgress = {
+    progressLabel: 'Question progress',
+    answeredLabel: 'Answered questions',
+    questionLabel: 'QUESTION',
+    completeLabel: 'COMPLETE',
+    summary: (answered: number, remaining: number) =>
+        `${answered} answered · ${remaining} remaining`,
+};
+const russianProgress = {
+    progressLabel: 'Прогресс вопросов',
+    answeredLabel: 'Отвеченные вопросы',
+    questionLabel: 'ВОПРОС',
+    completeLabel: 'ЗАВЕРШЕНО',
+    summary: (answered: number, remaining: number) =>
+        `Ответов: ${answered} · Осталось: ${remaining}`,
+};
+
 describe('question progress', () => {
     test('reports answered and remaining counts independently of the current question', () => {
         const { rerender } = render(
-            <QuestionProgress total={66} answered={12} currentQuestion={25} />,
+            <QuestionProgress
+                messages={englishProgress}
+                total={66}
+                answered={12}
+                currentQuestion={25}
+            />,
         );
         const progress = screen.getByRole('progressbar', {
             name: 'Answered questions',
@@ -18,7 +40,13 @@ describe('question progress', () => {
             (12 / 66) * 100,
         );
         expect(screen.getByText('25')).toBeInTheDocument();
-        rerender(<QuestionProgress total={81} answered={81} />);
+        rerender(
+            <QuestionProgress
+                messages={englishProgress}
+                total={81}
+                answered={81}
+            />,
+        );
         expect(progress).toHaveAttribute('aria-valuenow', '100');
         expect(progress).toHaveAttribute(
             'aria-valuetext',
@@ -29,7 +57,13 @@ describe('question progress', () => {
         ).toBeInTheDocument();
     });
     test('handles an empty questionnaire without invalid progress values', () => {
-        render(<QuestionProgress total={0} answered={0} language="ru" />);
+        render(
+            <QuestionProgress
+                total={0}
+                answered={0}
+                messages={russianProgress}
+            />,
+        );
         expect(screen.getByRole('progressbar')).toHaveAttribute(
             'aria-valuenow',
             '0',
@@ -45,6 +79,7 @@ describe('axis scale', () => {
     test('exposes a measurement rather than claiming task completion', () => {
         const { rerender } = render(
             <AxisScale
+                undefinedLabel="Axis is undefined"
                 value={39}
                 label="Regulation"
                 lowLabel="Let them build"
@@ -58,6 +93,7 @@ describe('axis scale', () => {
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
         rerender(
             <AxisScale
+                undefinedLabel="Axis is undefined"
                 value={100}
                 label="Regulation"
                 lowLabel="Let them build"
