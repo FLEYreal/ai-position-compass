@@ -13,15 +13,17 @@
 
 The original frontend checkout is the main worktree, listed first by `git worktree list --porcelain`. Locate it at runtime; do not store its absolute path in documentation. Feature worktrees live at `../worktrees/<feature>/` relative to it. Resolve sibling `../design/` and `../research/research-results/` references from the original checkout; both are read-only source material.
 
-`PLAN.md`, `DEBT.md`, and `MEMORY.md` are required ignored local files in the original checkout. `PRODUCT.md` and `DESIGN.md` are optional local sources: when present there, link them too; if an assigned task requires an absent source, report it. Never replace missing context with invented requirements.
+`PLAN.md`, `DEBT.md`, and `MEMORY.md` are required ignored local files in the original checkout. `PRODUCT.md`, `DESIGN.md`, and `TRANSLATIONS.md` are additional local sources: link them when present, and require them whenever the assigned work depends on their content. The translation source is named `TRANSLATIONS.md` (plural); see SPEC for its use.
 
-All five files have one canonical copy in the original checkout. Feature worktrees use ignored symlinks, never copies or committed links. Tracked AGENTS/SPEC/WORKFLOW, README, and skills arrive with the branch; their changes must be integrated before new worktrees inherit them. Remote workers need an explicit context bundle because local symlinks are inaccessible remotely.
+These files have one canonical copy in the original checkout. Feature worktrees on the same machine use ignored symlinks, never copies or committed links. Tracked AGENTS/SPEC/WORKFLOW, README, and skills arrive with the branch; their changes must be integrated before new worktrees inherit them. Git-ignored files do not arrive through clone, fetch, pull, or branch switching. On another machine, the owner must manually supply current copies in that machine's canonical checkout, or provide an explicit context bundle. Symlinks pointing to the original machine are not a usable handoff.
+
+Before acting on an assignment, check that required instructions, PLAN and local context exist, are readable files, and that any context symlinks resolve. If a required or task-relevant file is missing, unreadable, or a broken link, report its exact filename to the owner, explain what work depends on it, and request the current copy or an explicit owner decision about proceeding. Report before making dependent changes, recommendations or task-status claims. Do not silently skip the file, create an empty substitute, reconstruct it from memory, or treat missing context as permission to proceed. Read-only checks to identify the missing files may continue; independent work may continue only when its required context is available. List nonessential omitted files explicitly as well.
 
 # Starting work
 
-1. Read AGENTS, this procedure, SPEC, the assigned PLAN entry, and relevant local context. Inspect Git status; preserve existing changes. After a long wait, reread shared context and check updated specifications.
+1. Run the context availability check above, then read AGENTS, this procedure, SPEC, the assigned PLAN entry, and relevant local context. Inspect Git status; preserve existing changes. A missing ignored PLAN or translation source is a handoff problem to report, not a reason to guess the assignment or wording. After a long wait, reread shared context and check updated specifications.
 2. The owner establishes the remote and dev branch. Fetch current dev and create one feature branch/worktree per task; do not initialize shared branches without explicit instruction. From the original checkout, for example: `git worktree add -b feat/tooling ../worktrees/tooling origin/dev`.
-3. Link context before launching the worker. Run this example from the original checkout after the feature worktree exists. It checks all destinations before creating links and never overwrites them. Missing optional files are skipped; broken or non-file sources are errors.
+3. Link context before launching the worker. Run this example from the original checkout after the feature worktree exists and task-relevant sources have been confirmed available. It reports missing optional files and checks every source/destination before creating links; it never overwrites them. Relay failures and omissions to the owner instead of silently continuing.
 
 ```bash
 (
@@ -29,17 +31,29 @@ All five files have one canonical copy in the original checkout. Feature worktre
   project_checkout="$(pwd -P)"
   feature_checkout="$project_checkout/../worktrees/tooling"
   context_files=(PLAN.md DEBT.md MEMORY.md)
-  for context_file in PRODUCT.md DESIGN.md; do
+  for context_file in PRODUCT.md DESIGN.md TRANSLATIONS.md; do
     if [ -e "$project_checkout/$context_file" ] || [ -L "$project_checkout/$context_file" ]; then
       context_files+=("$context_file")
+    else
+      printf 'Optional context unavailable: %s; stop if required by this task.\n' "$context_file" >&2
     fi
   done
+  context_error=0
   for context_file in "${context_files[@]}"; do
-    test -f "$project_checkout/$context_file"
-    test ! -e "$feature_checkout/$context_file"
-    test ! -L "$feature_checkout/$context_file"
-    git -C "$feature_checkout" check-ignore -q -- "$context_file"
+    if [ ! -f "$project_checkout/$context_file" ] || [ ! -r "$project_checkout/$context_file" ]; then
+      printf 'Missing, unreadable or invalid context source: %s\n' "$context_file" >&2
+      context_error=1
+    fi
+    if [ -e "$feature_checkout/$context_file" ] || [ -L "$feature_checkout/$context_file" ]; then
+      printf 'Context destination already exists: %s\n' "$context_file" >&2
+      context_error=1
+    fi
+    if ! git -C "$feature_checkout" check-ignore -q -- "$context_file"; then
+      printf 'Context destination is not Git-ignored: %s\n' "$context_file" >&2
+      context_error=1
+    fi
   done
+  if [ "$context_error" -ne 0 ]; then exit 1; fi
   for context_file in "${context_files[@]}"; do
     ln -sT -- "$project_checkout/$context_file" "$feature_checkout/$context_file"
     test "$(readlink -f -- "$feature_checkout/$context_file")" = "$(readlink -f -- "$project_checkout/$context_file")"
