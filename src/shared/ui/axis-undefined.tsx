@@ -2,11 +2,11 @@ import { cn } from '@/shared/lib';
 
 export function AxisUndefined({
     label,
-    message = 'Axis is undefined',
+    message,
     className,
 }: {
     label: string;
-    message?: string;
+    message: string;
     className?: string;
 }) {
     return (

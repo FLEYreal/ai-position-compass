@@ -8,11 +8,5 @@ export default function RedirectToEnglish() {
     useEffect(() => {
         navigate(destination, { replace: true });
     }, [destination, navigate]);
-    return (
-        <main>
-            <p>
-                Continue to <Link to={destination}>English</Link>.
-            </p>
-        </main>
-    );
+    return <Link to={destination}>English</Link>;
 }

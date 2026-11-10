@@ -1,36 +1,39 @@
 import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, test } from 'vitest';
-import Home from './home';
-import ResultRoute from './result';
-import TestRoute from './test';
+import Home, { loader as homeLoader } from './home';
+import ResultRoute, { loader as resultLoader } from './result';
+import TestRoute, { loader as testLoader } from './test';
+import NotFoundRoute, { clientLoader as notFoundLoader } from './not-found';
 import RedirectToEnglish from './redirect';
 
 const routes = [
-    { path: '/:lang', element: <Home /> },
-    { path: '/:lang/test', element: <TestRoute /> },
-    { path: '/:lang/result', element: <ResultRoute /> },
+    { path: '/:lang', element: <Home />, loader: homeLoader },
+    { path: '/:lang/test', element: <TestRoute />, loader: testLoader },
+    { path: '/:lang/result', element: <ResultRoute />, loader: resultLoader },
+    { path: '*', element: <NotFoundRoute />, loader: notFoundLoader },
     { path: '/test', element: <RedirectToEnglish /> },
     { path: '/result', element: <RedirectToEnglish /> },
 ];
 
 describe('language routes', () => {
     test.each([
-        ['/en', 'AI Position Compass — EN'],
-        ['/ru', 'AI Position Compass — RU'],
-        ['/en/test', 'Test — EN'],
-        ['/ru/test', 'Test — RU'],
-        ['/en/result', 'Result — EN'],
-        ['/ru/result', 'Result — RU'],
+        ['/en', 'A new world. Where do you stand?'],
+        ['/ru', 'Новый мир. Где в нём ваше место?'],
+        ['/en/test', 'Your position, one question at a time.'],
+        ['/ru/test', 'Ваша позиция, вопрос за вопросом.'],
+        ['/en/result', 'Your AI position'],
+        ['/ru/result', 'Ваша позиция по ИИ'],
+        ['/ru/unknown', '404 — Страница не найдена'],
         ['/fr', '404 — Page not found'],
-    ])('%s renders the expected page', (path, title) => {
+    ])('%s renders the expected page', async (path, title) => {
         render(
             <RouterProvider
                 router={createMemoryRouter(routes, { initialEntries: [path] })}
             />,
         );
         expect(
-            screen.getByRole('heading', { name: title }),
+            await screen.findByRole('heading', { name: title }),
         ).toBeInTheDocument();
     });
     test('bare result redirects to English and preserves the query', async () => {
@@ -38,7 +41,7 @@ describe('language routes', () => {
             initialEntries: ['/result?r=example'],
         });
         render(<RouterProvider router={router} />);
-        await screen.findByRole('heading', { name: 'Result — EN' });
+        await screen.findByRole('heading', { name: 'Your AI position' });
         expect(router.state.location.search).toBe('?r=example');
     });
 });

@@ -4,10 +4,19 @@ import { cn } from '@/shared/lib';
 import { TooltipProvider } from '@/shared/ui';
 import { SiteHeader } from './site-header';
 import { SiteFooter } from './site-footer';
+import type { Messages } from '../i18n';
+import type { Language } from '@/shared/config';
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+    children,
+    language,
+    messages,
+}: {
+    children: ReactNode;
+    language: Language;
+    messages: Messages;
+}) {
     const { pathname } = useLocation();
-    const language = /^\/ru(?:\/|$)/.test(pathname) ? 'ru' : 'en';
     const page = pathname.replace(/\/$/, '').split('/').at(-1);
     return (
         <TooltipProvider delayDuration={200}>
@@ -16,11 +25,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                     href="#main"
                     className="sr-only z-50 rounded bg-card p-3 text-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
                 >
-                    {language === 'ru' ?
-                        'Перейти к содержимому'
-                    :   'Skip to content'}
+                    {messages['common.skipLink']}
                 </a>
-                <SiteHeader language={language} />
+                <SiteHeader language={language} messages={messages} />
                 <main
                     id="main"
                     tabIndex={-1}
@@ -32,7 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 >
                     {children}
                 </main>
-                <SiteFooter language={language} />
+                <SiteFooter messages={messages} />
             </div>
         </TooltipProvider>
     );

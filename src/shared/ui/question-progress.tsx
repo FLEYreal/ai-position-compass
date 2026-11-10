@@ -1,5 +1,4 @@
 import { cn } from '@/shared/lib';
-import type { Language } from '@/shared/config';
 import { Progress } from './progress';
 import { Ruler } from './ruler';
 
@@ -7,7 +6,7 @@ export function QuestionProgress({
     total,
     answered,
     currentQuestion,
-    language = 'en',
+    messages,
     note,
     label,
     className,
@@ -15,7 +14,13 @@ export function QuestionProgress({
     total: number;
     answered: number;
     currentQuestion?: number;
-    language?: Language;
+    messages: {
+        progressLabel: string;
+        answeredLabel: string;
+        questionLabel: string;
+        completeLabel: string;
+        summary: (answered: number, remaining: number) => string;
+    };
     note?: string;
     label?: string;
     className?: string;
@@ -31,22 +36,18 @@ export function QuestionProgress({
         :   Math.max(0, Math.min(count, Math.floor(currentQuestion)));
     const remaining = count - done;
     const percent = count === 0 ? 0 : (done / count) * 100;
-    const t = (en: string, ru: string) => (language === 'ru' ? ru : en);
-    const summary = t(
-        `${done} answered · ${remaining} remaining`,
-        `Ответов: ${done} · Осталось: ${remaining}`,
-    );
+    const summary = messages.summary(done, remaining);
     return (
         <section
             className={cn('min-w-0 text-ring', className)}
-            aria-label={t('Question progress', 'Прогресс вопросов')}
+            aria-label={messages.progressLabel}
         >
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 text-[length:var(--font-size-construct)] text-muted-foreground">
                 <span>
                     {label ??
                         (done === count && count > 0 ?
-                            t('COMPLETE', 'ЗАВЕРШЕНО')
-                        :   t('QUESTION', 'ВОПРОС'))}{' '}
+                            messages.completeLabel
+                        :   messages.questionLabel)}{' '}
                     <strong className="ml-2 text-lg font-medium text-ring tabular-nums">
                         {String(current).padStart(2, '0')}
                     </strong>{' '}
@@ -56,7 +57,7 @@ export function QuestionProgress({
             </div>
             <Progress
                 value={percent}
-                aria-label={t('Answered questions', 'Отвеченные вопросы')}
+                aria-label={messages.answeredLabel}
                 aria-valuetext={summary}
                 className="mt-3 h-auto overflow-visible rounded-none bg-transparent"
             >
