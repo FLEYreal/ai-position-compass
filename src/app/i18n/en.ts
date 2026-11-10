@@ -1,4 +1,3 @@
-// Reviewed wording from TRANSLATIONS.md.
 export default {
     'footer.description':
         'An exploratory map of beliefs and values about artificial intelligence.',
