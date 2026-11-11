@@ -1,4 +1,36 @@
 export { isLanguage, type Language } from './language';
 export { projectName } from './project';
 export { languageFromPathname } from './language';
-export { scoringConfig, getQuestionCount, getCompletionTime } from './scoring';
+export {
+    type ModelId,
+    type QuestionKey,
+    type QuestionWeight,
+    type CampPosition,
+    type CoreAxisDefinition,
+    type DevAxisDefinition,
+    type AxisDefinition,
+    type CoreAxisId,
+    type DevAxisId,
+    type AxisId,
+    type QuestionDefinition,
+    type ModeledQuestionDefinition,
+    type SuggestionDefinition,
+    type ModeledSuggestionDefinition,
+    type CampDefinition,
+    type ModeledCampDefinition,
+    coreAxes,
+    devAxes,
+    axes,
+    coreQuestions,
+    devQuestions,
+    questions,
+    coreSuggestions,
+    devSuggestions,
+    suggestions,
+    coreCamps,
+    devCamps,
+    camps,
+    scoringConfig,
+    getQuestionCount,
+    getCompletionTime,
+} from './scoring';
