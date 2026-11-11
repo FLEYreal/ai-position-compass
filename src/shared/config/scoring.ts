@@ -486,6 +486,44 @@ export const questions = [
     ),
 ] as const satisfies ModeledQuestionDefinition[];
 
+/* --- SUGGESTIONS --- */
+export type SuggestionDefinition = {
+    readonly id: string;
+    readonly questionId: string;
+};
+
+export const coreSuggestions = [
+    { id: 'CS1', questionId: 'L5' },
+    { id: 'CS2', questionId: 'O1' },
+    { id: 'CS3', questionId: 'A3' },
+    { id: 'CS4', questionId: 'E3' },
+    { id: 'CS5', questionId: 'P7' },
+    { id: 'CS6', questionId: 'X7' },
+] as const satisfies SuggestionDefinition[];
+export const devSuggestions = [
+    { id: 'DS6', questionId: 'D2' },
+] as const satisfies SuggestionDefinition[];
+
+export type ModeledSuggestionDefinition = SuggestionDefinition & {
+    readonly modelId: ModelId;
+};
+export const suggestions = [
+    ...coreSuggestions.map(
+        (suggestion) =>
+            ({
+                ...suggestion,
+                modelId: 'core',
+            }) satisfies ModeledSuggestionDefinition,
+    ),
+    ...devSuggestions.map(
+        (suggestion) =>
+            ({
+                ...suggestion,
+                modelId: 'dev',
+            }) satisfies ModeledSuggestionDefinition,
+    ),
+] as const satisfies SuggestionDefinition[];
+
 /* --- CAMPS --- */
 export type CampDefinition<TAxisId extends AxisId = AxisId> = {
     readonly id: string;
