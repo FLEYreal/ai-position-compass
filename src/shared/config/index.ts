@@ -18,6 +18,7 @@ export {
     type ModeledSuggestionDefinition,
     type CampDefinition,
     type ModeledCampDefinition,
+    type Setting,
     coreAxes,
     devAxes,
     axes,
@@ -30,7 +31,9 @@ export {
     coreCamps,
     devCamps,
     camps,
+    settings,
     scoringConfig,
     getQuestionCount,
     getCompletionTime,
+    getSetting,
 } from './scoring';

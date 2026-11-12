@@ -614,7 +614,7 @@ export type CampDefinition<TAxisId extends AxisId = AxisId> = {
     readonly id: string;
     readonly positions: {
         readonly axisId: TAxisId;
-        readonly position: CampPosition;
+        readonly score: CampPosition;
     }[];
 };
 
@@ -622,158 +622,158 @@ export const coreCamps = [
     {
         id: 'accelerationists',
         positions: [
-            { axisId: 'regulation', position: 17 },
-            { axisId: 'control', position: 17 },
-            { axisId: 'geopolitics', position: 17 },
-            { axisId: 'openness', position: 83 },
-            { axisId: 'capability', position: 83 },
-            { axisId: 'existentialRisk', position: 17 },
-            { axisId: 'labor', position: 33 },
+            { axisId: 'regulation', score: 17 },
+            { axisId: 'control', score: 17 },
+            { axisId: 'geopolitics', score: 17 },
+            { axisId: 'openness', score: 83 },
+            { axisId: 'capability', score: 83 },
+            { axisId: 'existentialRisk', score: 17 },
+            { axisId: 'labor', score: 33 },
         ],
     },
     {
         id: 'securitists',
         positions: [
-            { axisId: 'regulation', position: 33 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'geopolitics', position: 17 },
-            { axisId: 'openness', position: 17 },
-            { axisId: 'capability', position: 83 },
-            { axisId: 'existentialRisk', position: 67 },
+            { axisId: 'regulation', score: 33 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'geopolitics', score: 17 },
+            { axisId: 'openness', score: 17 },
+            { axisId: 'capability', score: 83 },
+            { axisId: 'existentialRisk', score: 67 },
         ],
     },
     {
         id: 'safetyCamp',
         positions: [
-            { axisId: 'regulation', position: 67 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'geopolitics', position: 83 },
-            { axisId: 'openness', position: 17 },
-            { axisId: 'capability', position: 83 },
-            { axisId: 'existentialRisk', position: 83 },
+            { axisId: 'regulation', score: 67 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'geopolitics', score: 83 },
+            { axisId: 'openness', score: 17 },
+            { axisId: 'capability', score: 83 },
+            { axisId: 'existentialRisk', score: 83 },
         ],
     },
     {
         id: 'pauseCamp',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'geopolitics', position: 83 },
-            { axisId: 'openness', position: 17 },
-            { axisId: 'capability', position: 83 },
-            { axisId: 'existentialRisk', position: 83 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'geopolitics', score: 83 },
+            { axisId: 'openness', score: 17 },
+            { axisId: 'capability', score: 83 },
+            { axisId: 'existentialRisk', score: 83 },
         ],
     },
     {
         id: 'cautiousBuilders',
         positions: [
-            { axisId: 'regulation', position: 33 },
-            { axisId: 'control', position: 17 },
-            { axisId: 'openness', position: 33 },
-            { axisId: 'capability', position: 83 },
-            { axisId: 'existentialRisk', position: 33 },
+            { axisId: 'regulation', score: 33 },
+            { axisId: 'control', score: 17 },
+            { axisId: 'openness', score: 33 },
+            { axisId: 'capability', score: 83 },
+            { axisId: 'existentialRisk', score: 33 },
         ],
     },
     {
         id: 'guardedOptimists',
         positions: [
-            { axisId: 'regulation', position: 33 },
-            { axisId: 'control', position: 33 },
-            { axisId: 'openness', position: 83 },
-            { axisId: 'capability', position: 83 },
-            { axisId: 'existentialRisk', position: 67 },
-            { axisId: 'surveillance', position: 67 },
+            { axisId: 'regulation', score: 33 },
+            { axisId: 'control', score: 33 },
+            { axisId: 'openness', score: 83 },
+            { axisId: 'capability', score: 83 },
+            { axisId: 'existentialRisk', score: 67 },
+            { axisId: 'surveillance', score: 67 },
         ],
     },
     {
         id: 'ethicsCamp',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'capability', position: 33 },
-            { axisId: 'existentialRisk', position: 17 },
-            { axisId: 'ecology', position: 83 },
-            { axisId: 'creativity', position: 83 },
-            { axisId: 'labor', position: 83 },
-            { axisId: 'surveillance', position: 83 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'capability', score: 33 },
+            { axisId: 'existentialRisk', score: 17 },
+            { axisId: 'ecology', score: 83 },
+            { axisId: 'creativity', score: 83 },
+            { axisId: 'labor', score: 83 },
+            { axisId: 'surveillance', score: 83 },
         ],
     },
     {
         id: 'normalTechnologyCamp',
         positions: [
-            { axisId: 'regulation', position: 33 },
-            { axisId: 'control', position: 33 },
-            { axisId: 'geopolitics', position: 67 },
-            { axisId: 'openness', position: 67 },
-            { axisId: 'capability', position: 33 },
-            { axisId: 'existentialRisk', position: 17 },
-            { axisId: 'labor', position: 33 },
+            { axisId: 'regulation', score: 33 },
+            { axisId: 'control', score: 33 },
+            { axisId: 'geopolitics', score: 67 },
+            { axisId: 'openness', score: 67 },
+            { axisId: 'capability', score: 33 },
+            { axisId: 'existentialRisk', score: 17 },
+            { axisId: 'labor', score: 33 },
         ],
     },
     {
         id: 'hypeSkeptics',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'capability', position: 17 },
-            { axisId: 'existentialRisk', position: 17 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'capability', score: 17 },
+            { axisId: 'existentialRisk', score: 17 },
         ],
     },
     {
         id: 'populists',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'capability', position: 33 },
-            { axisId: 'labor', position: 83 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'capability', score: 33 },
+            { axisId: 'labor', score: 83 },
         ],
     },
     {
         id: 'creativesCopyright',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'capability', position: 33 },
-            { axisId: 'creativity', position: 83 },
-            { axisId: 'labor', position: 83 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'capability', score: 33 },
+            { axisId: 'creativity', score: 83 },
+            { axisId: 'labor', score: 83 },
         ],
     },
     {
         id: 'unconcerned',
         positions: [
-            { axisId: 'regulation', position: 33 },
-            { axisId: 'capability', position: 33 },
-            { axisId: 'existentialRisk', position: 17 },
-            { axisId: 'ecology', position: 17 },
-            { axisId: 'creativity', position: 17 },
-            { axisId: 'labor', position: 17 },
-            { axisId: 'surveillance', position: 17 },
+            { axisId: 'regulation', score: 33 },
+            { axisId: 'capability', score: 33 },
+            { axisId: 'existentialRisk', score: 17 },
+            { axisId: 'ecology', score: 17 },
+            { axisId: 'creativity', score: 17 },
+            { axisId: 'labor', score: 17 },
+            { axisId: 'surveillance', score: 17 },
         ],
     },
     {
         id: 'existentialWorriers',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'capability', position: 33 },
-            { axisId: 'existentialRisk', position: 83 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'capability', score: 33 },
+            { axisId: 'existentialRisk', score: 83 },
         ],
     },
     {
         id: 'laborCritics',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'control', position: 83 },
-            { axisId: 'capability', position: 17 },
-            { axisId: 'labor', position: 83 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'control', score: 83 },
+            { axisId: 'capability', score: 17 },
+            { axisId: 'labor', score: 83 },
         ],
     },
     {
         id: 'surveillanceCritics',
         positions: [
-            { axisId: 'regulation', position: 83 },
-            { axisId: 'control', position: 33 },
-            { axisId: 'capability', position: 67 },
-            { axisId: 'surveillance', position: 83 },
+            { axisId: 'regulation', score: 83 },
+            { axisId: 'control', score: 33 },
+            { axisId: 'capability', score: 67 },
+            { axisId: 'surveillance', score: 83 },
         ],
     },
 ] as const satisfies CampDefinition<CoreAxisId>[];
@@ -782,51 +782,51 @@ export const devCamps = [
     {
         id: 'vibeCoders',
         positions: [
-            { axisId: 'aiDelegation', position: 83 },
-            { axisId: 'dispacementRisk', position: 33 },
+            { axisId: 'aiDelegation', score: 83 },
+            { axisId: 'dispacementRisk', score: 33 },
         ],
     },
     {
         id: 'vibeFounders',
         positions: [
-            { axisId: 'aiDelegation', position: 83 },
-            { axisId: 'dispacementRisk', position: 83 },
+            { axisId: 'aiDelegation', score: 83 },
+            { axisId: 'dispacementRisk', score: 83 },
         ],
     },
     {
         id: 'openSourceAdvocatesSelfHosters',
         positions: [
-            { axisId: 'openSourcePreference', position: 83 },
-            { axisId: 'aiDelegation', position: 83 },
+            { axisId: 'openSourcePreference', score: 83 },
+            { axisId: 'aiDelegation', score: 83 },
         ],
     },
     {
         id: 'craftspeople',
         positions: [
-            { axisId: 'openSourcePreference', position: 83 },
-            { axisId: 'aiDelegation', position: 17 },
+            { axisId: 'openSourcePreference', score: 83 },
+            { axisId: 'aiDelegation', score: 17 },
         ],
     },
     {
         id: 'corporatePragmatists',
         positions: [
-            { axisId: 'openSourcePreference', position: 17 },
-            { axisId: 'aiDelegation', position: 83 },
+            { axisId: 'openSourcePreference', score: 17 },
+            { axisId: 'aiDelegation', score: 83 },
         ],
     },
     {
         id: 'balancedUsers',
         positions: [
-            { axisId: 'openSourcePreference', position: 33 },
-            { axisId: 'aiDelegation', position: 33 },
-            { axisId: 'dispacementRisk', position: 33 },
+            { axisId: 'openSourcePreference', score: 33 },
+            { axisId: 'aiDelegation', score: 33 },
+            { axisId: 'dispacementRisk', score: 33 },
         ],
     },
     {
         id: 'skeptics',
         positions: [
-            { axisId: 'aiDelegation', position: 17 },
-            { axisId: 'dispacementRisk', position: 17 },
+            { axisId: 'aiDelegation', score: 17 },
+            { axisId: 'dispacementRisk', score: 17 },
         ],
     },
 ] as const satisfies CampDefinition<DevAxisId>[];
@@ -851,11 +851,32 @@ export const camps = [
     ),
 ] as const satisfies ModeledCampDefinition[];
 
+export type Setting = {
+    campMatchThreshold?: number; // If no camp gets above 45 points of difference, then user gets "No camp fits you closely"
+    axesThreshold?: number; // How many axes user must have defined to pass a threshold
+    axesMatchThreshold?: number; // How many axes both user and camp must have defined in common to pass
+    wildcardOffset?: number; // Pull similarity down if camp doesn't have the position user has a position on; Otherwise, camps with few defined axis positions will get prioritized
+};
+
+export const settings: Setting & Record<ModelId, Setting> = {
+    campMatchThreshold: 45,
+    wildcardOffset: 20,
+    core: {
+        axesThreshold: 4,
+        axesMatchThreshold: 3,
+    },
+    dev: {
+        axesThreshold: 2,
+        axesMatchThreshold: 2,
+    },
+} as const;
+
 /* --- CONFIG --- */
 export const scoringConfig = {
     axes,
     questions,
     camps,
+    settings,
 } as const;
 
 export function getQuestionCount(type?: ModelId) {
@@ -877,4 +898,19 @@ export function getQuestionCount(type?: ModelId) {
 export function getCompletionTime(type?: ModelId) {
     const secondsMultiplier = 15; // Estimation on how many seconds it takes a user to complete one question.
     return Math.floor((getQuestionCount(type) * secondsMultiplier) / 60);
+}
+
+// Find the right setting for the model type
+export function getSetting(
+    keys: (keyof Setting)[], // array of setting keys
+    modelId?: ModelId,
+): Partial<Setting> {
+    const result: Partial<Setting> = {};
+
+    for (const key of keys) {
+        result[key] =
+            settings[key] ?? (modelId ? settings[modelId][key] : undefined);
+    }
+
+    return result;
 }

@@ -1,5 +1,6 @@
 import {
     type AxisId,
+    type CampPosition,
     type QuestionKey,
     type QuestionWeight,
 } from '@/shared/config';
@@ -12,9 +13,14 @@ export type QuestionAnswer = {
 };
 
 // When score is null, it means that function couldn't reliably identify person's axis position
-export type AxesScore = {
+export type UserAxesScore = {
     axisId: AxisId;
     score: number | null;
+}[];
+
+export type CampAxesScore = {
+    axisId: AxisId;
+    score: CampPosition;
 }[];
 
 export function calculateScore(keys: { key: number; weight: number }[]) {
@@ -39,7 +45,7 @@ export function calculateScore(keys: { key: number; weight: number }[]) {
 
 export function calculateAxesScore(
     axes: { axisId: AxisId; answers: QuestionAnswer[] }[],
-): AxesScore {
+): UserAxesScore {
     const axesScore = [];
     for (const { axisId, answers } of axes) {
         const certainAnswers = answers

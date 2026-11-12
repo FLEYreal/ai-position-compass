@@ -7,7 +7,6 @@ import {
 import { type QuestionKey, type QuestionWeight } from '@/shared/config';
 
 describe('calculateScore', () => {
-    // ── Edge cases ──────────────────────────────────────────────
     test('empty answers → 50 (default centre)', () => {
         expect(calculateScore([])).toBe(50);
     });
@@ -22,7 +21,6 @@ describe('calculateScore', () => {
         ).toBe(50);
     });
 
-    // ── Extreme poles ───────────────────────────────────────────
     test('all strongly agree → 100', () => {
         expect(
             calculateScore([
@@ -43,7 +41,6 @@ describe('calculateScore', () => {
         ).toBe(0);
     });
 
-    // ── Single answers ──────────────────────────────────────────
     test('single strongly agree → 100', () => {
         expect(calculateScore([{ key: 1, weight: 1 }])).toBe(100);
     });
@@ -64,7 +61,6 @@ describe('calculateScore', () => {
         expect(calculateScore([{ key: -1, weight: 1 }])).toBe(0);
     });
 
-    // ── Perfect cancellation ────────────────────────────────────
     test('equal opposite answers cancel → 50', () => {
         expect(
             calculateScore([
@@ -81,7 +77,6 @@ describe('calculateScore', () => {
         ).toBe(50);
     });
 
-    // ── Weighted influence ──────────────────────────────────────
     test('stronger weight dominates', () => {
         // +1 with weight 3 vs -1 with weight 1 → S = (3 - 1) / 4 = 0.5 → P = 75
         expect(
@@ -104,7 +99,6 @@ describe('calculateScore', () => {
         ).toBe(50);
     });
 
-    // ── Realistic partial scores ────────────────────────────────
     test('mostly agree → above 50', () => {
         // (1 + 0.5 + 0 + -0.5) / 4 = 1/4 = 0.25 → 62.5
         expect(
@@ -129,7 +123,6 @@ describe('calculateScore', () => {
         ).toBe(37.5);
     });
 
-    // ── Floating-point / precision ──────────────────────────────
     test('produces exact decimal results', () => {
         // (1*1 + 0.5*1) / 2 = 0.75 → 87.5
         expect(
@@ -147,8 +140,6 @@ describe('calculateAxesScore', () => {
         weight: QuestionWeight,
         unsure = false,
     ): QuestionAnswer => ({ key, weight, unsure });
-
-    // ── Valid axes ───────────────────────────────────────────────
 
     test('single axis with valid answers → calculated score', () => {
         expect(
@@ -241,8 +232,6 @@ describe('calculateAxesScore', () => {
         ]);
     });
 
-    // ── Insufficient answers ─────────────────────────────────────
-
     test('empty answers → null', () => {
         expect(
             calculateAxesScore([
@@ -317,8 +306,6 @@ describe('calculateAxesScore', () => {
             ]),
         ).toEqual([{ axisId: 'openSourcePreference', score: 50 }]);
     });
-
-    // ── Opposite poles requirement ───────────────────────────────
 
     test('only positive answers → null', () => {
         expect(

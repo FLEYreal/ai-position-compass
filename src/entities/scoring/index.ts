@@ -1,6 +1,12 @@
 export {
     type QuestionAnswer,
-    type AxesScore,
+    type UserAxesScore,
+    type CampAxesScore,
     calculateScore,
     calculateAxesScore,
 } from './model/axis';
+export {
+    type CampMatch,
+    calculateCampMatch,
+    findCampMatches,
+} from './model/camp';
