@@ -5,9 +5,13 @@ import {
     type QuestionWeight,
 } from '@/shared/config';
 
-// Unsure marks person's answer where they choose to not answer question.
+export type AnswerValue = -1 | -0.5 | 0 | 0.5 | 1;
+
+// key describes the statement's direction; value describes the response.
+// Unsure responses contribute neither value nor weight.
 export type QuestionAnswer = {
     key: QuestionKey;
+    value: AnswerValue;
     weight: QuestionWeight;
     unsure: boolean;
 };
@@ -48,9 +52,7 @@ export function calculateAxesScore(
 ): UserAxesScore {
     const axesScore = [];
     for (const { axisId, answers } of axes) {
-        const certainAnswers = answers
-            .filter((a) => !a.unsure)
-            .map(({ key, weight }) => ({ key, weight }));
+        const certainAnswers = answers.filter((a) => !a.unsure);
 
         // Accept only if ~half of questions is answered
         if (certainAnswers.length < Math.floor(answers.length / 2)) {
@@ -65,7 +67,12 @@ export function calculateAxesScore(
         ) {
             axesScore.push({ axisId, score: null });
         } else {
-            const score = calculateScore(certainAnswers);
+            const score = calculateScore(
+                certainAnswers.map(({ key, value, weight }) => ({
+                    key: key * value,
+                    weight,
+                })),
+            );
             axesScore.push({ axisId, score });
         }
     }

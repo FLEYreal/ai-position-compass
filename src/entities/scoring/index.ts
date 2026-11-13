@@ -1,4 +1,5 @@
 export {
+    type AnswerValue,
     type QuestionAnswer,
     type UserAxesScore,
     type CampAxesScore,
