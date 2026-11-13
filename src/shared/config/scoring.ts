@@ -851,6 +851,397 @@ export const camps = [
     ),
 ] as const satisfies ModeledCampDefinition[];
 
+export type CoreCampId = (typeof coreCamps)[number]['id'];
+export type DevCampId = (typeof devCamps)[number]['id'];
+export type CampId = (typeof camps)[number]['id'];
+
+/* --- PEOPLE --- */
+export type PeopleDefinition<TCampId extends CampId = CampId> = {
+    readonly id: string;
+    readonly campIds: TCampId[]; // One person can take part in multiple camps
+    readonly sources: string[]; // A list of links to the source
+};
+
+export const corePeople = [
+    // 2023: techno-optimism and opposition to barriers on open-source AI.
+    {
+        id: 'marc-andreessen',
+        campIds: ['accelerationists'],
+        sources: [
+            'https://a16z.com/ai-will-save-the-world/',
+            'https://a16z.com/the-techno-optimist-manifesto/',
+        ],
+    },
+    // 2026-09: accelerationist example in the faction overviews.
+    {
+        id: 'david-sacks',
+        campIds: ['accelerationists'],
+        sources: [
+            'https://www.kunc.org/npr-news/2026-09-26/the-ai-safety-debate-is-confusing-heres-our-guide-to-the-different-factions',
+            'https://www.euronews.com/next/2026/09/15/doomers-vs-boosters-whos-who-in-the-global-fight-over-the-risks-of-ai',
+        ],
+    },
+    // 2026-09-15: booster example in the Euronews overview.
+    {
+        id: 'jensen-huang',
+        campIds: ['accelerationists'],
+        sources: [
+            'https://www.euronews.com/next/2026/09/15/doomers-vs-boosters-whos-who-in-the-global-fight-over-the-risks-of-ai',
+        ],
+    },
+    // 2026-03 to 2026-10; caveat: also backed voluntary safety commitments.
+    {
+        id: 'donald-trump',
+        campIds: ['accelerationists'],
+        sources: [
+            'https://www.kunc.org/npr-news/2026-09-26/the-ai-safety-debate-is-confusing-heres-our-guide-to-the-different-factions',
+            'https://www.ropesgray.com/en/insights/alerts/2026/03/examining-the-landscape-and-limitations-of-the-federal-push-to-override-state-ai-regulation',
+            'https://www.axios.com/2026/10/08/trump-ai-super-intelligence-white-house',
+        ],
+    },
+    // 2024-06: Situational Awareness, national security and securing AI secrets.
+    {
+        id: 'leopold-aschenbrenner',
+        campIds: ['securitists'],
+        sources: ['https://situational-awareness.ai/'],
+    },
+    // 2025-03; caveat: deterrence rather than an unchecked race.
+    {
+        id: 'eric-schmidt',
+        campIds: ['securitists'],
+        sources: ['https://arxiv.org/abs/2503.05628'],
+    },
+    // 2025-01-29 export controls; 2023 AI-risk statement. Caveat: spans both camps.
+    {
+        id: 'dario-amodei',
+        campIds: ['securitists', 'safetyCamp'],
+        sources: [
+            'https://www.404media.co/anthropic-ceo-says-limiting-chinas-access-to-ai-chips-is-existentially-important/',
+            'https://www.safe.ai/work/statement-on-ai-risk',
+        ],
+    },
+    // 2023 AI-risk statement; caveat: distinguishes open code from open weights.
+    {
+        id: 'geoffrey-hinton',
+        campIds: ['safetyCamp'],
+        sources: [
+            'https://www.safe.ai/work/statement-on-ai-risk',
+            'https://officechai.com/ai/releasing-foundational-model-weights-is-like-making-nuclear-material-freely-available-geoffrey-hinton/',
+        ],
+    },
+    // 2023: signatory of the CAIS AI-risk statement.
+    {
+        id: 'yoshua-bengio',
+        campIds: ['safetyCamp'],
+        sources: ['https://www.safe.ai/work/statement-on-ai-risk'],
+    },
+    // 2025-04-03: co-author of AI 2027.
+    {
+        id: 'daniel-kokotajlo',
+        campIds: ['safetyCamp'],
+        sources: ['https://ai-2027.com/'],
+    },
+    // 2023: signatory of the CAIS AI-risk statement.
+    {
+        id: 'stuart-russell',
+        campIds: ['safetyCamp'],
+        sources: ['https://www.safe.ai/work/statement-on-ai-risk'],
+    },
+    // 2025-09-16: co-author of If Anyone Builds It, Everyone Dies.
+    {
+        id: 'eliezer-yudkowsky',
+        campIds: ['pauseCamp'],
+        sources: ['https://ifanyonebuildsit.com/'],
+    },
+    // 2025-09-16: co-author of If Anyone Builds It, Everyone Dies.
+    {
+        id: 'nate-soares',
+        campIds: ['pauseCamp'],
+        sources: ['https://ifanyonebuildsit.com/'],
+    },
+    // 2025-10: prohibition until safety and public buy-in.
+    {
+        id: 'max-tegmark',
+        campIds: ['pauseCamp'],
+        sources: [
+            'https://superintelligence-statement.org/',
+            'https://cyberscoop.com/ai-superintelligence-ban-open-letter-future-of-life-harry-meghan-tech-leaders/',
+        ],
+    },
+    // 2026-09 overview; 2023 AI-risk statement. Caveat: safety commitments alongside development.
+    {
+        id: 'sam-altman',
+        campIds: ['cautiousBuilders'],
+        sources: [
+            'https://www.euronews.com/next/2026/09/15/doomers-vs-boosters-whos-who-in-the-global-fight-over-the-risks-of-ai',
+            'https://www.safe.ai/work/statement-on-ai-risk',
+        ],
+    },
+    // 2023-05-23: supports AI regulation; caveat: older statement.
+    {
+        id: 'sundar-pichai',
+        campIds: ['cautiousBuilders'],
+        sources: [
+            'https://www.cityam.com/google-boss-sundar-pichai-warns-ai-is-too-important-not-to-regulate/',
+        ],
+    },
+    // 2020-01-23: AI ethics and cooperation; caveat: older statement.
+    {
+        id: 'satya-nadella',
+        campIds: ['cautiousBuilders'],
+        sources: [
+            'https://www.cnbc.com/2020/01/23/microsoft-ceo-at-davos-china-cares-as-deeply-about-ai-ethics-as-us.html',
+        ],
+    },
+    // 2025-01-05: defensive technology and distributed power, with caution about superintelligence.
+    {
+        id: 'vitalik-buterin',
+        campIds: ['guardedOptimists'],
+        sources: ['https://vitalik.eth.limo/general/2025/01/05/dacc2.html'],
+    },
+    // 2026-07-23: favors lab peer review; caveat: signed the pause letter in 2023.
+    {
+        id: 'elon-musk',
+        campIds: ['guardedOptimists'],
+        sources: [
+            'https://fortune.com/article/elon-musk-says-rival-ai-labs-should-peer-review-frontier-models-before-release-with-government-as-last-resort/',
+        ],
+    },
+    // 2025-01-26; caveat: close to accelerationists.
+    {
+        id: 'reid-hoffman',
+        campIds: ['guardedOptimists'],
+        sources: [
+            'https://techcrunch.com/2025/01/26/why-reid-hoffman-feels-optimistic-about-our-ai-future',
+        ],
+    },
+    // 2021: co-author of Stochastic Parrots on present harms.
+    {
+        id: 'timnit-gebru',
+        campIds: ['ethicsCamp'],
+        sources: ['https://dl.acm.org/doi/10.1145/3442188.3445922'],
+    },
+    // 2021 Stochastic Parrots; 2025 The AI Con on hype and present harms.
+    {
+        id: 'emily-bender',
+        campIds: ['ethicsCamp'],
+        sources: [
+            'https://dl.acm.org/doi/10.1145/3442188.3445922',
+            'https://www.penguin.co.uk/books/468070/the-ai-con-by-hanna-emily-m-bender-and-alex/9781847928610',
+        ],
+    },
+    // 2023: Unmasking AI on discrimination and surveillance. Caveat: spans both camps.
+    {
+        id: 'joy-buolamwini',
+        campIds: ['ethicsCamp', 'surveillanceCritics'],
+        sources: [
+            'https://www.penguinrandomhouse.com/books/670356/unmasking-ai-by-joy-buolamwini/',
+        ],
+    },
+    // 2025-04-15: co-author of AI as Normal Technology.
+    {
+        id: 'arvind-narayanan',
+        campIds: ['normalTechnologyCamp'],
+        sources: ['https://knightcolumbia.org/content/ai-as-normal-technology'],
+    },
+    // 2025-04-15: co-author of AI as Normal Technology.
+    {
+        id: 'sayash-kapoor',
+        campIds: ['normalTechnologyCamp'],
+        sources: ['https://knightcolumbia.org/content/ai-as-normal-technology'],
+    },
+    // 2026-09-26: normal-technology example in the NPR overview.
+    {
+        id: 'fei-fei-li',
+        campIds: ['normalTechnologyCamp'],
+        sources: [
+            'https://www.kunc.org/npr-news/2026-09-26/the-ai-safety-debate-is-confusing-heres-our-guide-to-the-different-factions',
+        ],
+    },
+    // 2024: Taming Silicon Valley; skepticism and calls for regulation.
+    {
+        id: 'gary-marcus',
+        campIds: ['hypeSkeptics'],
+        sources: [
+            'https://mitpress.mit.edu/9780262551069/taming-silicon-valley/',
+        ],
+    },
+    // 2025-07-21: The Hater's Guide to the AI Bubble.
+    {
+        id: 'ed-zitron',
+        campIds: ['hypeSkeptics'],
+        sources: ['https://www.wheresyoured.at/the-haters-gui/'],
+    },
+    // 2025: co-author of The AI Con.
+    {
+        id: 'alex-hanna',
+        campIds: ['hypeSkeptics'],
+        sources: [
+            'https://www.penguin.co.uk/books/468070/the-ai-con-by-hanna-emily-m-bender-and-alex/9781847928610',
+        ],
+    },
+    // 2026-09-26: jobs and opposition to China; differs from Sanders on cooperation.
+    {
+        id: 'steve-bannon',
+        campIds: ['populists'],
+        sources: [
+            'https://www.kunc.org/npr-news/2026-09-26/the-ai-safety-debate-is-confusing-heres-our-guide-to-the-different-factions',
+        ],
+    },
+    // 2026-09-26: populist example in the NPR overview.
+    {
+        id: 'tucker-carlson',
+        campIds: ['populists'],
+        sources: [
+            'https://www.kunc.org/npr-news/2026-09-26/the-ai-safety-debate-is-confusing-heres-our-guide-to-the-different-factions',
+        ],
+    },
+    // 2026-09-26: pause, ban and cooperation with China. Caveat: spans both camps.
+    {
+        id: 'bernie-sanders',
+        campIds: ['populists', 'pauseCamp'],
+        sources: [
+            'https://www.kunc.org/npr-news/2026-09-26/the-ai-safety-debate-is-confusing-heres-our-guide-to-the-different-factions',
+        ],
+    },
+    // 2024-10: training-statement organizer; demand concerns unlicensed training.
+    {
+        id: 'ed-newton-rex',
+        campIds: ['creativesCopyright'],
+        sources: [
+            'https://www.aitrainingstatement.org/',
+            'https://www.techradar.com/computing/artificial-intelligence/kevin-bacon-julianne-moore-thom-yorke-and-10k-creators-sign-warning-against-ai-use-of-their-work',
+        ],
+    },
+    // 2024-10: signatory opposing unlicensed AI training.
+    {
+        id: 'kazuo-ishiguro',
+        campIds: ['creativesCopyright'],
+        sources: ['https://www.aitrainingstatement.org/'],
+    },
+    // 2024-10: signatory opposing unlicensed AI training.
+    {
+        id: 'thom-yorke',
+        campIds: ['creativesCopyright'],
+        sources: ['https://www.aitrainingstatement.org/'],
+    },
+    // 2024-10: signatory opposing unlicensed AI training.
+    {
+        id: 'julianne-moore',
+        campIds: ['creativesCopyright'],
+        sources: ['https://www.aitrainingstatement.org/'],
+    },
+    // 2026-06: criticism of using AI promises to justify layoffs.
+    {
+        id: 'cory-doctorow',
+        campIds: ['laborCritics'],
+        sources: [
+            'https://jacobin.com/2026/06/ai-bubble-layoffs-workers-copyright',
+        ],
+    },
+    // 2023-09-26: Blood in the Machine on technology and labor power.
+    {
+        id: 'brian-merchant',
+        campIds: ['laborCritics'],
+        sources: [
+            'https://www.hbglibrary.com/titles/brian-merchant/blood-in-the-machine/9780316487740/',
+        ],
+    },
+    // 2024-12-06: automation, productivity uncertainty and effects on workers.
+    {
+        id: 'daron-acemoglu',
+        campIds: ['laborCritics'],
+        sources: [
+            'https://economics.mit.edu/news/daron-acemoglu-what-do-we-know-about-economics-ai',
+        ],
+    },
+    // 2025-03-07: privacy and security concerns about agentic AI.
+    {
+        id: 'meredith-whittaker',
+        campIds: ['surveillanceCritics'],
+        sources: [
+            'https://techcrunch.com/2025/03/07/signal-president-meredith-whittaker-calls-out-agentic-ai-as-having-profound-security-and-privacy-issues',
+        ],
+    },
+    // 2024-06; caveat: also dismisses exaggerated AI-safety panic.
+    {
+        id: 'edward-snowden',
+        campIds: ['surveillanceCritics'],
+        sources: [
+            'https://the-decoder.com/edward-snowden-warns-against-chatgpt-and-openai-after-former-nsa-director-joins-board/',
+        ],
+    },
+    // 2025-10-22; caveat for all four signatories: moderate capability expectations unproven.
+    {
+        id: 'prince-harry',
+        campIds: ['existentialWorriers'],
+        sources: [
+            'https://cyberscoop.com/ai-superintelligence-ban-open-letter-future-of-life-harry-meghan-tech-leaders/',
+        ],
+    },
+    // 2025-10-22: superintelligence-ban signatory; see capability caveat above.
+    {
+        id: 'meghan-markle',
+        campIds: ['existentialWorriers'],
+        sources: [
+            'https://cyberscoop.com/ai-superintelligence-ban-open-letter-future-of-life-harry-meghan-tech-leaders/',
+        ],
+    },
+    // 2025-10-22: superintelligence-ban signatory; see capability caveat above.
+    {
+        id: 'steve-wozniak',
+        campIds: ['existentialWorriers'],
+        sources: [
+            'https://cyberscoop.com/ai-superintelligence-ban-open-letter-future-of-life-harry-meghan-tech-leaders/',
+        ],
+    },
+    // 2025-10-22: superintelligence-ban signatory; see capability caveat above.
+    {
+        id: 'richard-branson',
+        campIds: ['existentialWorriers'],
+        sources: [
+            'https://cyberscoop.com/ai-superintelligence-ban-open-letter-future-of-life-harry-meghan-tech-leaders/',
+        ],
+    },
+] as const satisfies PeopleDefinition<CoreCampId>[];
+
+// No named examples were supplied for the other developer camps.
+export const devPeople = [
+    // 2025-02; caveat: describes casual projects, not a blanket production recommendation.
+    {
+        id: 'andrej-karpathy',
+        campIds: ['vibeCoders'],
+        sources: [
+            'https://x.com/karpathy/status/1886192184808149383',
+            'https://en.wikipedia.org/wiki/Vibe_coding',
+        ],
+    },
+] as const satisfies PeopleDefinition<DevCampId>[];
+
+export type ModeledPeopleDefinition = PeopleDefinition & {
+    readonly modelId: ModelId;
+};
+export const people = [
+    ...corePeople.map(
+        (person) =>
+            ({
+                ...person,
+                modelId: 'core',
+            }) satisfies ModeledPeopleDefinition,
+    ),
+    ...devPeople.map(
+        (person) =>
+            ({
+                ...person,
+                modelId: 'dev',
+            }) satisfies ModeledPeopleDefinition,
+    ),
+] as const satisfies ModeledPeopleDefinition[];
+
+export type CorePersonId = (typeof corePeople)[number]['id'];
+export type DevPersonId = (typeof devPeople)[number]['id'];
+export type PersonId = (typeof people)[number]['id'];
+
 export type Setting = {
     campMatchThreshold?: number; // If no camp gets above 45 points of difference, then user gets "No camp fits you closely"
     axesThreshold?: number; // How many axes user must have defined to pass a threshold
@@ -876,6 +1267,8 @@ export const scoringConfig = {
     axes,
     questions,
     camps,
+    people,
+    suggestions,
     settings,
 } as const;
 
