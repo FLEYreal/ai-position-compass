@@ -1,18 +1,19 @@
 import {
     type AxisId,
     type CampPosition,
-    type QuestionKey,
+    type QuestionDefinition,
     type QuestionWeight,
 } from '@/shared/config';
 
 export type AnswerValue = -1 | -0.5 | 0 | 0.5 | 1;
 
 // key describes the statement's direction; value describes the response.
-// Unsure responses contribute neither value nor weight.
-export type QuestionAnswer = {
-    key: QuestionKey;
+// Secondary definitions inherit the parent's response and Unsure state.
+export type QuestionAnswer = Pick<
+    QuestionDefinition,
+    'key' | 'weight' | 'secondary'
+> & {
     value: AnswerValue;
-    weight: QuestionWeight;
     unsure: boolean;
 };
 
@@ -48,20 +49,38 @@ export function calculateScore(keys: { key: number; weight: number }[]) {
 }
 
 // Supply every primary question, including Unsure entries, to establish coverage.
-// Under the current contract, weight 1 is primary and weight 0.5 is secondary.
+// Each group's answers are primary to that axis; nested effects name their targets.
 export function calculateAxesScore(
     axes: { axisId: AxisId; answers: QuestionAnswer[] }[],
 ): UserAxesScore {
+    const secondaryByAxis = new Map<
+        AxisId,
+        { key: number; weight: QuestionWeight }[]
+    >();
+
+    // Collect effects before scoring so source eligibility and input order do
+    // not determine whether an eligible target receives its secondary evidence.
+    for (const { answers } of axes) {
+        for (const answer of answers) {
+            if (answer.unsure) continue;
+            for (const secondary of answer.secondary ?? []) {
+                const contributions =
+                    secondaryByAxis.get(secondary.axisId) ?? [];
+                contributions.push({
+                    key: secondary.key * answer.value,
+                    weight: secondary.weight,
+                });
+                secondaryByAxis.set(secondary.axisId, contributions);
+            }
+        }
+    }
+
     const axesScore = [];
     for (const { axisId, answers } of axes) {
-        const primaryAnswers = answers.filter(({ weight }) => weight === 1);
-        const certainPrimaryAnswers = primaryAnswers.filter((a) => !a.unsure);
-        const certainAnswers = answers.filter((a) => !a.unsure);
+        const certainPrimaryAnswers = answers.filter((a) => !a.unsure);
 
         // Only primary responses establish eligibility; round the minimum up.
-        if (
-            certainPrimaryAnswers.length < Math.ceil(primaryAnswers.length / 2)
-        ) {
+        if (certainPrimaryAnswers.length < Math.ceil(answers.length / 2)) {
             axesScore.push({ axisId, score: null });
         }
 
@@ -72,12 +91,13 @@ export function calculateAxesScore(
         ) {
             axesScore.push({ axisId, score: null });
         } else {
-            const score = calculateScore(
-                certainAnswers.map(({ key, value, weight }) => ({
+            const score = calculateScore([
+                ...certainPrimaryAnswers.map(({ key, value, weight }) => ({
                     key: key * value,
                     weight,
                 })),
-            );
+                ...(secondaryByAxis.get(axisId) ?? []),
+            ]);
             axesScore.push({ axisId, score: Math.round(score) });
         }
     }

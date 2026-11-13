@@ -183,36 +183,53 @@ describe('calculateAxesScore: primary coverage', () => {
 describe('calculateAxesScore: secondary contributions', () => {
     const primary = () =>
         regulation([1, 1, 1, 0, 'unsure', 'unsure', 'unsure']);
+    const source = (
+        value: AnswerValue,
+        key: QuestionKey = 1,
+        unsure = false,
+    ) => ({
+        ...answer(1, value, 1, unsure),
+        secondary: [{ axisId: 'control' as const, key, weight: 0.5 as const }],
+    });
+    const withSource = (
+        answers: QuestionAnswer[],
+        response: ReturnType<typeof source>,
+    ) =>
+        calculateAxesScore([
+            { axisId: 'control', answers },
+            { axisId: 'regulation', answers: [response] },
+        ]);
+
     test.each([
         {
             name: 'half-weight disagreement',
-            secondary: answer(1, -1, 0.5),
+            response: source(-1),
             expected: 56,
         },
-        {
-            name: 'its own reverse key',
-            secondary: answer(-1, -1, 0.5),
-            expected: 67,
-        },
+        { name: 'its own reverse key', response: source(-1, -1), expected: 67 },
         {
             name: 'neutral denominator weight',
-            secondary: answer(1, 0, 0.5),
+            response: source(0),
             expected: 61,
         },
         {
             name: 'Unsure contributes no weight',
-            secondary: answer(1, -1, 0.5, true),
+            response: source(-1, 1, true),
             expected: 63,
         },
-    ])('$name -> $expected', ({ secondary, expected }) => {
-        // Primary sum 1, weight 4. Secondary cases yield .5/4.5, 1.5/4.5,
-        // 1/4.5, and 1/4 respectively, then normalize and round once.
-        expect(score([...primary(), secondary], 'control')).toEqual([
-            { axisId: 'control', score: expected },
-        ]);
-    });
+    ])(
+        '$name -> $expected even when the source axis is Undefined',
+        ({ response, expected }) => {
+            // Primary sum 1, weight 4. Nested effects use the parent's response.
+            expect(withSource(primary(), response)).toEqual([
+                { axisId: 'control', score: expected },
+                { axisId: 'regulation', score: null },
+            ]);
+        },
+    );
+
     test('secondary evidence cannot rescue three of seven primary responses', () => {
-        const primary = regulation([
+        const insufficient = regulation([
             1,
             -1,
             1,
@@ -221,14 +238,121 @@ describe('calculateAxesScore: secondary contributions', () => {
             'unsure',
             'unsure',
         ]);
-        expect(score([...primary, answer(-1, 1, 0.5)], 'control')).toEqual([
+        expect(withSource(insufficient, source(1, -1))).toEqual([
             { axisId: 'control', score: null },
+            { axisId: 'regulation', score: null },
         ]);
     });
+
     test('a secondary negative key cannot supply missing primary direction', () => {
-        const primary = regulation([1, 'unsure', 1, 'unsure', 1, 'unsure', 1]);
-        expect(score([...primary, answer(-1, 1, 0.5)], 'control')).toEqual([
+        const oneDirection = regulation([
+            1,
+            'unsure',
+            1,
+            'unsure',
+            1,
+            'unsure',
+            1,
+        ]);
+        expect(withSource(oneDirection, source(1, -1))).toEqual([
             { axisId: 'control', score: null },
+            { axisId: 'regulation', score: null },
+        ]);
+    });
+
+    test('a target without primary answers remains Undefined', () => {
+        expect(withSource([], source(1))).toEqual([
+            { axisId: 'control', score: null },
+            { axisId: 'regulation', score: null },
+        ]);
+    });
+
+    test('multiple declared targets use their own keys without changing the source answer', () => {
+        const response = {
+            ...answer(1, 1),
+            secondary: [
+                {
+                    axisId: 'control' as const,
+                    key: 1 as const,
+                    weight: 0.5 as const,
+                },
+                {
+                    axisId: 'labor' as const,
+                    key: -1 as const,
+                    weight: 0.5 as const,
+                },
+            ],
+        };
+        const input = [
+            {
+                axisId: 'control' as const,
+                answers: regulation([0, 0, 0, 0, 'unsure', 'unsure', 'unsure']),
+            },
+            {
+                axisId: 'labor' as const,
+                answers: regulation([0, 0, 0, 0, 'unsure', 'unsure', 'unsure']),
+            },
+            { axisId: 'regulation' as const, answers: [response] },
+        ];
+        const before = structuredClone(input);
+        expect(calculateAxesScore(input)).toEqual([
+            { axisId: 'control', score: 56 },
+            { axisId: 'labor', score: 44 },
+            { axisId: 'regulation', score: null },
+        ]);
+        expect(input).toEqual(before);
+    });
+
+    test('multiple source questions contribute to the same target', () => {
+        const input = [
+            { axisId: 'control' as const, answers: primary() },
+            { axisId: 'regulation' as const, answers: [source(1), source(-1)] },
+        ];
+        // Primary sum 1; opposing effects cancel, but both add .5 weight: 60.
+        expect(calculateAxesScore(input)).toEqual([
+            { axisId: 'control', score: 60 },
+            { axisId: 'regulation', score: null },
+        ]);
+    });
+
+    test('source/target input order does not change secondary scoring', () => {
+        const input = [
+            { axisId: 'control' as const, answers: primary() },
+            { axisId: 'regulation' as const, answers: [source(-1)] },
+        ];
+        expect(calculateAxesScore(input.toReversed())).toEqual([
+            { axisId: 'regulation', score: null },
+            { axisId: 'control', score: 56 },
+        ]);
+    });
+
+    test('effects aimed at an omitted axis do not create extra output axes', () => {
+        expect(
+            calculateAxesScore([
+                { axisId: 'regulation', answers: [source(1)] },
+            ]),
+        ).toEqual([{ axisId: 'regulation', score: null }]);
+    });
+
+    test('an answer is primary because of its placement, regardless of its weight', () => {
+        // Structural regression: do not infer the contribution role from weight.
+        const answers = [
+            answer(1, 0, 0.5),
+            answer(-1, 0, 0.5),
+            answer(1, 0, 0.5),
+            answer(-1, 0, 1, true),
+            answer(1, 0, 1, true),
+        ];
+        expect(score(answers, 'openSourcePreference')).toEqual([
+            { axisId: 'openSourcePreference', score: 50 },
+        ]);
+    });
+
+    test('no secondary field and an empty secondary list behave identically', () => {
+        const answers = regulation([1, -1, 1, -1, 1, -1, 1]);
+        expect(score(answers)).toEqual([{ axisId: 'regulation', score: 100 }]);
+        expect(score(answers.map((a) => ({ ...a, secondary: [] })))).toEqual([
+            { axisId: 'regulation', score: 100 },
         ]);
     });
 });
