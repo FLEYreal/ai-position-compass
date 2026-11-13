@@ -47,23 +47,28 @@ export function calculateScore(keys: { key: number; weight: number }[]) {
     return ((mean + 1) / 2) * 100;
 }
 
+// Supply every primary question, including Unsure entries, to establish coverage.
+// Under the current contract, weight 1 is primary and weight 0.5 is secondary.
 export function calculateAxesScore(
     axes: { axisId: AxisId; answers: QuestionAnswer[] }[],
 ): UserAxesScore {
     const axesScore = [];
     for (const { axisId, answers } of axes) {
+        const primaryAnswers = answers.filter(({ weight }) => weight === 1);
+        const certainPrimaryAnswers = primaryAnswers.filter((a) => !a.unsure);
         const certainAnswers = answers.filter((a) => !a.unsure);
 
-        // Accept only if ~half of questions is answered
-        if (certainAnswers.length < Math.floor(answers.length / 2)) {
+        // Only primary responses establish eligibility; round the minimum up.
+        if (
+            certainPrimaryAnswers.length < Math.ceil(primaryAnswers.length / 2)
+        ) {
             axesScore.push({ axisId, score: null });
         }
 
-        // At least one question from -1 and 1 key should be answered to reduce agreability bias
-        // (When people tend to agree with positive statements by default).
+        // Require answered primary statements in both key directions.
         else if (
-            !certainAnswers.some(({ key }) => key > 0) ||
-            !certainAnswers.some(({ key }) => key < 0)
+            !certainPrimaryAnswers.some(({ key }) => key === 1) ||
+            !certainPrimaryAnswers.some(({ key }) => key === -1)
         ) {
             axesScore.push({ axisId, score: null });
         } else {
@@ -73,7 +78,7 @@ export function calculateAxesScore(
                     weight,
                 })),
             );
-            axesScore.push({ axisId, score });
+            axesScore.push({ axisId, score: Math.round(score) });
         }
     }
 
