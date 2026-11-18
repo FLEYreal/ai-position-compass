@@ -42,6 +42,9 @@ __pycache__/
 /*.tar
 /*.tar.*
 
+# Backups
+*.bak
+
 # React Router build output
 .react-router
 build

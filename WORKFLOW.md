@@ -1,83 +1,125 @@
-# Roles and permissions
+# Project workflow
 
-- The planner researches, prepares specifications/task briefs, and reviews reports. The worker implements assigned supporting work independently from repository context.
-- Task ownership is defined in `PLAN.md`. For owner-owned implementations/tests, agents may explain concepts, review, and identify bugs; solutions, edits, and additional tests require an explicit request. Do not implement reserved work to unblock another task.
-- The owner maintains `PLAN.md` and every section of `DEBT.md`; agents edit them only on explicit request. Suggest debt entries in reports. The planner maintains `MEMORY.md`; workers report handoff updates.
-- Workers may implement, add necessary dependencies, test, fix, and commit locally within assigned scope. Agents must never push, upload commits/files, or mutate remote branch refs through Git, GitHub APIs, connectors, or other tools. The owner reviews and verifies locally, approves the result, and pushes it. Only after that approval may an agent create/update a PR for the already-pushed diff, check CI, and address review feedback locally. Only the owner merges or authorizes publication. Never force-push, rewrite shared history, or delete unmerged work.
-- The owner may commit and push directly to main or dev. Agents must not commit on main or dev until the owner has reviewed the exact changes and explicitly approved the commit.
-- Before editing AGENTS.md, WORKFLOW.md, or SPEC.md, warn the owner which files will change and why. Explicit owner instructions authorizing the edits remain sufficient; do not silently change these files.
-- Do not add a new Git-visible Markdown file, or remove its ignore protection, without explicit owner permission. Keep plans, audit/review notes, reports and handoffs in ignored local context. Existing approved tracked Markdown requirements remain in place; required third-party notices must be retained.
-- Showcases, component galleries, demonstrations, review fixtures and their integration code must stay out of changes submitted to dev unless the owner explicitly approves including them. Keep local review copies and integration hunks unstaged by default, but visible for review; do not blanket-ignore source files by names such as showcase. Stage production paths explicitly and inspect the complete diff against dev before the owner pushes it for a PR.
+## Methodology
 
-# Canonical checkout and local context
+Update the section for the stage that changed. Open with the scope, then use **Rules** for standing requirements, **Procedures** for ordered actions, and **Relevant** for supporting details and links. Introduce each procedure with its trigger and purpose. Verify changed commands against the repository and link to existing instructions.
 
-The original frontend checkout is the main worktree, listed first by `git worktree list --porcelain`. Locate it at runtime; do not store its absolute path in documentation. Feature worktrees live at `../worktrees/<feature>/` relative to it. Resolve sibling `../design/` and `../research/research-results/` references from the original checkout; both are read-only source material.
+Use [SPEC.md](SPEC.md) for application requirements, `PLAN.md` for assignments and task status, and `MEMORY.md` for the current operational snapshot.
 
-`PLAN.md`, `DEBT.md`, and `MEMORY.md` are required ignored local files in the original checkout. `PRODUCT.md`, `DESIGN.md`, and `TRANSLATIONS.md` are additional local sources: link them when present, and require them whenever the assigned work depends on their content. The translation source is named `TRANSLATIONS.md` (plural); see SPEC for its use.
+## Roles and permissions
 
-These files have one canonical copy in the original checkout. Feature worktrees on the same machine use ignored symlinks, never copies or committed links. Tracked AGENTS/SPEC/WORKFLOW, README, and skills arrive with the branch; their changes must be integrated before new worktrees inherit them. Git-ignored files do not arrive through clone, fetch, pull, or branch switching. On another machine, the owner must manually supply current copies in that machine's canonical checkout, or provide an explicit context bundle. Symlinks pointing to the original machine are not a usable handoff.
+Who assigns work, edits shared documents, and controls publication.
 
-Before acting on an assignment, check that required instructions, PLAN and local context exist, are readable files, and that any context symlinks resolve. If a required or task-relevant file is missing, unreadable, or a broken link, report its exact filename to the owner, explain what work depends on it, and request the current copy or an explicit owner decision about proceeding. Report before making dependent changes, recommendations or task-status claims. Do not silently skip the file, create an empty substitute, reconstruct it from memory, or treat missing context as permission to proceed. Read-only checks to identify the missing files may continue; independent work may continue only when its required context is available. List nonessential omitted files explicitly as well.
+### Rules
 
-# Starting work
+- The owner assigns work. The planner researches, drafts specifications and task briefs, and reviews reports. The worker implements assigned supporting work independently using repository context.
+- Agents may explain, review, and identify bugs in owner-owned code. Solutions, edits, and tests for owner-owned features require an explicit request. Reserved work stays with the owner even when it blocks another task.
+- The owner maintains `PLAN.md` and `DEBT.md`. Agents need an explicit request to edit them. The planner maintains `MEMORY.md` and workers report operational updates.
+- Workers may implement, add dependencies, test, fix, and commit locally within scope. The owner may commit directly on `main` and `dev`. Agents need explicit owner approval of the reviewed diff before committing there.
+- Only the owner pushes code, uploads commits or files, changes remote branch refs, and merges or authorizes publication. This applies across all tools.
+- Keep plans, review notes, reports, and handoffs Git-ignored.
 
-1. Run the context availability check above, then read AGENTS, this procedure, SPEC, the assigned PLAN entry, and relevant local context. Inspect Git status; preserve existing changes. A missing ignored PLAN or translation source is a handoff problem to report, not a reason to guess the assignment or wording. After a long wait, reread shared context and check updated specifications.
-2. The owner establishes the remote and dev branch. Fetch current dev and create one feature branch/worktree per task; do not initialize shared branches without explicit instruction. From the original checkout, for example: `git worktree add -b feat/tooling ../worktrees/tooling origin/dev`.
-3. Link context before launching the worker. Run this example from the original checkout after the feature worktree exists and task-relevant sources have been confirmed available. It reports missing optional files and checks every source/destination before creating links; it never overwrites them. Relay failures and omissions to the owner instead of silently continuing.
+### Procedures
 
-```bash
-(
-  set -eu
-  project_checkout="$(pwd -P)"
-  feature_checkout="$project_checkout/../worktrees/tooling"
-  context_files=(PLAN.md DEBT.md MEMORY.md)
-  for context_file in PRODUCT.md DESIGN.md TRANSLATIONS.md; do
-    if [ -e "$project_checkout/$context_file" ] || [ -L "$project_checkout/$context_file" ]; then
-      context_files+=("$context_file")
-    else
-      printf 'Optional context unavailable: %s; stop if required by this task.\n' "$context_file" >&2
-    fi
-  done
-  context_error=0
-  for context_file in "${context_files[@]}"; do
-    if [ ! -f "$project_checkout/$context_file" ] || [ ! -r "$project_checkout/$context_file" ]; then
-      printf 'Missing, unreadable or invalid context source: %s\n' "$context_file" >&2
-      context_error=1
-    fi
-    if [ -e "$feature_checkout/$context_file" ] || [ -L "$feature_checkout/$context_file" ]; then
-      printf 'Context destination already exists: %s\n' "$context_file" >&2
-      context_error=1
-    fi
-    if ! git -C "$feature_checkout" check-ignore -q -- "$context_file"; then
-      printf 'Context destination is not Git-ignored: %s\n' "$context_file" >&2
-      context_error=1
-    fi
-  done
-  if [ "$context_error" -ne 0 ]; then exit 1; fi
-  for context_file in "${context_files[@]}"; do
-    ln -sT -- "$project_checkout/$context_file" "$feature_checkout/$context_file"
-    test "$(readlink -f -- "$feature_checkout/$context_file")" = "$(readlink -f -- "$project_checkout/$context_file")"
-  done
-)
-```
+**Edit controlled documentation.** When an assignment touches shared instructions or local notes, check the edit boundary before changing what others rely on.
 
-4. Inspect worktree status and confirm no context links are staged. Keep dependencies and build output per worktree; never share node_modules symlinks. Install using the configured registry; follow session-level installation restrictions. Stop and report unavailable prerequisites instead of changing registry sources without permission.
-   Run `pnpm hooks:install` once per clone to activate the Git pre-push backstop. It refuses pushes from coding-agent processes while leaving the owner's normal terminal available. `.codex/hooks.json` also blocks pushes/API code writes at the tool boundary when its trusted project layer is loaded. Both are guardrails, not a sandbox against deliberate bypasses; never disable them or remove agent environment markers to push.
-5. Give each server a distinct port, for example `pnpm dev --port 5181 --strictPort`. Record checkout/branch/port in reports without embedding private home paths in public PRs. Do not stop another checkout's server. Validate the same worktree that implements the change.
+1. Before editing `AGENTS.md`, `WORKFLOW.md`, or `SPEC.md`, tell the owner which files will change and why. An explicit owner instruction authorizes the edit.
+2. Get explicit permission before adding a Git-visible Markdown file or removing an ignore rule that protects one. Keep existing approved tracked requirements and required third-party notices.
 
-# Checks and reporting
+### Relevant
 
-- Install: `pnpm install --frozen-lockfile`; development: `pnpm dev`; preview: `pnpm preview`.
-- Checks: `pnpm lint`, `pnpm build` (includes TypeScript), and `pnpm exec vitest run`. Testing libraries and CI requirements are in SPEC.
-- Owner core work uses TDD; worker UI tests follow implementation. Test meaningful behavior and integration, not component internals.
-- Before a ready PR or meaningful update, run applicable checks. For UI changes, verify affected languages/themes, responsive layouts, keyboard behavior, and reduced motion in a browser. Documentation-only changes require document/link/diff checks, not application builds.
-- Reports include changes, checks actually run/results, limitations, owner action needed, and suggested comprehension debt. Distinguish source inspection from observed behavior; never claim unrun checks passed or treat a prototype review as frontend verification.
-- Agent hooks must cover the actual worker tools without obstructing legitimate worktree use. Verify tool-specific settings rather than copying historical examples. GitHub rulesets are not required.
+- See [AGENTS.md](AGENTS.md) for the source-of-truth map and instruction precedence.
 
-# Git, review, and cleanup
+## Starting work
 
-- main holds released/deployable code; dev integrates reviewed features. Feature PRs target dev. Use Conventional Commits and focused PRs.
-- Make one commit per fix or completed feature, including its directly related tests. Put independent fixes, features, and workflow changes in separate commits so each change can be reviewed on its own.
-- Squash short-lived feature PRs into dev. Promote dev to main through an owner-merged release PR using a merge commit; bring main-only fixes back into dev through an owner-reviewed PR.
-- When dev advances, merge it into affected feature branches, resolve conflicts, rerun relevant checks, and report meaningful post-review changes. Worktrees share Git refs and machine resources; do not alter another checkout.
-- Keep waiting PR worktrees available for review fixes. After merge, confirm PR status, retained changes, and a clean worktree before cleanup. Squash merges may fail ancestry-based merged checks; never force-remove blindly.
+Assignment context, linked worktrees, dependencies, and local servers.
+
+### Rules
+
+- Use one feature branch and worktree per task at `../worktrees/<feature>/` relative to the original checkout. The owner establishes the remote and `dev`. Initializing shared branches requires explicit owner instruction.
+- Keep local sources in the original checkout. Link `PLAN.md`, `DEBT.md`, and `MEMORY.md` in same-machine worktrees using ignored symlinks. Also link `PRODUCT.md`, `DESIGN.md`, and `TRANSLATIONS.md` when present. Require them for tasks that depend on them.
+- Keep dependencies and build output per worktree. Use a distinct port per server and leave other checkouts and servers alone.
+- Keep both agent hooks active and preserve agent environment markers. Verify changed hooks against the worker tools and normal worktree use.
+
+### Procedures
+
+**Check context.** Before starting or resuming after a long wait, check for changes to the instructions and task.
+
+1. Find the original checkout with `git worktree list --porcelain`. It is listed first. Inspect Git status and preserve existing changes.
+2. Check that required files are readable and context symlinks resolve. Read [AGENTS.md](AGENTS.md), this workflow, [SPEC.md](SPEC.md), the assigned plan entry, and relevant local sources.
+3. Report missing, unreadable, or dangling files by name, including optional omissions. For required files, explain what they block and ask for the current copy or an owner decision. Pause dependent changes, recommendations, and status claims. Continue diagnosis and independent work where context allows.
+
+**Create and link a worktree.** When an assigned feature needs its own checkout, prepare context before the worker starts so it can work independently.
+
+1. Fetch current `dev`. From the original checkout, create the branch and worktree from `origin/dev`, for example `git worktree add -b feat/tooling ../worktrees/tooling origin/dev`.
+2. Before linking, check that all applicable sources are readable and each destination is absent, including dangling symlinks. Verify ignore coverage with `git check-ignore` in the feature worktree. Report failed checks and pause linking until they pass.
+3. Resolve the absolute source and destination paths at runtime. Link each file with `ln -sT -- "$source" "$destination"`. Check that each link resolves to the original file and stays unstaged.
+
+**Set up local tools.** When a clone or worktree needs tools or a server, configure it in place to keep checkouts independent.
+
+1. Run `pnpm install --frozen-lockfile` under session restrictions. Report unavailable prerequisites. Get permission before changing registry sources.
+2. Run `pnpm hooks:install` once per clone to activate the pre-push hook.
+3. Start development with `pnpm dev` on a distinct port, for example `pnpm dev --port 5181 --strictPort`. Use `pnpm preview` to preview production output.
+
+### Relevant
+
+- The branch supplies tracked instructions, README, and skills. On another machine, the owner supplies ignored context as current files in its original checkout or as an explicit bundle.
+- Resolve read-only `../design/` and `../research/research-results/` from the original checkout.
+- The [pre-push hook](.githooks/pre-push) blocks agent pushes. Trusted [Codex hooks](.codex/hooks.json) also block pushes and API code writes. GitHub rulesets are optional.
+
+## Checks and reporting
+
+Verification in the changed worktree and the report the owner uses to review it.
+
+### Rules
+
+- The owner uses TDD for core work. Workers test UI after implementation. Verify behavior and integration through normal entry points.
+
+### Procedures
+
+**Verify and report a change.** Before marking a PR ready or reporting a meaningful update, gather evidence for owner review.
+
+1. Check the implementing worktree. For code changes, use applicable checks from `pnpm lint`, `pnpm build` (includes TypeScript), and `pnpm exec vitest run`. For docs-only changes, check formatting, links, and the diff.
+2. For UI changes, verify affected languages and themes, responsive layouts, keyboard behavior, and reduced motion in a browser.
+3. Report the changes, checks run and their results, limitations, owner actions, and suggested comprehension debt. Include checkout, branch, and port when relevant. Keep private paths out of public PRs.
+
+### Relevant
+
+- Source inspection, prototype review, and frontend verification provide different evidence. Name the kind of check in the report.
+
+## Git, review, and cleanup
+
+Branch roles, local commits, pull requests, releases, and worktree cleanup.
+
+### Rules
+
+- `main` holds deployable releases and `dev` integrates reviewed features. Feature PRs target `dev`. Use focused PRs and Conventional Commits. Make one commit per fix or completed feature with its directly related tests. Keep independent changes in separate commits.
+- Keep showcases, demonstrations, galleries, fixtures, and their integration out of submissions to `dev` unless the owner approves them. Keep review copies and integration hunks visible and unstaged. Use explicit staging paths and avoid blanket ignore patterns for source files.
+- Keep worktrees available while their PRs are awaiting review. Never force-push, rewrite shared history, or delete unmerged work.
+
+### Procedures
+
+**Sync a feature.** When `dev` advances, bring it into the affected feature branch to catch integration issues.
+
+1. Fetch current `dev`, merge it into the feature branch, and resolve conflicts in that worktree.
+2. Rerun applicable checks and report meaningful changes made after review.
+
+**Submit a feature.** When a feature is ready for owner review, check the complete diff so the PR contains only intended changes.
+
+1. Inspect the full diff against `dev`. The owner reviews, verifies, approves, and pushes the result.
+2. After that approval and push, an agent may create or update a PR for the already-pushed diff, check CI, and address feedback locally.
+3. The owner squash-merges short-lived feature PRs into `dev`.
+
+**Release or bring back a fix.** When transferring changes between shared branches, use a PR so the owner can review them.
+
+1. Choose the direction. Use `dev` into `main` for a release or carry the `main`-only fix into `dev`.
+2. Submit the PR through owner review. The owner uses a merge commit for release PRs.
+
+**Clean up a merged feature.** After a PR merges, verify the work is retained before removing the worktree.
+
+1. Confirm the PR is merged, the changes are in the destination branch, and the worktree is clean.
+2. Remove the clean worktree with `git worktree remove`. If branch cleanup is blocked by an ancestry check, verify the retained patch before any branch deletion.
+
+### Relevant
+
+- A squash merge can retain the patch without preserving the feature commits as ancestors. See the [GitHub merge methods](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github) and [Git worktree reference](https://git-scm.com/docs/git-worktree).
