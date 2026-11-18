@@ -2,9 +2,28 @@
 
 ## Methodology
 
-Update the section for the stage that changed. Open with the scope, then use **Rules** for standing requirements, **Procedures** for ordered actions, and **Relevant** for supporting details and links. Introduce each procedure with its trigger and purpose. Verify changed commands against the repository and link to existing instructions.
+### Scope
 
-Use [SPEC.md](SPEC.md) for application requirements, `PLAN.md` for assignments and task status, and `MEMORY.md` for the current operational snapshot.
+Governs project execution, including owner and agent responsibilities, worktree setup, verification, reporting, and Git review and release.
+
+### Updating policy
+
+#### Rules
+
+- Never add new content to this file without the owner's direct approval.
+
+#### Procedures
+
+**Update a workflow stage.** When a workflow requirement or procedure changes, update the affected stage so readers can find the current instructions where they apply.
+
+1. Open with a short scope paragraph naming what the stage governs. Keep instructions and background in the sections below.
+2. Put standing obligations and restrictions under **Rules**. Keep ordered steps and explanatory notes in their own sections.
+3. Under **Procedures**, title each procedure, explain when and why to use it, then give the steps in order. Verify changed commands against the repository.
+4. Under **Context**, list supporting facts, rationale, or links. Put requirements under **Rules** and actions under **Procedures**. Link to existing guidance wherever it already covers the subject.
+
+#### Context
+
+- The [source-of-truth map](AGENTS.md#sources-of-truth) identifies the files for application requirements, assignments, and operational status.
 
 ## Roles and permissions
 
@@ -17,7 +36,7 @@ Who assigns work, edits shared documents, and controls publication.
 - The owner maintains `PLAN.md` and `DEBT.md`. Agents need an explicit request to edit them. The planner maintains `MEMORY.md` and workers report operational updates.
 - Workers may implement, add dependencies, test, fix, and commit locally within scope. The owner may commit directly on `main` and `dev`. Agents need explicit owner approval of the reviewed diff before committing there.
 - Only the owner pushes code, uploads commits or files, changes remote branch refs, and merges or authorizes publication. This applies across all tools.
-- Keep plans, review notes, reports, and handoffs Git-ignored.
+- Keep plans, review notes, reports, and handoffs Git-ignored. Never stage or track `MEMORY.md`.
 
 ### Procedures
 
@@ -26,7 +45,7 @@ Who assigns work, edits shared documents, and controls publication.
 1. Before editing `AGENTS.md`, `WORKFLOW.md`, or `SPEC.md`, tell the owner which files will change and why. An explicit owner instruction authorizes the edit.
 2. Get explicit permission before adding a Git-visible Markdown file or removing an ignore rule that protects one. Keep existing approved tracked requirements and required third-party notices.
 
-### Relevant
+### Context
 
 - See [AGENTS.md](AGENTS.md) for the source-of-truth map and instruction precedence.
 
@@ -38,8 +57,10 @@ Assignment context, linked worktrees, dependencies, and local servers.
 
 - Use one feature branch and worktree per task at `../worktrees/<feature>/` relative to the original checkout. The owner establishes the remote and `dev`. Initializing shared branches requires explicit owner instruction.
 - Keep local sources in the original checkout. Link `PLAN.md`, `DEBT.md`, and `MEMORY.md` in same-machine worktrees using ignored symlinks. Also link `PRODUCT.md`, `DESIGN.md`, and `TRANSLATIONS.md` when present. Require them for tasks that depend on them.
+- On another machine, the owner supplies ignored context as current files in its original checkout or as an explicit bundle.
 - Keep dependencies and build output per worktree. Use a distinct port per server and leave other checkouts and servers alone.
 - Keep both agent hooks active and preserve agent environment markers. Verify changed hooks against the worker tools and normal worktree use.
+- Resolve the read-only `../design/` and `../research/research-results/` references relative to the original checkout.
 
 ### Procedures
 
@@ -61,10 +82,9 @@ Assignment context, linked worktrees, dependencies, and local servers.
 2. Run `pnpm hooks:install` once per clone to activate the pre-push hook.
 3. Start development with `pnpm dev` on a distinct port, for example `pnpm dev --port 5181 --strictPort`. Use `pnpm preview` to preview production output.
 
-### Relevant
+### Context
 
-- The branch supplies tracked instructions, README, and skills. On another machine, the owner supplies ignored context as current files in its original checkout or as an explicit bundle.
-- Resolve read-only `../design/` and `../research/research-results/` from the original checkout.
+- The branch supplies tracked instructions, README, and skills.
 - The [pre-push hook](.githooks/pre-push) blocks agent pushes. Trusted [Codex hooks](.codex/hooks.json) also block pushes and API code writes. GitHub rulesets are optional.
 
 ## Checks and reporting
@@ -81,11 +101,11 @@ Verification in the changed worktree and the report the owner uses to review it.
 
 1. Check the implementing worktree. For code changes, use applicable checks from `pnpm lint`, `pnpm build` (includes TypeScript), and `pnpm exec vitest run`. For docs-only changes, check formatting, links, and the diff.
 2. For UI changes, verify affected languages and themes, responsive layouts, keyboard behavior, and reduced motion in a browser.
-3. Report the changes, checks run and their results, limitations, owner actions, and suggested comprehension debt. Include checkout, branch, and port when relevant. Keep private paths out of public PRs.
+3. Report the changes, checks run and their results, limitations, owner actions, and suggested comprehension debt. Name the kind of check and include checkout, branch, and port when relevant. Keep private paths out of public PRs.
 
-### Relevant
+### Context
 
-- Source inspection, prototype review, and frontend verification provide different evidence. Name the kind of check in the report.
+- Source inspection, prototype review, and frontend verification provide different evidence.
 
 ## Git, review, and cleanup
 
@@ -120,6 +140,6 @@ Branch roles, local commits, pull requests, releases, and worktree cleanup.
 1. Confirm the PR is merged, the changes are in the destination branch, and the worktree is clean.
 2. Remove the clean worktree with `git worktree remove`. If branch cleanup is blocked by an ancestry check, verify the retained patch before any branch deletion.
 
-### Relevant
+### Context
 
 - A squash merge can retain the patch without preserving the feature commits as ancestors. See the [GitHub merge methods](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github) and [Git worktree reference](https://git-scm.com/docs/git-worktree).

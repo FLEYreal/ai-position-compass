@@ -2,14 +2,28 @@
 
 ## Methodology
 
-Update the [contract](#technical-contracts) that governs the change. Keep each contract in this order.
+### Scope
 
-1. Open with a short scope paragraph that names what the contract governs.
-2. Put applicable requirements and constraints under **Rules**.
-3. Under **Procedures**, give each task a title, state when to use it and why, then list the actions in order.
-4. Put supporting details and source links under **Relevant** as bullets. Link to existing rules instead of repeating them.
+Defines application behavior, technical constraints, data contracts, and the procedures that implement or verify them. Tracks open and deferred technical decisions in [Status](#status).
 
-Keep open and deferred technical decisions in [Status](#status). When a decision is settled, update the relevant contract and remove the status entry. Use [WORKFLOW.md](WORKFLOW.md) for project procedures and `PLAN.md` for task ownership and progress.
+### Updating policy
+
+#### Rules
+
+- Never add new content to this file without the owner's direct approval.
+
+#### Procedures
+
+**Update a technical contract.** When a technical requirement, procedure, or source changes, update the contract that governs it so readers can find the current agreement in one place.
+
+1. Open the contract with a short scope paragraph naming the behavior or data it governs. Keep requirements, instructions, and source details in the sections below.
+2. Put required behavior, invariants, and constraints under **Rules**. Link to rules defined elsewhere and put rationale and ordered steps in their own sections.
+3. Under **Procedures**, title each procedure, explain when and why to use it, then give the technical steps in order. Refer to standing rules where needed.
+4. Under **Context**, list supporting facts, rationale, or source links. Put unsettled technical decisions in [Status](#status). When a decision is settled, update its contract and remove the status entry.
+
+#### Context
+
+- [WORKFLOW.md](WORKFLOW.md) owns project procedures. `PLAN.md` owns task assignments and progress.
 
 ## Technical contracts
 
@@ -36,7 +50,7 @@ The app's stack, localized routes, static hosting, accessibility, and privacy.
 1. Start with the matching shadcn Radix component where available.
 2. Adapt it to the accepted design and compose existing primitives for custom behavior.
 
-#### Relevant
+#### Context
 
 - The public source is released under the [MIT licence](LICENSE).
 - Tests use Vitest and React Testing Library. See the [CI workflow](.github/workflows/ci.yml) for checks.
@@ -61,7 +75,7 @@ Source layout, slice dependencies, and how localized copy reaches the UI.
 2. For missing, ambiguous, or placeholder copy, give the owner the key, full English message, UI context, and placeholder meanings. Leave the affected copy pending until reviewed wording is available. Keep both locales free of placeholders and silent English fallbacks.
 3. Copy the reviewed EN/RU entries into the owning dictionaries at development time. Preserve research IDs and worksheet keys.
 
-#### Relevant
+#### Context
 
 - The [FSD skill](.agents/skills/feature-sliced-design/SKILL.md) covers slice structure and public APIs.
 
@@ -88,7 +102,7 @@ Question order, navigation, developer opt-in, completion, and persistence.
 1. Ask for confirmation before applying the change.
 2. On confirmation, clear the questionnaire and retain language and theme preferences.
 
-#### Relevant
+#### Context
 
 - The [scoring configuration](src/shared/config/scoring.ts) supplies question definitions in their fixed order.
 
@@ -117,7 +131,7 @@ Axis coverage, numeric scores, and separate core and developer camp rankings.
 1. Pass scores, camps, and explicit module settings to [`findCampMatches`](src/entities/scoring/model/camp.ts).
 2. Use the returned ranking by descending raw similarity, with exact ties broken by stable camp ID. Read `passesThreshold` to identify close matches. It is true at raw similarity of 70 or higher.
 
-#### Relevant
+#### Context
 
 - The [scoring configuration](src/shared/config/scoring.ts) defines IDs, order, keys, weights, camp positions, and settings.
 - The research source for numeric data is `../research/data/`, relative to the canonical checkout.
@@ -144,7 +158,7 @@ The presentation of axis scores, camp comparisons, and PNG exports.
 1. Follow the local `DESIGN.md` for composition. Lay out the image for browser canvas using local or embedded fonts and allow room for long camp text.
 2. Draw the real scores, named poles, applicable developer results, deployed project URL, and required notices.
 
-#### Relevant
+#### Context
 
 - The English Ecology, Creativity, and Labor endpoints are Low harm and High harm.
 
@@ -176,7 +190,7 @@ The URL payload, validation, and compatibility across result versions.
 1. Assign a new version to the changed format or rules.
 2. Retain supported decoders and their version-specific matching definitions.
 
-#### Relevant
+#### Context
 
 - See [Scoring](#scoring) for how the whole scores in the payload are calculated.
 
