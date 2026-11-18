@@ -50,7 +50,13 @@ export function findCampMatches({
 }: {
     user: UserAxesScore;
     camps: CampDefinition[];
-    settings?: Setting;
+    settings?: Pick<
+        Setting,
+        | 'campMatchThreshold'
+        | 'axesThreshold'
+        | 'axesMatchThreshold'
+        | 'wildcardOffset'
+    >;
 }): CampMatch[] {
     const campMatches: CampMatch[] = [];
     const minimumDefiningAxes = settings?.axesThreshold ?? 2;
