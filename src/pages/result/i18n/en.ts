@@ -4,98 +4,90 @@ export default {
 
     // Axes
     'research.axes.regulation':
-        'Регулирование · Свобода разработки ↔ Строгий надзор',
-    'research.axes.control': 'Контроль · Рынок ↔ Государство',
+        'Regulation · Let them build ↔ Strict oversight',
+    'research.axes.control': 'Control · Market ↔ Public institutions',
     'research.axes.geopolitics':
-        'Геополитика · Гонка ↔ Международное сотрудничество',
-    'research.axes.openness':
-        'Открытость · Контролируемый доступ ↔ Открытый доступ',
-    'research.axes.capability': 'Потенциал · Ограниченный ↔ Революционный',
-    'research.axes.existentialRisk': 'Риск вымирания · Низкий ↔ Высокий',
-    'research.axes.ecology': 'Экология · Низкий вред ↔ Высокий вред',
-    'research.axes.creativity': 'Творчество · Низкий вред ↔ Высокий вред',
-    'research.axes.labor': 'Рынок труда · Низкий вред ↔ Высокий вред',
-    'research.axes.surveillance': 'Массовая слежка · Низкая ↔ Высокая',
+        'Geopolitics · Race ↔ International cooperation',
+    'research.axes.openness': 'Openness · Controlled ↔ Open',
+    'research.axes.capability': 'Capability · Limited ↔ Transformative',
+    'research.axes.existentialRisk': 'Existential risk · Low ↔ High',
+    'research.axes.ecology': 'Ecology · Low harm ↔ High harm',
+    'research.axes.creativity': 'Creativity · Low harm ↔ High harm',
+    'research.axes.labor': 'Labor · Low harm ↔ High harm',
+    'research.axes.surveillance': 'Surveillance · Low ↔ High',
     'research.axes.openSourcePreference':
-        'Предпочтение опенсорса · Закрытые API ↔ Открытые и локальные модели',
+        'Open-source preference · Closed APIs ↔ Open / self-hosted',
     'research.axes.aiDelegation':
-        'Делегирование кода ИИ · Пишу сам ↔ Пусть пишет ИИ',
-    'research.axes.displacementRisk':
-        'Риск замены разработчиков · Низкий ↔ Высокий',
+        'AI delegation · Write it myself ↔ Agents write it',
+    'research.axes.displacementRisk': 'Displacement risk · Low ↔ High',
 
     // Camps
-    'research.camps.core.accelerationists.name': 'Лагерь ускорения',
+    'research.camps.core.accelerationists.name': 'Accelerationists',
     'research.camps.core.accelerationists.description':
-        'Строить быстрее и побеждать в гонке. Регулирование тормозит прогресс, открытые модели — это нормально, а страхи вымирания преувеличены.',
-    'research.camps.core.securitists.name': 'Лагерь национальной безопасности',
+        'Build fast and win the race. Regulation slows progress; open models are fine; extinction fears are overblown.',
+    'research.camps.core.securitists.name': 'Securitists',
     'research.camps.core.securitists.description':
-        'ИИ будет невероятно мощным и опасным, поэтому государство должно возглавить его развитие, выиграть гонку и закрыть доступ к моделям.',
-    'research.camps.core.safetyCamp.name': 'Лагерь безопасности',
+        'AI will be extremely powerful and dangerous, so the state must lead, win the race and lock the models down.',
+    'research.camps.core.safetyCamp.name': 'Safety camp',
     'research.camps.core.safetyCamp.description':
-        'Продвинутый ИИ может привести к катастрофе. Нужно регулировать самые мощные модели и сотрудничать на международном уровне.',
-    'research.camps.core.pauseCamp.name': 'Лагерь паузы',
+        'Advanced AI could cause a catastrophe. Regulate frontier models and cooperate internationally.',
+    'research.camps.core.pauseCamp.name': 'Pause camp',
     'research.camps.core.pauseCamp.description':
-        'Не создавать сверхинтеллект, пока это нельзя сделать безопасно. Остановить разработку самых мощных моделей международным договором.',
-    'research.camps.core.cautiousBuilders.name':
-        'Лагерь осторожных разработчиков',
+        "Don't build superintelligence until it can be done safely; pause frontier AI through an international treaty.",
+    'research.camps.core.cautiousBuilders.name': 'Cautious builders',
     'research.camps.core.cautiousBuilders.description':
-        'Риски реальны, но первыми ИИ должны создавать ответственные лаборатории — по мягким правилам, которые формирует сама отрасль.',
-    'research.camps.core.guardedOptimists.name': 'Лагерь осторожных оптимистов',
+        'The risks are real, but responsible labs should build it first under light, industry-shaped rules.',
+    'research.camps.core.guardedOptimists.name': 'Guarded optimists',
     'research.camps.core.guardedOptimists.description':
-        'Развивать ИИ, но отдавать предпочтение защитным и децентрализованным технологиям, а не концентрации власти.',
-    'research.camps.core.ethicsCamp.name': 'Этический лагерь',
+        'Build it, but favor defensive and decentralized technology over concentrated power.',
+    'research.camps.core.ethicsCamp.name': 'Ethics camp',
     'research.camps.core.ethicsCamp.description':
-        'Главное — вред, который ИИ наносит уже сейчас: предвзятость, слежка, эксплуатация, ущерб окружающей среде.',
-    'research.camps.core.normalTechnologyCamp.name':
-        'Лагерь «обычной технологии»',
+        'Focus on harms happening now: bias, surveillance, exploitation, environmental cost.',
+    'research.camps.core.normalTechnologyCamp.name': 'Normal-technology camp',
     'research.camps.core.normalTechnologyCamp.description':
-        'ИИ — мощная, но обычная технология, сродни электричеству. Регулировать нужно конкретные способы применения, а не всю отрасль.',
-    'research.camps.core.hypeSkeptics.name': 'Лагерь скептиков хайпа',
+        'AI is powerful but normal, like electricity. Regulate specific uses, not the technology itself.',
+    'research.camps.core.hypeSkeptics.name': 'Hype skeptics',
     'research.camps.core.hypeSkeptics.description':
-        'ИИ переоценён и ненадёжен, но отрасли всё равно нужен строгий контроль.',
-    'research.camps.core.populists.name': 'Лагерь популистов',
+        "Today's AI is overhyped and unreliable, and the industry still needs strict rules.",
+    'research.camps.core.populists.name': 'Populists',
     'research.camps.core.populists.description':
-        'Скептически относятся к ИИ и власти корпораций: защищать рабочие места и семьи строгим государственным надзором.',
-    'research.camps.core.creativesCopyright.name': 'Лагерь авторов',
+        'Skeptical of AI and Big Tech power: protect jobs and families with strong government oversight.',
+    'research.camps.core.creativesCopyright.name': 'Creatives / copyright',
     'research.camps.core.creativesCopyright.description':
-        'Обучать модели на чужих работах без согласия и оплаты несправедливо, это вредит авторам.',
-    'research.camps.core.unconcerned.name': 'Лагерь спокойных',
+        "Training on creative work without consent and payment is unjust and harms creators' livelihoods.",
+    'research.camps.core.unconcerned.name': 'Unconcerned',
     'research.camps.core.unconcerned.description':
-        'ИИ — полезный инструмент. Особых поводов для беспокойства нет.',
-    'research.camps.core.existentialWorriers.name':
-        'Лагерь экзистенциальной тревоги',
+        'AI is a useful tool. Not worried about it either way.',
+    'research.camps.core.existentialWorriers.name': 'Existential worriers',
     'research.camps.core.existentialWorriers.description':
-        'Боятся, что ИИ может положить конец человечеству, даже если не ждут, что он скоро станет всемогущим.',
-    'research.camps.core.laborCritics.name': 'Лагерь критиков рынка труда',
+        'Afraid AI could end humanity, even without expecting it to become all-powerful soon.',
+    'research.camps.core.laborCritics.name': 'Labor critics',
     'research.camps.core.laborCritics.description':
-        'ИИ не справляется с работой на уровне человека, но работодатели всё равно будут заменять им сотрудников и давить на них.',
-    'research.camps.core.surveillanceCritics.name':
-        'Лагерь критиков массовой слежки',
+        "AI can't really do the job, but bosses will use it to replace and squeeze workers anyway.",
+    'research.camps.core.surveillanceCritics.name': 'Surveillance critics',
     'research.camps.core.surveillanceCritics.description':
-        'ИИ делает слежку и массовый контроль дешёвыми — и для государств, и для компаний.',
+        'AI makes it cheap to watch and control everyone, by governments and companies alike.',
 
-    'research.camps.dev.vibeCoders.name': 'Лагерь вайб-кодеров',
+    'research.camps.dev.vibeCoders.name': 'Vibe-coders',
     'research.camps.dev.vibeCoders.description':
-        'Пусть код пишут ИИ-агенты; часть разработчиков останется без работы.',
-    'research.camps.dev.vibeFounders.name': 'Лагерь вайб-стартаперов',
+        'Let the agents write the code; developers will be partly displaced.',
+    'research.camps.dev.vibeFounders.name': 'Vibe-founders',
     'research.camps.dev.vibeFounders.description':
-        'Выпускать продукты, код которых пишет ИИ; многие разработчики потеряют работу.',
+        'Ship products with AI writing the code; many developer jobs will go.',
     'research.camps.dev.openSourceAdvocatesSelfHosters.name':
-        'Лагерь сторонников опенсорса',
+        'Open-source advocates / self-hosters',
     'research.camps.dev.openSourceAdvocatesSelfHosters.description':
-        'Запускай открытые модели на своём железе и используй их по полной.',
-    'research.camps.dev.craftspeople.name': 'Лагерь ремесленников',
+        'Run open models on your own hardware, and use them heavily.',
+    'research.camps.dev.craftspeople.name': 'Craftspeople',
     'research.camps.dev.craftspeople.description':
-        'Пиши код сам, на открытых инструментах, которые полностью под твоим контролем.',
-    'research.camps.dev.corporatePragmatists.name':
-        'Лагерь корпоративных прагматиков',
+        'Write it yourself, with open tools you control.',
+    'research.camps.dev.corporatePragmatists.name': 'Corporate pragmatists',
     'research.camps.dev.corporatePragmatists.description':
-        'Используй по полной ИИ-инструменты, которые даёт работа.',
-    'research.camps.dev.balancedUsers.name':
-        'Лагерь сбалансированных пользователей',
+        'Make heavy use of the hosted AI tools your employer provides.',
+    'research.camps.dev.balancedUsers.name': 'Balanced users',
     'research.camps.dev.balancedUsers.description':
-        'Часть кода пишет ИИ, часть — ты сам. Какие-то инструменты открытые, какие-то закрытые.',
-    'research.camps.dev.skeptics.name': 'Лагерь скептиков агентов',
+        'Some AI, some hand-written code, some open tools, some closed.',
+    'research.camps.dev.skeptics.name': 'Skeptics',
     'research.camps.dev.skeptics.description':
-        'Пиши сам: ИИ не заменит разработчиков.',
+        "Write it yourself; AI won't replace developers.",
 };

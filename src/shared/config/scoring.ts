@@ -24,7 +24,7 @@ export const coreAxes = [
 export const devAxes = [
     { id: 'openSourcePreference' },
     { id: 'aiDelegation' },
-    { id: 'dispacementRisk' },
+    { id: 'displacementRisk' },
 ] as const satisfies DevAxisDefinition[];
 
 // Merge all axes together and add a model id
@@ -520,31 +520,31 @@ export const devQuestions = [
     },
     {
         id: 'H1',
-        axisId: 'dispacementRisk',
+        axisId: 'displacementRisk',
         key: 1,
         weight: 1,
     },
     {
         id: 'H2',
-        axisId: 'dispacementRisk',
+        axisId: 'displacementRisk',
         key: -1,
         weight: 1,
     },
     {
         id: 'H3',
-        axisId: 'dispacementRisk',
+        axisId: 'displacementRisk',
         key: 1,
         weight: 1,
     },
     {
         id: 'H4',
-        axisId: 'dispacementRisk',
+        axisId: 'displacementRisk',
         key: -1,
         weight: 1,
     },
     {
         id: 'H5',
-        axisId: 'dispacementRisk',
+        axisId: 'displacementRisk',
         key: 1,
         weight: 1,
     },
@@ -582,7 +582,7 @@ export const coreSuggestions = [
     { id: 'CS3', questionId: 'A3' },
     { id: 'CS4', questionId: 'E3' },
     { id: 'CS5', questionId: 'P7' },
-    { id: 'CS6', questionId: 'X7' },
+    { id: 'CS6', questionId: 'X4' },
 ] as const satisfies SuggestionDefinition[];
 
 export const devSuggestions = [
@@ -634,7 +634,7 @@ export const coreCamps = [
     {
         id: 'securitists',
         positions: [
-            { axisId: 'regulation', score: 33 },
+            { axisId: 'regulation', score: 50 },
             { axisId: 'control', score: 83 },
             { axisId: 'geopolitics', score: 17 },
             { axisId: 'openness', score: 17 },
@@ -669,9 +669,9 @@ export const coreCamps = [
         positions: [
             { axisId: 'regulation', score: 33 },
             { axisId: 'control', score: 17 },
-            { axisId: 'openness', score: 33 },
+            { axisId: 'openness', score: 50 },
             { axisId: 'capability', score: 83 },
-            { axisId: 'existentialRisk', score: 33 },
+            { axisId: 'existentialRisk', score: 50 },
         ],
     },
     {
@@ -701,13 +701,13 @@ export const coreCamps = [
     {
         id: 'normalTechnologyCamp',
         positions: [
-            { axisId: 'regulation', score: 33 },
-            { axisId: 'control', score: 33 },
+            { axisId: 'regulation', score: 50 },
+            { axisId: 'control', score: 50 },
             { axisId: 'geopolitics', score: 67 },
             { axisId: 'openness', score: 67 },
-            { axisId: 'capability', score: 33 },
+            { axisId: 'capability', score: 50 },
             { axisId: 'existentialRisk', score: 17 },
-            { axisId: 'labor', score: 33 },
+            { axisId: 'labor', score: 50 },
         ],
     },
     {
@@ -724,7 +724,7 @@ export const coreCamps = [
         positions: [
             { axisId: 'regulation', score: 83 },
             { axisId: 'control', score: 83 },
-            { axisId: 'capability', score: 33 },
+            { axisId: 'capability', score: 50 },
             { axisId: 'labor', score: 83 },
         ],
     },
@@ -732,7 +732,7 @@ export const coreCamps = [
         id: 'creativesCopyright',
         positions: [
             { axisId: 'regulation', score: 83 },
-            { axisId: 'capability', score: 33 },
+            { axisId: 'capability', score: 50 },
             { axisId: 'creativity', score: 83 },
             { axisId: 'labor', score: 83 },
         ],
@@ -741,7 +741,7 @@ export const coreCamps = [
         id: 'unconcerned',
         positions: [
             { axisId: 'regulation', score: 33 },
-            { axisId: 'capability', score: 33 },
+            { axisId: 'capability', score: 50 },
             { axisId: 'existentialRisk', score: 17 },
             { axisId: 'ecology', score: 17 },
             { axisId: 'creativity', score: 17 },
@@ -754,7 +754,7 @@ export const coreCamps = [
         positions: [
             { axisId: 'regulation', score: 83 },
             { axisId: 'control', score: 83 },
-            { axisId: 'capability', score: 33 },
+            { axisId: 'capability', score: 50 },
             { axisId: 'existentialRisk', score: 83 },
         ],
     },
@@ -771,7 +771,7 @@ export const coreCamps = [
         id: 'surveillanceCritics',
         positions: [
             { axisId: 'regulation', score: 83 },
-            { axisId: 'control', score: 33 },
+            { axisId: 'control', score: 50 },
             { axisId: 'capability', score: 67 },
             { axisId: 'surveillance', score: 83 },
         ],
@@ -783,14 +783,14 @@ export const devCamps = [
         id: 'vibeCoders',
         positions: [
             { axisId: 'aiDelegation', score: 83 },
-            { axisId: 'dispacementRisk', score: 33 },
+            { axisId: 'displacementRisk', score: 50 },
         ],
     },
     {
         id: 'vibeFounders',
         positions: [
             { axisId: 'aiDelegation', score: 83 },
-            { axisId: 'dispacementRisk', score: 83 },
+            { axisId: 'displacementRisk', score: 83 },
         ],
     },
     {
@@ -817,16 +817,16 @@ export const devCamps = [
     {
         id: 'balancedUsers',
         positions: [
-            { axisId: 'openSourcePreference', score: 33 },
-            { axisId: 'aiDelegation', score: 33 },
-            { axisId: 'dispacementRisk', score: 33 },
+            { axisId: 'openSourcePreference', score: 50 },
+            { axisId: 'aiDelegation', score: 50 },
+            { axisId: 'displacementRisk', score: 50 },
         ],
     },
     {
         id: 'skeptics',
         positions: [
             { axisId: 'aiDelegation', score: 17 },
-            { axisId: 'dispacementRisk', score: 17 },
+            { axisId: 'displacementRisk', score: 17 },
         ],
     },
 ] as const satisfies CampDefinition<DevAxisId>[];

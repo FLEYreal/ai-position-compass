@@ -6,6 +6,9 @@ import {
     type QuestionAnswer,
 } from '@/entities/scoring';
 import {
+    axes,
+    coreQuestions,
+    devQuestions,
     type AxisId,
     type QuestionKey,
     type QuestionWeight,
@@ -390,6 +393,42 @@ describe('calculateAxesScore: independent, repeatable calculations', () => {
         ]);
         expect(score(input.toReversed())).toEqual([
             { axisId: 'regulation', score: 63 },
+        ]);
+    });
+});
+
+describe('canonical question inputs: SPEC and research archive', () => {
+    test('preserves the explicit axis IDs and order', () => {
+        expect(axes.map((a) => a.id)).toEqual([
+            'regulation',
+            'control',
+            'geopolitics',
+            'openness',
+            'capability',
+            'existentialRisk',
+            'ecology',
+            'creativity',
+            'labor',
+            'surveillance',
+            'openSourcePreference',
+            'aiDelegation',
+            'displacementRisk',
+        ]);
+    });
+    test('retains the canonical module counts', () => {
+        expect(coreQuestions).toHaveLength(66);
+        expect(devQuestions).toHaveLength(15);
+    });
+    test('preserves the three declared secondary links', () => {
+        const links = coreQuestions.flatMap((q) =>
+            'secondary' in q ?
+                q.secondary.map((s) => ({ questionId: q.id, ...s }))
+            :   [],
+        );
+        expect(links).toEqual([
+            { questionId: 'R1', axisId: 'control', key: 1, weight: 0.5 },
+            { questionId: 'C5', axisId: 'geopolitics', key: 1, weight: 0.5 },
+            { questionId: 'K1', axisId: 'labor', key: 1, weight: 0.5 },
         ]);
     });
 });

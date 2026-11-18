@@ -6,6 +6,8 @@ import {
     type UserAxesScore,
 } from '@/entities/scoring';
 import {
+    coreCamps,
+    devCamps,
     getSetting,
     type CampDefinition,
     type CampPosition,
@@ -392,5 +394,32 @@ describe('configured camp matching policies', () => {
             campMatchThreshold: 70,
             wildcardOffset: 20,
         });
+    });
+});
+
+describe('canonical camp positions from the research archive', () => {
+    // Research LEVEL.MODERATE is 50. These copied coordinates drifted during import.
+    test.each([
+        ['securitists', 'regulation'],
+        ['cautiousBuilders', 'openness'],
+        ['cautiousBuilders', 'existentialRisk'],
+        ['normalTechnologyCamp', 'regulation'],
+        ['normalTechnologyCamp', 'control'],
+        ['normalTechnologyCamp', 'capability'],
+        ['normalTechnologyCamp', 'labor'],
+        ['populists', 'capability'],
+        ['creativesCopyright', 'capability'],
+        ['unconcerned', 'capability'],
+        ['existentialWorriers', 'capability'],
+        ['surveillanceCritics', 'control'],
+        ['vibeCoders', 'displacementRisk'],
+        ['balancedUsers', 'openSourcePreference'],
+        ['balancedUsers', 'aiDelegation'],
+        ['balancedUsers', 'displacementRisk'],
+    ])('%s retains its canonical moderate position on %s', (campId, axisId) => {
+        const camp = [...coreCamps, ...devCamps].find((c) => c.id === campId);
+        expect(camp?.positions.find((p) => p.axisId === axisId)?.score).toBe(
+            50,
+        );
     });
 });
