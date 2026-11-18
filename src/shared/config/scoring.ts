@@ -1243,14 +1243,14 @@ export type DevPersonId = (typeof devPeople)[number]['id'];
 export type PersonId = (typeof people)[number]['id'];
 
 export type Setting = {
-    campMatchThreshold?: number; // If no camp gets above 45 points of difference, then user gets "No camp fits you closely"
-    axesThreshold?: number; // How many axes user must have defined to pass a threshold
+    campMatchThreshold?: number; // Minimum similarity for a close match
+    axesThreshold?: number; // Minimum number of axes defined by a camp
     axesMatchThreshold?: number; // How many axes both user and camp must have defined in common to pass
     wildcardOffset?: number; // Pull similarity down if camp doesn't have the position user has a position on; Otherwise, camps with few defined axis positions will get prioritized
 };
 
 export const settings: Setting & Record<ModelId, Setting> = {
-    campMatchThreshold: 45,
+    campMatchThreshold: 70,
     wildcardOffset: 20,
     core: {
         axesThreshold: 4,
