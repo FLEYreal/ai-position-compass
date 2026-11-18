@@ -425,10 +425,12 @@ describe('canonical question inputs: SPEC and research archive', () => {
                 q.secondary.map((s) => ({ questionId: q.id, ...s }))
             :   [],
         );
-        expect(links).toEqual([
-            { questionId: 'R1', axisId: 'control', key: 1, weight: 0.5 },
+        expect(
+            links.sort((a, b) => a.questionId.localeCompare(b.questionId)),
+        ).toEqual([
             { questionId: 'C5', axisId: 'geopolitics', key: 1, weight: 0.5 },
             { questionId: 'K1', axisId: 'labor', key: 1, weight: 0.5 },
+            { questionId: 'R1', axisId: 'control', key: 1, weight: 0.5 },
         ]);
     });
 });
