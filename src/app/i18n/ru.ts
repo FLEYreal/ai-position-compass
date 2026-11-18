@@ -1,4 +1,3 @@
-// Reviewed wording from TRANSLATIONS.md.
 export default {
     'footer.description':
         'Исследовательская карта убеждений и ценностей об искусственном интеллекте.',
