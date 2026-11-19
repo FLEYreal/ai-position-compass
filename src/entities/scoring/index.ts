@@ -13,4 +13,12 @@ export {
 export {
     type AnswerValue,
     type QuestionAnswer,
+    type QuestionnaireProgress,
+    type QuestionResponse,
 } from './model/questionnaire-progress';
+export {
+    restoreQuestionnaireProgress,
+    useQuestionnaireStorageStatus,
+    useQuestionnaireStore,
+} from './model/questionnaire-store';
+export type { QuestionnaireResult } from './model/questionnaire-result';

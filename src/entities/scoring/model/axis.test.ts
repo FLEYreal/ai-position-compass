@@ -3,7 +3,7 @@ import {
     calculateAxesScore,
     calculateScore,
     type AnswerValue,
-    type QuestionAnswer,
+    type ScoringAnswer,
 } from '@/entities/scoring';
 import {
     axes,
@@ -19,13 +19,13 @@ const answer = (
     value: AnswerValue,
     weight: QuestionWeight = 1,
     unsure = false,
-): QuestionAnswer => ({ key, value, weight, unsure });
+): ScoringAnswer => ({ key, value, weight, unsure });
 const keys: QuestionKey[] = [1, -1, 1, -1, 1, -1, 1];
-const regulation = (values: (AnswerValue | 'unsure')[]): QuestionAnswer[] =>
+const regulation = (values: (AnswerValue | 'unsure')[]): ScoringAnswer[] =>
     values.map((value, i) =>
         answer(keys[i], value === 'unsure' ? 0 : value, 1, value === 'unsure'),
     );
-const score = (answers: QuestionAnswer[], axisId: AxisId = 'regulation') =>
+const score = (answers: ScoringAnswer[], axisId: AxisId = 'regulation') =>
     calculateAxesScore([{ axisId, answers }]);
 
 describe('calculateScore: already-oriented weighted contributions', () => {
@@ -195,7 +195,7 @@ describe('calculateAxesScore: secondary contributions', () => {
         secondary: [{ axisId: 'control' as const, key, weight: 0.5 as const }],
     });
     const withSource = (
-        answers: QuestionAnswer[],
+        answers: ScoringAnswer[],
         response: ReturnType<typeof source>,
     ) =>
         calculateAxesScore([
