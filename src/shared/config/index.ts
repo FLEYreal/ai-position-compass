@@ -43,6 +43,7 @@ export {
     devPeople,
     people,
     settings,
+    questionnaireVersion,
     scoringConfig,
     getQuestionCount,
     getCompletionTime,

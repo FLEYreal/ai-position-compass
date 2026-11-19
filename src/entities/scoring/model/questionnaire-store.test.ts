@@ -1,0 +1,164 @@
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import {
+    restoreQuestionnaireProgress,
+    useQuestionnaireStore,
+} from '@/entities/scoring';
+import { coreQuestions, devQuestions } from '@/shared/config';
+
+beforeEach(() => {
+    localStorage.clear();
+});
+
+afterEach(() => {
+    vi.restoreAllMocks();
+});
+
+test('restores responses and saves only questionnaire progress', async () => {
+    localStorage.setItem(
+        'questionnaire',
+        JSON.stringify({
+            version: 1,
+            state: {
+                questionnaireVersion: 1,
+                answersById: { S7: 0 },
+                currentQuestionId: 'K6',
+                status: 'in-process',
+                includeDeveloper: false,
+            },
+        }),
+    );
+
+    await useQuestionnaireStore.persist.rehydrate();
+
+    const { answersById, currentQuestionId, answerQuestion } =
+        useQuestionnaireStore.getState();
+    expect(answersById).toEqual({ S7: 0 });
+    expect(currentQuestionId).toBe('K6');
+
+    answerQuestion('K6', 'unsure');
+
+    expect(JSON.parse(localStorage.getItem('questionnaire')!)).toEqual({
+        version: 1,
+        state: {
+            questionnaireVersion: 1,
+            answersById: { S7: 0, K6: 'unsure' },
+            currentQuestionId: 'K6',
+            status: 'in-process',
+            includeDeveloper: false,
+        },
+    });
+});
+
+test('creates a result from the current responses and keeps rankings separate', async () => {
+    await useQuestionnaireStore.persist.rehydrate();
+    const { reset, answerQuestion, createResult } =
+        useQuestionnaireStore.getState();
+    reset(true);
+    expect(createResult()).toBeNull();
+
+    for (const { id } of coreQuestions) answerQuestion(id, 0);
+    expect(createResult()).toBeNull();
+
+    for (const { id } of devQuestions) answerQuestion(id, 'unsure');
+    const result = createResult();
+
+    expect(result?.includeDeveloper).toBe(true);
+    expect(result?.axisScores.map(({ score }) => score)).toEqual([
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        null,
+        null,
+        null,
+    ]);
+    expect(result?.campMatches.core.length).toBeGreaterThan(0);
+    expect(result?.campMatches.dev).toEqual([]);
+    expect(useQuestionnaireStore.getState().status).toBe('finished');
+});
+
+test('keeps incompatible progress in storage until a confirmed reset', async () => {
+    const incompatible = JSON.stringify({
+        version: 1,
+        state: {
+            questionnaireVersion: 999,
+            answersById: { S7: 1 },
+            currentQuestionId: 'S7',
+            status: 'in-process',
+            includeDeveloper: false,
+        },
+    });
+    localStorage.setItem('questionnaire', incompatible);
+    await useQuestionnaireStore.persist.rehydrate();
+
+    const { answerQuestion, createResult, reset } =
+        useQuestionnaireStore.getState();
+    answerQuestion('S7', 0.5);
+
+    expect(createResult()).toBeNull();
+    expect(localStorage.getItem('questionnaire')).toBe(incompatible);
+
+    reset();
+    await useQuestionnaireStore.persist.rehydrate();
+    expect(useQuestionnaireStore.getState().answersById).toEqual({});
+});
+
+test('keeps the live answer when storage cannot save it', async () => {
+    await useQuestionnaireStore.persist.rehydrate();
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementationOnce(() => {
+        throw new DOMException('Storage is full', 'QuotaExceededError');
+    });
+
+    useQuestionnaireStore.getState().answerQuestion('S7', 0.5);
+    useQuestionnaireStore.getState().nextQuestion();
+
+    expect(useQuestionnaireStore.getState().answersById).toEqual({ S7: 0.5 });
+    expect(useQuestionnaireStore.getState().currentQuestionId).toBe('K6');
+});
+
+test('keeps newer in-memory responses when the questionnaire remounts', async () => {
+    await restoreQuestionnaireProgress();
+    const { answerQuestion } = useQuestionnaireStore.getState();
+    answerQuestion('S7', 0);
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementationOnce(() => {
+        throw new DOMException('Storage is full', 'QuotaExceededError');
+    });
+
+    answerQuestion('S7', 'unsure');
+    await restoreQuestionnaireProgress();
+
+    expect(useQuestionnaireStore.getState().answersById).toEqual({
+        S7: 'unsure',
+    });
+});
+
+test('returns the v1 axis order and undefined developer scores for a core-only result', async () => {
+    await useQuestionnaireStore.persist.rehydrate();
+    const { answerQuestion, createResult } = useQuestionnaireStore.getState();
+    for (const { id } of coreQuestions) answerQuestion(id, 0);
+
+    const result = createResult();
+    expect(result?.includeDeveloper).toBe(false);
+    expect(result?.axisScores).toEqual([
+        { axisId: 'regulation', score: 50 },
+        { axisId: 'control', score: 50 },
+        { axisId: 'geopolitics', score: 50 },
+        { axisId: 'openness', score: 50 },
+        { axisId: 'capability', score: 50 },
+        { axisId: 'existentialRisk', score: 50 },
+        { axisId: 'ecology', score: 50 },
+        { axisId: 'creativity', score: 50 },
+        { axisId: 'labor', score: 50 },
+        { axisId: 'surveillance', score: 50 },
+        { axisId: 'openSourcePreference', score: null },
+        { axisId: 'aiDelegation', score: null },
+        { axisId: 'displacementRisk', score: null },
+    ]);
+    expect(result?.campMatches.dev).toEqual([]);
+});

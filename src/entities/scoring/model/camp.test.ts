@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest';
 import {
     calculateCampMatch,
     findCampMatches,
-    type CampAxesScore,
-    type UserAxesScore,
+    type CampAxisScore,
+    type UserAxisScore,
 } from '@/entities/scoring';
 import {
     coreCamps,
@@ -26,13 +26,13 @@ const devPolicy = {
     wildcardOffset: 20,
     campMatchThreshold: 70,
 };
-const corePositions = (score: CampPosition = 50): CampAxesScore => [
+const corePositions = (score: CampPosition = 50): CampAxisScore[] => [
     { axisId: 'regulation', score },
     { axisId: 'control', score },
     { axisId: 'geopolitics', score },
     { axisId: 'openness', score },
 ];
-const devPositions = (score: CampPosition = 50): CampAxesScore => [
+const devPositions = (score: CampPosition = 50): CampAxisScore[] => [
     { axisId: 'openSourcePreference', score },
     { axisId: 'aiDelegation', score },
 ];
@@ -49,7 +49,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
     });
 
     test('equal 33-point differences in either direction give similarity 67', () => {
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             { axisId: 'regulation', score: 83 },
             { axisId: 'control', score: 17 },
         ];
@@ -64,7 +64,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
 
     test('uses RMS rather than absolute mean or unnormalized Euclidean distance', () => {
         // Differences 0, 10, -20, wildcard 20 -> RMS 15 -> similarity 85.
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             { axisId: 'regulation', score: 50 },
             { axisId: 'control', score: 60 },
             { axisId: 'geopolitics', score: 30 },
@@ -80,7 +80,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
     });
 
     test('a wildcard contributes 20 points inside RMS, not a final subtraction', () => {
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             ...corePositions().slice(0, 3),
             { axisId: 'capability', score: 0 },
         ];
@@ -95,7 +95,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
     });
 
     test('the wildcard discrepancy can be supplied explicitly', () => {
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             ...corePositions().slice(0, 3),
             { axisId: 'capability', score: 100 },
         ];
@@ -109,7 +109,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
     });
 
     test('Undefined defining and wildcard axes add neither charge nor denominator', () => {
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             ...corePositions().slice(0, 3),
             { axisId: 'openness', score: null },
             { axisId: 'capability', score: null },
@@ -137,7 +137,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
     });
 
     test('wildcards cannot satisfy the minimum shared defining-axis count', () => {
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             ...corePositions().slice(0, 2),
             { axisId: 'capability', score: 50 },
             { axisId: 'labor', score: 50 },
@@ -154,7 +154,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
     test.each([
         { user: [] },
         { user: [{ axisId: 'regulation', score: null }] },
-    ] satisfies { user: UserAxesScore }[])(
+    ] satisfies { user: UserAxisScore[] }[])(
         'no scored shared axes produce no similarity: %j',
         ({ user }) => {
             expect(
@@ -168,7 +168,7 @@ describe('calculateCampMatch: distance over supplied module scores', () => {
     );
 
     test('user order and camp position order cannot affect distance or mutate inputs', () => {
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             { axisId: 'regulation', score: 50 },
             { axisId: 'control', score: 60 },
             { axisId: 'geopolitics', score: 30 },
@@ -317,7 +317,7 @@ describe('findCampMatches: deterministic ranking and low-match behavior', () => 
     });
 
     test('preserves unrounded similarity for rankings that display the same percentage', () => {
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             { axisId: 'openSourcePreference', score: 49 },
             { axisId: 'aiDelegation', score: 49 },
         ];
@@ -370,7 +370,7 @@ describe('findCampMatches: deterministic ranking and low-match behavior', () => 
 
     test('uses raw similarity for the threshold even if the display rounds to 70', () => {
         // Differences 30, 30, 31 -> similarity 69.66300388414612.
-        const user: UserAxesScore = [
+        const user: UserAxisScore[] = [
             { axisId: 'regulation', score: 47 },
             { axisId: 'control', score: 47 },
             { axisId: 'geopolitics', score: 48 },
