@@ -1,3 +1,4 @@
+import { getQuestionCount } from '@/shared/config';
 import { ArrowRight, Code2 } from 'lucide-react';
 import { useId, useState } from 'react';
 import {
@@ -21,10 +22,7 @@ export function StartDialog({
 }: {
     label: string;
     messages: StartMessages;
-    common: Pick<
-        CommonMessages,
-        'common.close' | 'home.abstract.body' | 'test.privacy'
-    >;
+    common: Pick<CommonMessages, 'common.close'>;
     openOnMount?: boolean;
     onStart: (includeDeveloper: boolean) => void;
 }) {
@@ -49,7 +47,7 @@ export function StartDialog({
                 <DialogHeader>
                     <DialogTitle>{messages['start.heading']}</DialogTitle>
                     <DialogDescription>
-                        {common['home.abstract.body']}
+                        {messages['start.description']}
                     </DialogDescription>
                 </DialogHeader>
                 <label className="flex cursor-pointer items-start gap-3 rounded-md border border-border bg-card p-4">
@@ -75,12 +73,15 @@ export function StartDialog({
                             id={developerDescription}
                             className="mt-1 block text-sm text-muted-foreground"
                         >
-                            {messages['test.developerDescription']}
+                            {messages['start.developer.description'].replace(
+                                '{count}',
+                                String(getQuestionCount('dev')),
+                            )}
                         </span>
                     </span>
                 </label>
                 <p className="text-xs text-muted-foreground">
-                    {common['test.privacy']}
+                    {messages['start.privacy']}
                 </p>
                 <Button
                     className="justify-self-start"
