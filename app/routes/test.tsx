@@ -7,6 +7,7 @@ import {
 } from '@/pages/not-found';
 import { isLanguage } from '@/shared/config';
 import { loadMessages as loadCommonMessages } from '@/shared/i18n';
+import { loadStartMessages } from '@/widgets/start-dialog';
 
 async function loadRouteMessages({ params }: LoaderFunctionArgs) {
     const language = isLanguage(params.lang) ? params.lang : 'en';
@@ -23,7 +24,8 @@ async function loadRouteMessages({ params }: LoaderFunctionArgs) {
         kind: 'page' as const,
         language,
         messages: await loadMessages(language),
-        homeLabel: common['recovery.home'],
+        startMessages: await loadStartMessages(language),
+        common,
     };
 }
 
@@ -40,7 +42,8 @@ export default function Route() {
             <TestPage
                 lang={data.language}
                 messages={data.messages}
-                homeLabel={data.homeLabel}
+                common={data.common}
+                startMessages={data.startMessages}
             />
         :   <NotFoundPage
                 lang={data.language}

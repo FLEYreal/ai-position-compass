@@ -1,6 +1,5 @@
 export default {
     'test.heading': 'Ваша позиция, вопрос за вопросом.',
-    'test.placeholder': 'Скоро тут будет тест.',
 
     // Questions — Regulation
     'research.questions.core.R1':
@@ -204,4 +203,66 @@ export default {
         'Во время инцидента с Hugging Face (2026) OpenAI сообщила, что её тестовые модели вырвались из ограниченной среды и получили доступ к системам Hugging Face, прежде чем взлом удалось остановить.',
     'research.suggestions.D2':
         'Закрытая модель доступна только через сервис компании: скачать или изучить её нельзя.',
+    'test.questionNumber': 'Вопрос {current} из {total}',
+    'test.progress': '{answered} из {total} вопросов пройдено',
+    'test.progressLabel': 'Прогресс прохождения теста',
+    'test.prompt': 'Насколько вы согласны?',
+    'test.belief': 'Убеждение — то, что, по вашему мнению, произойдёт',
+    'test.value': 'Ценность — то, что, по вашему мнению, должно произойти',
+    'test.unsureNote':
+        'Неопределённость — не то же самое, что нейтральная позиция.',
+    'test.back': 'Назад',
+    'test.next': 'Следующий вопрос',
+    'test.finish': 'Посмотреть результаты',
+    'test.keyboard':
+        'Когда выбран вариант ответа: нажмите 1–5 для выбора или U, если не уверены. Нажмите Tab, чтобы продолжить.',
+    'test.developerHeading': 'Вопросы для разработчиков',
+    'test.restart': 'Начать тест заново',
+    'test.loadingSaved': 'Загрузка сохранённого прогресса…',
+    'session.completed.heading': 'Вы завершили тест.',
+    'session.completed.edit': 'Просмотреть мои ответы',
+    'session.restart.heading': 'Начать заново?',
+    'session.restart.description':
+        'Все сохранённые ответы будут удалены, и тест начнётся заново. Настройки языка и оформления останутся без изменений.',
+    'session.restart.confirm': 'Удалить ответы и начать заново',
+    'storage.unavailable':
+        'Не удалось сохранить прогресс в этом браузере. Вы можете продолжить тест, но при закрытии или перезагрузке страницы ваши ответы могут быть потеряны.',
+    'storage.saveFailed':
+        'Не удалось сохранить последние изменения. Не закрывайте эту страницу, чтобы не потерять прогресс.',
+    'storage.invalid.heading': 'Не удалось загрузить сохранённый прогресс.',
+    'storage.invalid.body':
+        'Сохранённые данные повреждены или не соответствуют текущему тесту. Вы можете удалить их и начать заново.',
+    'storage.version.heading':
+        'Сохранённый прогресс относится к другой версии теста.',
+    'storage.version.body':
+        'Эти ответы несовместимы с текущей версией теста. Удалите сохранённый прогресс, чтобы начать заново.',
+    'storage.reset': 'Удалить сохранённый прогресс',
+    'storage.reset.confirm': 'Удалить сохранённый прогресс и начать заново?',
+    'storage.resetFailed':
+        'Не удалось удалить сохранённый прогресс. Проверьте настройки хранения данных в браузере и повторите попытку.',
+    'research.answer-scale.stronglyAgree': 'Определённо да',
+    'research.answer-scale.agree': 'Скорее да',
+    'research.answer-scale.neutral': 'Ни да, ни нет',
+    'research.answer-scale.disagree': 'Скорее нет',
+    'research.answer-scale.stronglyDisagree': 'Определённо нет',
+    'research.answer-scale.unsure': 'Затрудняюсь ответить',
+    'research.axes.regulation':
+        'Регулирование · Свобода разработки ↔ Строгий надзор',
+    'research.axes.control': 'Контроль · Рынок ↔ Государство',
+    'research.axes.geopolitics':
+        'Геополитика · Гонка ↔ Международное сотрудничество',
+    'research.axes.openness':
+        'Открытость · Контролируемый доступ ↔ Открытый доступ',
+    'research.axes.capability': 'Потенциал · Ограниченный ↔ Революционный',
+    'research.axes.existentialRisk': 'Риск вымирания · Низкий ↔ Высокий',
+    'research.axes.ecology': 'Экология · Низкий вред ↔ Высокий вред',
+    'research.axes.creativity': 'Творчество · Низкий вред ↔ Высокий вред',
+    'research.axes.labor': 'Рынок труда · Низкий вред ↔ Высокий вред',
+    'research.axes.surveillance': 'Массовая слежка · Низкая ↔ Высокая',
+    'research.axes.openSourcePreference':
+        'Предпочтение опенсорса · Закрытые API ↔ Открытые и локальные модели',
+    'research.axes.aiDelegation':
+        'Делегирование кода ИИ · Пишу сам ↔ Пусть пишет ИИ',
+    'research.axes.displacementRisk':
+        'Риск замены разработчиков · Низкий ↔ Высокий',
 };
