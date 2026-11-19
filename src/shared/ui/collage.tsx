@@ -51,8 +51,7 @@ export function Collage({
         description: string;
         resumeAction: string;
         pauseAction: string;
-        resumeLabel: string;
-        pauseLabel: string;
+        punchcard: string;
     };
     caption?: string;
     className?: string;
@@ -118,7 +117,7 @@ export function Collage({
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-[5px] bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
                     />
-                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
+                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono uppercase text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
                         {home ? 'GRABLE · 1953' : 'APOLLO 11 · 1969'}
                     </span>
                 </div>
@@ -134,7 +133,7 @@ export function Collage({
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-[5px] bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
                     />
-                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
+                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono uppercase text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
                         {home ? 'APOLLO 11 · 1969' : 'COURTROOM · 1945'}
                     </span>
                 </div>
@@ -147,8 +146,8 @@ export function Collage({
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-0 bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
                     />
-                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
-                        IBM · PUNCHED CARD
+                    <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono uppercase text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
+                        IBM · {messages.punchcard}
                     </span>
                 </div>
                 <div
@@ -245,21 +244,19 @@ export function Collage({
                         {home ?
                             'GRABLE · 1953 / APOLLO 11 · 1969'
                         :   'APOLLO 11 · 1969 / COURTROOM · 1945'}
-                        {' / IBM · PUNCHED CARD'}
+                        {' / IBM · '}
+                        {messages.punchcard}
                     </span>
                 </span>
                 <button
                     type="button"
                     className="ml-auto inline-flex min-h-8 shrink-0 items-center gap-1 text-xs text-muted-foreground underline decoration-dotted underline-offset-[3px] hover:text-foreground motion-reduce:hidden"
-                    aria-label={
-                        paused ? messages.resumeAction : messages.pauseAction
-                    }
                     onClick={togglePaused}
                 >
                     {paused ?
                         <Play size={11} aria-hidden="true" />
                     :   <Pause size={11} aria-hidden="true" />}
-                    {paused ? messages.resumeLabel : messages.pauseLabel}
+                    {paused ? messages.resumeAction : messages.pauseAction}
                 </button>
             </figcaption>
         </figure>
