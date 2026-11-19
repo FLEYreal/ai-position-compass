@@ -1,32 +1,25 @@
 import {
     type AxisId,
     type CampPosition,
-    type QuestionDefinition,
     type QuestionWeight,
 } from '@/shared/config';
+import type { QuestionAnswer } from './questionnaire-progress';
 
-export type AnswerValue = -1 | -0.5 | 0 | 0.5 | 1;
-
-// key describes the statement's direction; value describes the response.
-// Secondary definitions inherit the parent's response and Unsure state.
-export type QuestionAnswer = Pick<
-    QuestionDefinition,
-    'key' | 'weight' | 'secondary'
-> & {
-    value: AnswerValue;
-    unsure: boolean;
-};
+export type ScoringAnswer = Pick<
+    QuestionAnswer,
+    'key' | 'weight' | 'value' | 'secondary' | 'unsure'
+>;
 
 // When score is null, it means that function couldn't reliably identify person's axis position
-export type UserAxesScore = {
+export type UserAxisScore = {
     axisId: AxisId;
     score: number | null;
-}[];
+};
 
-export type CampAxesScore = {
+export type CampAxisScore = {
     axisId: AxisId;
     score: CampPosition;
-}[];
+};
 
 export function calculateScore(keys: { key: number; weight: number }[]) {
     // If array of keys is empty
@@ -51,8 +44,11 @@ export function calculateScore(keys: { key: number; weight: number }[]) {
 // Supply every primary question, including Unsure entries, to establish coverage.
 // Each group's answers are primary to that axis; nested effects name their targets.
 export function calculateAxesScore(
-    axes: { axisId: AxisId; answers: QuestionAnswer[] }[],
-): UserAxesScore {
+    axes: {
+        axisId: AxisId;
+        answers: ScoringAnswer[];
+    }[],
+): UserAxisScore[] {
     const secondaryByAxis = new Map<
         AxisId,
         { key: number; weight: QuestionWeight }[]

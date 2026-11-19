@@ -1264,6 +1264,9 @@ export const settings: Setting & Record<ModelId, Setting> = {
     },
 } as const;
 
+/* --- VERSION --- */
+export const questionnaireVersion: number = 1;
+
 /* --- CONFIG --- */
 export const scoringConfig = {
     axes,

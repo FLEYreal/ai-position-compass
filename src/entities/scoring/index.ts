@@ -1,8 +1,7 @@
 export {
-    type AnswerValue,
-    type QuestionAnswer,
-    type UserAxesScore,
-    type CampAxesScore,
+    type ScoringAnswer,
+    type UserAxisScore,
+    type CampAxisScore,
     calculateScore,
     calculateAxesScore,
 } from './model/axis';
@@ -11,3 +10,7 @@ export {
     calculateCampMatch,
     findCampMatches,
 } from './model/camp';
+export {
+    type AnswerValue,
+    type QuestionAnswer,
+} from './model/questionnaire-progress';

@@ -1,5 +1,5 @@
 import { rms } from '@/shared/lib/math';
-import type { UserAxesScore, CampAxesScore } from './axis';
+import type { UserAxisScore, CampAxisScore } from './axis';
 import type { CampDefinition, Setting } from '@/shared/config';
 
 // passesThreshold marks camps whose similarity is too low to show it to the user as a fitting camp
@@ -15,8 +15,8 @@ export function calculateCampMatch({
     camp,
     settings,
 }: {
-    user: UserAxesScore;
-    camp: CampAxesScore;
+    user: UserAxisScore[];
+    camp: CampAxisScore[];
     settings?: Pick<Setting, 'axesMatchThreshold' | 'wildcardOffset'>;
 }): number | null {
     let sharedAxes = 0;
@@ -48,7 +48,7 @@ export function findCampMatches({
     camps,
     settings,
 }: {
-    user: UserAxesScore;
+    user: UserAxisScore[];
     camps: CampDefinition[];
     settings?: Pick<
         Setting,
