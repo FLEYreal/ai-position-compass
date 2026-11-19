@@ -9,7 +9,15 @@ import {
 } from '@/entities/scoring';
 import { axisConstruct, suggestions, type Language } from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
-import { Button, QuestionProgress } from '@/shared/ui';
+import {
+    Button,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogTitle,
+    QuestionProgress,
+} from '@/shared/ui';
 import { QuestionSheet } from '@/widgets/question-sheet';
 import {
     QuestionnaireConfirmation,
@@ -31,7 +39,7 @@ export default function TestPage({
 }) {
     const progress = useQuestionnaireStore();
     const storage = useQuestionnaireStorageStatus();
-    const [reviewing, setReviewing] = useState(false);
+    const [completionOpen, setCompletionOpen] = useState(false);
     const [resetFailed, setResetFailed] = useState(false);
     const [openStartAfterReset, setOpenStartAfterReset] = useState(false);
 
@@ -46,12 +54,23 @@ export default function TestPage({
 
     function restart() {
         if (progress.reset()) {
-            setReviewing(false);
+            setCompletionOpen(false);
             setResetFailed(false);
             setOpenStartAfterReset(true);
         } else {
             setResetFailed(true);
         }
+    }
+
+    function handleCompletionOpenChange(open: boolean) {
+        if (open) {
+            const result = progress.createResult();
+            if (!result) return;
+            if (import.meta.env.DEV) {
+                console.info('Questionnaire result', result);
+            }
+        }
+        setCompletionOpen(open);
     }
 
     const closeLabel = common['common.close'];
@@ -116,24 +135,6 @@ export default function TestPage({
             );
         }
 
-        if (progress.status === 'finished' && !reviewing) {
-            return (
-                <QuestionnaireStatus
-                    heading={copy['session.completed.heading']}
-                >
-                    <Button
-                        onClick={() => {
-                            progress.reviewAnswers();
-                            setReviewing(true);
-                        }}
-                    >
-                        {copy['session.completed.edit']}
-                    </Button>
-                    {restartAction}
-                </QuestionnaireStatus>
-            );
-        }
-
         const questions = getSelectedQuestions(progress.includeDeveloper);
         const index = questions.findIndex(
             ({ id }) => id === progress.currentQuestionId,
@@ -146,7 +147,10 @@ export default function TestPage({
         const atLast = index === questions.length - 1;
 
         return (
-            <>
+            <Dialog
+                open={completionOpen}
+                onOpenChange={handleCompletionOpenChange}
+            >
                 <QuestionProgress
                     total={questions.length}
                     answered={answered}
@@ -215,19 +219,7 @@ export default function TestPage({
                         progress.answerQuestion(question.id, response)
                     }
                     onBack={progress.previousQuestion}
-                    onContinue={() => {
-                        if (!atLast) {
-                            progress.nextQuestion();
-                            return;
-                        }
-                        const result = progress.createResult();
-                        if (result) {
-                            if (import.meta.env.DEV) {
-                                console.info('Questionnaire result', result);
-                            }
-                            setReviewing(false);
-                        }
-                    }}
+                    onContinue={progress.nextQuestion}
                 />
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <p className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -239,7 +231,29 @@ export default function TestPage({
                     </p>
                     {restartAction}
                 </div>
-            </>
+                <DialogContent
+                    closeLabel={closeLabel}
+                    aria-describedby={undefined}
+                >
+                    <DialogTitle className="font-heading">
+                        {copy['session.completed.heading']}
+                    </DialogTitle>
+                    <DialogFooter
+                        closeLabel={closeLabel}
+                        className="flex-col gap-3 sm:flex-wrap sm:justify-start"
+                    >
+                        <DialogClose asChild>
+                            <Button
+                                onClick={progress.reviewAnswers}
+                                className="whitespace-normal"
+                            >
+                                {copy['session.completed.edit']}
+                            </Button>
+                        </DialogClose>
+                        {restartAction}
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         );
     }
 

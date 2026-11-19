@@ -211,7 +211,7 @@ export default {
     'test.unsureNote': 'Not knowing is different from being in the middle.',
     'test.back': 'Back',
     'test.next': 'Next question',
-    'test.finish': 'See my results',
+    'test.finish': 'Finish',
     'test.keyboard':
         'With an answer focused: 1–5 to choose, U for Unsure. Press Tab to continue.',
     'test.developerHeading': 'Developer questions',

@@ -3,7 +3,13 @@ import { useEffect, useId, useRef, type KeyboardEvent } from 'react';
 import type { AnswerValue, QuestionResponse } from '@/entities/scoring';
 import type { AxisId, SuggestionDefinition } from '@/shared/config';
 import { cn } from '@/shared/lib';
-import { AxisIcon, Button, RadioGroup, RadioGroupItem } from '@/shared/ui';
+import {
+    AxisIcon,
+    Button,
+    DialogTrigger,
+    RadioGroup,
+    RadioGroupItem,
+} from '@/shared/ui';
 
 const agreementValues = [
     -1, -0.5, 0, 0.5, 1,
@@ -95,6 +101,17 @@ export function QuestionSheet({
             .querySelector<HTMLElement>(`[data-answer="${next}"]`)
             ?.focus();
     }
+
+    const continueButton = (
+        <Button
+            disabled={response === undefined}
+            onClick={atLast ? undefined : onContinue}
+            className="justify-self-end whitespace-normal max-[360px]:px-3"
+        >
+            {atLast ? copy.finish : copy.next}
+            <ArrowRight aria-hidden="true" />
+        </Button>
+    );
 
     return (
         <section className="relative isolate overflow-hidden rounded-[15px] border border-t-[3px] border-border border-t-foreground bg-card px-[30px] pt-7 pb-[25px] max-[800px]:px-[21px] max-[800px]:py-[22px] max-[560px]:rounded-[13px] max-[560px]:px-[17px] max-[560px]:py-5">
@@ -267,14 +284,9 @@ export function QuestionSheet({
                 >
                     {copy.keyboard}
                 </p>
-                <Button
-                    disabled={response === undefined}
-                    onClick={onContinue}
-                    className="justify-self-end whitespace-normal max-[360px]:px-3"
-                >
-                    {atLast ? copy.finish : copy.next}
-                    <ArrowRight aria-hidden="true" />
-                </Button>
+                {atLast ?
+                    <DialogTrigger asChild>{continueButton}</DialogTrigger>
+                :   continueButton}
             </div>
         </section>
     );
