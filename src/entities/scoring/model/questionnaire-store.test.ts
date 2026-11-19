@@ -195,3 +195,24 @@ test('keeps damaged progress available for another clear attempt if removal fail
     await useQuestionnaireStore.persist.rehydrate();
     expect(useQuestionnaireStore.getState().status).toBe('not-started');
 });
+
+test('rejects a saved position reached by skipping unanswered questions', async () => {
+    await useQuestionnaireStore.persist.rehydrate();
+    const saved = JSON.stringify({
+        version: 1,
+        state: {
+            questionnaireVersion: 1,
+            answersById: { K6: 0 },
+            currentQuestionId: 'K6',
+            status: 'in-process',
+            includeDeveloper: false,
+        },
+    });
+    localStorage.setItem('questionnaire', saved);
+    await useQuestionnaireStore.persist.rehydrate();
+
+    useQuestionnaireStore.getState().start(true);
+
+    expect(useQuestionnaireStore.getState().status).toBe('not-started');
+    expect(localStorage.getItem('questionnaire')).toBe(saved);
+});

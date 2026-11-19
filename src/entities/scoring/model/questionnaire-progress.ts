@@ -86,13 +86,17 @@ export function parseQuestionnaireProgress(
 
     const selectedQuestions = getSelectedQuestions(includeDeveloper);
     const selectedIds = new Set<string>(selectedQuestions.map(({ id }) => id));
+    const currentIndex = selectedQuestions.findIndex(
+        ({ id }) => id === currentQuestionId,
+    );
     const responses = Object.entries(answersById);
     if (
-        !selectedIds.has(currentQuestionId) ||
+        currentIndex === -1 ||
         (status === 'finished' && responses.length !== selectedIds.size) ||
         (status === 'not-started' && responses.length !== 0) ||
-        (responses.length === 0 &&
-            currentQuestionId !== selectedQuestions[0].id)
+        selectedQuestions
+            .slice(0, currentIndex)
+            .some(({ id }) => !Object.hasOwn(answersById, id))
     ) {
         throw new QuestionnaireRestoreError('invalid');
     }
