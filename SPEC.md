@@ -81,30 +81,31 @@ Source layout, slice dependencies, and how localized copy reaches the UI.
 
 ### Questionnaire and saved progress
 
-Question order, navigation, developer opt-in, completion, and persistence.
+Home entry, question order, navigation, developer opt-in, completion, and persistence.
 
 #### Rules
 
 - Use a fixed, interleaved question order across locales and reloads. Preserve answers and the current question on reload and when switching languages. Derive question counts from the selected modules. Base published duration estimates on timed observations.
-- Show one question at a time with Back and visible progress. Enable Next once the question has a response. Show the seven sourced term hints where relevant. Offer developer opt-in before the test, unchecked by default.
-- Keep unanswered, Unsure, and neutral distinct. Completion requires a response to every selected question, including Unsure. Persist answers by question ID, current question ID, developer selection, completion, and questionnaire version in localStorage via Zustand. Derive scores and matches. Version the storage schema separately from the questionnaire and scoring model.
+- Show one question at a time with Back and visible progress. Enable Next once the question has a response. Show all seven term hints inline with their questions. Include the sources provided by the research, and render glossary explanations without a source link when the research lists none.
+- Keep unanswered, Unsure, and neutral distinct. Completion requires a response to every selected question, including Unsure. Persist answers by question ID, current question ID, developer selection, start and completion status, and questionnaire version in localStorage via Zustand. Derive scores and matches. Version the storage schema separately from the questionnaire and scoring model.
 
 #### Procedures
 
-**Restore progress.** When the questionnaire mounts, restore saved state before enabling interaction so the user can resume safely.
+**Enter or resume the questionnaire.** Restore saved state before enabling the Home action or questionnaire controls.
 
-1. Hydrate after mount and validate saved state. Use explicit migrations for supported older schemas. Offer a reset for damaged or incompatible progress.
-2. Resume unfinished progress. For completed progress, offer results, review or editing, and restart.
-3. If storage is unavailable, continue in memory and explain that progress may be lost on reload or close. Use the same fallback if a later write fails.
+1. Hydrate after mount and validate saved state. Use explicit migrations for supported older schemas. Offer a confirmed reset for damaged or incompatible progress.
+2. On Home, label the primary action for a fresh, unfinished, or completed questionnaire. A fresh start opens the localized welcome dialog with developer opt-in unchecked. A direct Test visit offers the same setup for a fresh questionnaire. Confirming the dialog saves the module and marks the questionnaire started before the first answer.
+3. Open unfinished progress at the saved question. Skip the welcome dialog for unfinished and completed progress. For completed progress, offer results, review or editing, and restart. Before the result route supports score links, the Home results action opens the completed questionnaire screen.
+4. If storage is unavailable, continue in memory and explain that progress may be lost on reload or close. Use the same fallback if a later write fails.
 
 **Reset progress.** When the user requests a restart or changes module selection after answering begins, confirm the reset to prevent accidental data loss.
 
 1. Ask for confirmation before applying the change.
-2. On confirmation, clear the questionnaire and retain language and theme preferences.
+2. On confirmation, clear the questionnaire and retain language and theme preferences. The new questionnaire opens the welcome dialog so the user can choose the module again.
 
 #### Context
 
-- The [scoring configuration](src/shared/config/scoring.ts) supplies question definitions in their fixed order.
+- The [scoring configuration](src/shared/config/scoring.ts) supplies question definitions in their fixed order and source links for the term hints. The hint references come from the Hints section of `../research/research-results/resources/test/questions.md`. The accepted Home and question sheet presentation lives in `DESIGN.md`.
 
 ### Scoring
 
