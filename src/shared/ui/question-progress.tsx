@@ -18,6 +18,7 @@ export function QuestionProgress({
         progressLabel: string;
         answeredLabel: string;
         questionLabel: string;
+        position?: (current: number, total: number) => string;
         completeLabel: string;
         summary: (answered: number, remaining: number) => string;
     };
@@ -43,16 +44,21 @@ export function QuestionProgress({
             aria-label={messages.progressLabel}
         >
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 text-[length:var(--font-size-construct)] text-muted-foreground">
-                <span>
-                    {label ??
-                        (done === count && count > 0 ?
-                            messages.completeLabel
-                        :   messages.questionLabel)}{' '}
-                    <strong className="ml-2 text-lg font-medium text-ring tabular-nums">
-                        {String(current).padStart(2, '0')}
-                    </strong>{' '}
-                    / {String(count).padStart(2, '0')}
-                </span>
+                {messages.position ?
+                    <span className="font-medium text-ring tabular-nums">
+                        {messages.position(current, count)}
+                    </span>
+                :   <span>
+                        {label ??
+                            (done === count && count > 0 ?
+                                messages.completeLabel
+                            :   messages.questionLabel)}{' '}
+                        <strong className="ml-2 text-lg font-medium text-ring tabular-nums">
+                            {String(current).padStart(2, '0')}
+                        </strong>{' '}
+                        / {String(count).padStart(2, '0')}
+                    </span>
+                }
                 {note && <span className="text-xs italic">{note}</span>}
             </div>
             <Progress
