@@ -90,8 +90,8 @@ export function parseQuestionnaireProgress(
     if (
         !selectedIds.has(currentQuestionId) ||
         (status === 'finished' && responses.length !== selectedIds.size) ||
-        (status === 'not-started') !== (responses.length === 0) ||
-        (status === 'not-started' &&
+        (status === 'not-started' && responses.length !== 0) ||
+        (responses.length === 0 &&
             currentQuestionId !== selectedQuestions[0].id)
     ) {
         throw new QuestionnaireRestoreError('invalid');

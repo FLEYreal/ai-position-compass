@@ -162,3 +162,36 @@ test('returns the v1 axis order and undefined developer scores for a core-only r
     ]);
     expect(result?.campMatches.dev).toEqual([]);
 });
+
+test('restores a started developer questionnaire before its first answer', async () => {
+    await useQuestionnaireStore.persist.rehydrate();
+
+    const { start } = useQuestionnaireStore.getState();
+    start(true);
+    start(false);
+
+    await useQuestionnaireStore.persist.rehydrate();
+
+    expect(useQuestionnaireStore.getState()).toMatchObject({
+        answersById: {},
+        currentQuestionId: coreQuestions[0].id,
+        includeDeveloper: true,
+        status: 'in-process',
+    });
+});
+
+test('keeps damaged progress available for another clear attempt if removal fails', async () => {
+    localStorage.setItem('questionnaire', 'damaged data');
+    await useQuestionnaireStore.persist.rehydrate();
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementationOnce(() => {
+        throw new DOMException('Storage is blocked', 'SecurityError');
+    });
+
+    const { reset } = useQuestionnaireStore.getState();
+    expect(reset()).toBe(false);
+    expect(localStorage.getItem('questionnaire')).toBe('damaged data');
+    expect(reset()).toBe(true);
+
+    await useQuestionnaireStore.persist.rehydrate();
+    expect(useQuestionnaireStore.getState().status).toBe('not-started');
+});
