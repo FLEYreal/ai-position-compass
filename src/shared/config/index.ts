@@ -27,6 +27,7 @@ export {
     type DevPersonId,
     type PersonId,
     type Setting,
+    axisConstruct,
     coreAxes,
     devAxes,
     axes,
