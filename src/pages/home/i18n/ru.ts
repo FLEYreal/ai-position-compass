@@ -9,7 +9,9 @@ export default {
     'artwork.caption': 'РИС. А / АРХИВНОЕ ИССЛЕДОВАНИЕ',
     'artwork.description':
         'Архивный коллаж, отражающий развитие технологий, институтов и общественной жизни.',
-    'artwork.pause': 'Выключить анимацию',
-    'artwork.play': 'Включить анимацию',
+    'artwork.pause': 'Пауза',
+    'artwork.play': 'Продолжить',
     'artwork.punchcard': 'Перфокарта',
+    'home.questions.core': 'Вопросы: {count}',
+    'home.duration.estimate': 'Около {count} мин',
 };

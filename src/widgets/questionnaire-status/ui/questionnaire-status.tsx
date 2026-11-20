@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib';
 import { useEffect, useRef, type ReactNode } from 'react';
 import {
     Button,
@@ -13,10 +14,12 @@ import {
 export function QuestionnaireStatus({
     heading,
     description,
+    centered = false,
     children,
 }: {
     heading: string;
     description?: string;
+    centered?: boolean;
     children: ReactNode;
 }) {
     const headingRef = useRef<HTMLHeadingElement>(null);
@@ -26,7 +29,12 @@ export function QuestionnaireStatus({
     }, []);
 
     return (
-        <section className="mx-auto max-w-2xl rounded-[var(--radius-panel)] border border-border bg-card p-[clamp(20px,4vw,42px)]">
+        <section
+            className={cn(
+                'mx-auto max-w-2xl rounded-[var(--radius-panel)] border border-border bg-card p-[clamp(20px,4vw,42px)]',
+                centered && 'text-center',
+            )}
+        >
             <h2
                 ref={headingRef}
                 tabIndex={-1}
@@ -35,9 +43,21 @@ export function QuestionnaireStatus({
                 {heading}
             </h2>
             {description && (
-                <p className="mt-2 max-w-[52ch] text-sm">{description}</p>
+                <p
+                    className={cn(
+                        'mt-2 max-w-[52ch] text-sm',
+                        centered && 'mx-auto',
+                    )}
+                >
+                    {description}
+                </p>
             )}
-            <div className="mt-5 flex flex-wrap items-center gap-3">
+            <div
+                className={cn(
+                    'mt-5 flex flex-wrap items-center gap-3',
+                    centered && 'justify-center',
+                )}
+            >
                 {children}
             </div>
         </section>

@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight, Check, CircleHelp } from 'lucide-react';
-import { useEffect, useId, useRef, type KeyboardEvent } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import type { AnswerValue, QuestionResponse } from '@/entities/scoring';
 import type { AxisId, SuggestionDefinition } from '@/shared/config';
 import { cn } from '@/shared/lib';
@@ -61,6 +61,7 @@ export function QuestionSheet({
     onContinue: () => void;
 }) {
     const heading = useRef<HTMLHeadingElement>(null);
+    const answers = useRef<HTMLDivElement>(null);
     const prompt = useId();
     const shortcuts = useId();
     const hintId = useId();
@@ -75,32 +76,42 @@ export function QuestionSheet({
         heading.current?.focus();
     }, [id]);
 
-    function handleShortcut(event: KeyboardEvent<HTMLDivElement>) {
-        if (
-            event.defaultPrevented ||
-            event.altKey ||
-            event.ctrlKey ||
-            event.metaKey ||
-            event.shiftKey ||
-            event.repeat ||
-            event.nativeEvent.isComposing ||
-            !(event.target instanceof HTMLElement) ||
-            !event.target.closest('[data-answer]')
-        )
-            return;
+    useEffect(() => {
+        function handleShortcut(event: KeyboardEvent) {
+            if (
+                event.defaultPrevented ||
+                event.altKey ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.repeat ||
+                event.isComposing ||
+                (event.target instanceof Element &&
+                    event.target.closest(
+                        'input, textarea, select, [contenteditable], [role="menu"]',
+                    )) ||
+                document.querySelector(
+                    '[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]',
+                )
+            )
+                return;
 
-        const next =
-            event.code === 'KeyU' || event.key.toLowerCase() === 'u' ?
-                'unsure'
-            :   agreementValues[Number(event.key) - 1];
-        if (next === undefined) return;
+            const next =
+                event.code === 'KeyU' || event.key.toLowerCase() === 'u' ?
+                    'unsure'
+                :   agreementValues[Number(event.key) - 1];
+            if (next === undefined) return;
 
-        event.preventDefault();
-        onAnswer(next);
-        event.currentTarget
-            .querySelector<HTMLElement>(`[data-answer="${next}"]`)
-            ?.focus();
-    }
+            event.preventDefault();
+            onAnswer(next);
+            answers.current
+                ?.querySelector<HTMLElement>(`[data-answer="${next}"]`)
+                ?.focus();
+        }
+
+        window.addEventListener('keydown', handleShortcut);
+        return () => window.removeEventListener('keydown', handleShortcut);
+    }, [onAnswer]);
 
     const continueButton = (
         <Button
@@ -117,11 +128,11 @@ export function QuestionSheet({
         <section className="relative isolate overflow-hidden rounded-[15px] border border-t-[3px] border-border border-t-foreground bg-card px-[30px] pt-7 pb-[25px] max-[800px]:px-[21px] max-[800px]:py-[22px] max-[560px]:rounded-[13px] max-[560px]:px-[17px] max-[560px]:py-5">
             <span
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-2 right-3 -z-10 font-heading text-[90px] leading-none font-medium text-foreground/[0.065] tabular-nums max-[560px]:top-0.5 max-[560px]:text-[62px]"
+                className="pointer-events-none absolute top-3 right-3 -z-10 font-heading text-[90px] leading-none font-medium text-foreground/[0.065] tabular-nums max-[560px]:text-[62px]"
             >
                 {String(position).padStart(2, '0')}
             </span>
-            <div className="flex flex-wrap items-center gap-2 text-[length:var(--font-size-construct)] font-semibold">
+            <div className="flex max-w-[calc(100%-7rem)] flex-wrap items-center gap-2 text-[length:var(--font-size-construct)] font-semibold max-[640px]:max-w-[calc(100%-5rem)] max-[640px]:flex-col max-[640px]:items-start">
                 {developerLabel && (
                     <span className="w-full text-muted-foreground">
                         {developerLabel}
@@ -131,7 +142,7 @@ export function QuestionSheet({
                     {construct}
                 </span>
                 <span
-                    className="inline-flex items-center gap-1.5 rounded-sm bg-current/10 px-2 py-1"
+                    className="inline-flex items-center gap-1.5 rounded-sm border border-current/40 bg-current/10 px-2 py-1"
                     style={{ color: `var(--axis-${axisToken})` }}
                 >
                     <AxisIcon axis={axis} size={15} />
@@ -148,11 +159,11 @@ export function QuestionSheet({
             {hint && (
                 <aside
                     id={hintId}
-                    className="mt-4 flex max-w-[68ch] items-start gap-3 rounded-[7px] border border-border bg-background p-3 text-sm"
+                    className="mt-4 flex items-start gap-[13px] rounded-[7px] bg-[var(--paper-deep)] px-[19px] py-[17px] text-[13px] leading-[1.85] max-[560px]:gap-[9px] max-[560px]:px-3 max-[560px]:py-3.5 max-[560px]:text-xs"
                 >
                     <CircleHelp
                         aria-hidden="true"
-                        className="mt-0.5 size-4 shrink-0 text-ring"
+                        className="mt-[3px] size-4 shrink-0 text-ring"
                     />
                     <div className="min-w-0">
                         <p>{hint.text}</p>
@@ -165,7 +176,7 @@ export function QuestionSheet({
                                     <span key={url}>
                                         {index > 0 && ' · '}
                                         <a
-                                            className="text-ring underline underline-offset-2"
+                                            className="font-semibold underline underline-offset-2"
                                             href={url}
                                             target="_blank"
                                             rel="noreferrer"
@@ -179,7 +190,7 @@ export function QuestionSheet({
                     </div>
                 </aside>
             )}
-            <div className="mt-6" onKeyDown={handleShortcut}>
+            <div className="mt-6" ref={answers}>
                 <p id={prompt} className="mb-2 text-sm font-semibold">
                     {copy.prompt}
                 </p>
@@ -208,6 +219,7 @@ export function QuestionSheet({
                         >
                             <button
                                 type="button"
+                                onClick={(event) => event.currentTarget.focus()}
                                 className={cn(
                                     'grid min-h-[58px] w-full grid-cols-[1.25rem_1fr_auto] items-center gap-3 rounded-md border px-3 text-left text-sm hover:border-ring focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring max-[560px]:min-h-[54px]',
                                     response === value ?
@@ -250,7 +262,10 @@ export function QuestionSheet({
                         aria-keyshortcuts="U"
                         aria-describedby={`${unsureNote} ${shortcuts}`}
                         data-answer="unsure"
-                        onClick={() => onAnswer('unsure')}
+                        onClick={(event) => {
+                            event.currentTarget.focus();
+                            onAnswer('unsure');
+                        }}
                     >
                         {copy.unsure}
                         <kbd
@@ -262,7 +277,7 @@ export function QuestionSheet({
                     </Button>
                     <span
                         id={unsureNote}
-                        className="text-xs text-muted-foreground"
+                        className="hidden text-xs text-muted-foreground sm:inline"
                     >
                         {copy.unsureNote}
                     </span>
@@ -280,7 +295,7 @@ export function QuestionSheet({
                 </Button>
                 <p
                     id={shortcuts}
-                    className="order-last col-span-2 text-xs text-muted-foreground sm:order-0 sm:col-span-1 sm:text-center"
+                    className="hidden text-xs text-muted-foreground sm:block sm:text-center"
                 >
                     {copy.keyboard}
                 </p>

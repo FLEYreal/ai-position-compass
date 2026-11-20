@@ -9,7 +9,9 @@ export default {
     'artwork.caption': 'FIG. A / ARCHIVAL STUDY',
     'artwork.description':
         'Archival collage of technology, institutions, and public life.',
-    'artwork.pause': 'Pause illustration animation',
-    'artwork.play': 'Play illustration animation',
+    'artwork.pause': 'Pause',
+    'artwork.play': 'Resume',
     'artwork.punchcard': 'Punched card',
+    'home.questions.core': '{count} core questions',
+    'home.duration.estimate': 'About {count} min',
 };

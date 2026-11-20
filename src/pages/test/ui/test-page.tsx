@@ -106,6 +106,7 @@ export default function TestPage({
                 <QuestionnaireStatus
                     heading={heading}
                     description={description}
+                    centered
                 >
                     <QuestionnaireConfirmation
                         label={copy['storage.reset']}
@@ -117,7 +118,9 @@ export default function TestPage({
                         onConfirm={restart}
                     />
                     {resetFailed && (
-                        <p role="alert">{copy['storage.resetFailed']}</p>
+                        <p role="alert" className="w-full">
+                            {copy['storage.resetFailed']}
+                        </p>
                     )}
                 </QuestionnaireStatus>
             );
@@ -180,7 +183,9 @@ export default function TestPage({
                     }
                     construct={copy[`test.${axisConstruct[question.axisId]}`]}
                     axis={question.axisId}
-                    axisLabel={copy[`research.axes.${question.axisId}`]}
+                    axisLabel={
+                        copy[`research.axes.${question.axisId}`].split(' · ')[0]
+                    }
                     developerLabel={
                         question.modelId === 'dev' ?
                             copy['test.developerHeading']
@@ -258,7 +263,13 @@ export default function TestPage({
     }
 
     return (
-        <div className="space-y-5">
+        <div
+            className={
+                progress.status === 'not-started' ?
+                    'grid justify-items-center gap-5 text-center'
+                :   'space-y-5'
+            }
+        >
             <h1 className="font-heading text-[length:var(--font-size-headline)] font-medium">
                 {copy['test.heading']}
             </h1>
@@ -276,7 +287,7 @@ export default function TestPage({
                     storage === 'invalid' ||
                     storage === 'incompatible') && (
                     <Link
-                        className="inline-block text-sm text-ring underline"
+                        className="block w-fit text-sm text-ring underline"
                         to={`/${lang}/`}
                     >
                         {common['recovery.home']}

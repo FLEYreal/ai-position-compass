@@ -1,4 +1,4 @@
-import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Clock3, ListChecks, ShieldCheck } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import {
@@ -6,7 +6,11 @@ import {
     useQuestionnaireStorageStatus,
     useQuestionnaireStore,
 } from '@/entities/scoring';
-import type { Language } from '@/shared/config';
+import {
+    getCompletionTime,
+    getQuestionCount,
+    type Language,
+} from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
 import { Button, Collage } from '@/shared/ui';
 import { StartDialog, type StartMessages } from '@/widgets/start-dialog';
@@ -46,14 +50,27 @@ export default function Home({
     }
 
     return (
-        <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 min-[561px]:grid-cols-[1.05fr_1fr]">
+        <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 min-[851px]:grid-cols-[1.05fr_1fr]">
             <h1 className="min-w-0 self-end font-heading text-[clamp(37px,6.7vw,96px)] leading-[var(--line-height-display)] font-semibold tracking-[var(--letter-spacing-display)] text-balance uppercase max-[560px]:text-[clamp(42px,10vw,65px)]">
                 {lead} <span className="block">{question}</span>{' '}
-                <span className="block underline decoration-[var(--orange)] decoration-[0.05em] underline-offset-[0.12em]">
+                <span className="relative inline-block max-w-full pb-[0.15em]">
                     {emphasis}
+                    <svg
+                        aria-hidden="true"
+                        viewBox="0 0 560 23"
+                        preserveAspectRatio="none"
+                        className="absolute bottom-0 left-0 h-[0.22em] w-full text-[var(--orange)]"
+                    >
+                        <path
+                            d="M4 15Q183 1 350 9T553 8M18 20Q270 10 520 18"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                        />
+                    </svg>
                 </span>
             </h1>
-            <div className="min-w-0 min-[561px]:col-start-2 min-[561px]:row-span-2 min-[561px]:row-start-1">
+            <div className="min-w-0 max-[850px]:mx-auto max-[850px]:w-full max-[850px]:max-w-[480px] min-[851px]:col-start-2 min-[851px]:row-span-2 min-[851px]:row-start-1">
                 <Collage
                     className="m-0"
                     caption={copy['artwork.caption']}
@@ -96,13 +113,29 @@ export default function Home({
                         />
                     }
                 </div>
-                <p className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-                    <ShieldCheck
-                        aria-hidden="true"
-                        className="size-4 shrink-0"
-                    />
-                    {copy['home.privacy']}
-                </p>
+                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                    <li className="flex items-center gap-2">
+                        <ListChecks aria-hidden="true" className="size-4" />
+                        {copy['home.questions.core'].replace(
+                            '{count}',
+                            String(getQuestionCount('core')),
+                        )}
+                    </li>
+                    <li className="flex items-center gap-2">
+                        <Clock3 aria-hidden="true" className="size-4" />
+                        {copy['home.duration.estimate'].replace(
+                            '{count}',
+                            String(getCompletionTime('core')),
+                        )}
+                    </li>
+                    <li className="flex items-center gap-2">
+                        <ShieldCheck
+                            aria-hidden="true"
+                            className="size-4 shrink-0"
+                        />
+                        {copy['home.privacy']}
+                    </li>
+                </ul>
             </div>
         </section>
     );

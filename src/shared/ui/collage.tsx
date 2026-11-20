@@ -240,13 +240,6 @@ export function Collage({
             <figcaption className="relative z-20 mt-[13px] flex min-h-5 items-center justify-between gap-3">
                 <span className="min-w-0 font-mono text-[length:var(--font-size-technical)] text-muted-foreground">
                     {caption}
-                    <span className="mt-1 block" data-slot="collage-sources">
-                        {home ?
-                            'GRABLE · 1953 / APOLLO 11 · 1969'
-                        :   'APOLLO 11 · 1969 / COURTROOM · 1945'}
-                        {' / IBM · '}
-                        {messages.punchcard}
-                    </span>
                 </span>
                 <button
                     type="button"
