@@ -24,8 +24,8 @@ describe('language routes', () => {
         ['/ru/test', 'Ваша позиция, вопрос за вопросом.'],
         ['/en/result', 'Your AI position'],
         ['/ru/result', 'Ваша позиция по ИИ'],
-        ['/ru/unknown', '404 — Страница не найдена'],
-        ['/fr', '404 — Page not found'],
+        ['/ru/unknown', 'Неизведанная территория.'],
+        ['/fr', 'Unmapped territory.'],
     ])('%s renders the expected page', async (path, title) => {
         render(
             <RouterProvider
