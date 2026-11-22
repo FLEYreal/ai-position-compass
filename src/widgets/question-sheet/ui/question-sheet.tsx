@@ -104,9 +104,11 @@ export function QuestionSheet({
 
             event.preventDefault();
             onAnswer(next);
-            answers.current
-                ?.querySelector<HTMLElement>(`[data-answer="${next}"]`)
-                ?.focus();
+            if (next !== 'unsure') {
+                answers.current
+                    ?.querySelector<HTMLElement>(`[data-answer="${next}"]`)
+                    ?.focus();
+            }
         }
 
         window.addEventListener('keydown', handleShortcut);
@@ -262,10 +264,7 @@ export function QuestionSheet({
                         aria-keyshortcuts="U"
                         aria-describedby={`${unsureNote} ${shortcuts}`}
                         data-answer="unsure"
-                        onClick={(event) => {
-                            event.currentTarget.focus();
-                            onAnswer('unsure');
-                        }}
+                        onClick={() => onAnswer('unsure')}
                     >
                         {copy.unsure}
                         <kbd

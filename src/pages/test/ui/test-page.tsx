@@ -5,6 +5,7 @@ import {
     encodeResultPayload,
     getLocalResultState,
     type LocalResultState,
+    type QuestionResponse,
     getSelectedQuestions,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
@@ -80,12 +81,13 @@ export default function TestPage({
             setCompletion(null);
             return;
         }
-        const result = progress.createResult();
+        const current = useQuestionnaireStore.getState();
+        const result = current.createResult();
         if (!result) return;
         if (import.meta.env.DEV) {
             console.info('Questionnaire result', result);
         }
-        const state = await getLocalResultState(progress);
+        const state = await getLocalResultState(current);
         setCompletion({ payload: encodeResultPayload(result), state });
     }
 
@@ -165,6 +167,16 @@ export default function TestPage({
         const answered = Object.keys(progress.answersById).length;
         const atLast = index === questions.length - 1;
 
+        function answer(response: QuestionResponse) {
+            progress.answerQuestion(question.id, response);
+            if (response !== 'unsure') return;
+            if (atLast) {
+                void handleCompletionOpenChange(true);
+            } else {
+                progress.nextQuestion();
+            }
+        }
+
         return (
             <Dialog
                 open={completion !== null}
@@ -236,9 +248,7 @@ export default function TestPage({
                     }}
                     atFirst={index === 0}
                     atLast={atLast}
-                    onAnswer={(response) =>
-                        progress.answerQuestion(question.id, response)
-                    }
+                    onAnswer={answer}
                     onBack={progress.previousQuestion}
                     onContinue={progress.nextQuestion}
                 />

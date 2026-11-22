@@ -26,7 +26,8 @@ export default {
     'test.back': 'Back',
     'test.next': 'Next question',
     'test.finish': 'Finish',
-    'test.keyboard': 'Press 1–5 to choose an answer, or U for Unsure.',
+    'test.keyboard':
+        'Press 1–5 to choose an answer, or U to answer Unsure and continue.',
     'test.developerHeading': 'Developer questions',
     'test.restart': 'Restart questionnaire',
     'test.loadingSaved': 'Loading saved progress…',
