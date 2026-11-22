@@ -23,3 +23,8 @@ export {
     useQuestionnaireStore,
 } from './model/questionnaire-store';
 export type { QuestionnaireResult } from './model/questionnaire-result';
+export {
+    decodeResultPayload,
+    encodeResultPayload,
+    type ResultUrlDecodeResult,
+} from './model/result-url-codec';
