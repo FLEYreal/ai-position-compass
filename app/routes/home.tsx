@@ -5,7 +5,7 @@ import {
     NotFoundPage,
     loadMessages as loadNotFoundMessages,
 } from '@/pages/not-found';
-import { isLanguage } from '@/shared/config';
+import { isLanguage, projectName } from '@/shared/config';
 import { loadMessages as loadCommonMessages } from '@/shared/i18n';
 import { loadStartMessages } from '@/widgets/start-dialog';
 
@@ -43,12 +43,15 @@ export async function clientLoader(args: LoaderFunctionArgs) {
 export default function Route() {
     const data = useLoaderData<typeof loader>();
     return data.kind === 'page' ?
-            <HomePage
-                lang={data.language}
-                messages={data.messages}
-                startMessages={data.startMessages}
-                common={data.common}
-            />
+            <>
+                <title>{`${data.messages['home.eyebrow']} | ${projectName}`}</title>
+                <HomePage
+                    lang={data.language}
+                    messages={data.messages}
+                    startMessages={data.startMessages}
+                    common={data.common}
+                />
+            </>
         :   <NotFoundPage
                 lang={data.language}
                 messages={data.messages}
