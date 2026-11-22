@@ -31,6 +31,7 @@ const previewPrerenderedRoutes: Plugin = {
 
 export default defineConfig({
     base: process.env.PUBLIC_BASE_PATH || '/',
+    build: { license: { fileName: 'licenses/bundled-software.txt' } },
     plugins: [previewPrerenderedRoutes, tailwindcss(), reactRouter()],
     resolve: { alias: { '@': path.resolve(import.meta.dirname, './src') } },
 });

@@ -51,12 +51,15 @@ export default function Route() {
         () => false,
     );
     return data.kind === 'page' ?
-            <ResultPage
-                lang={data.language}
-                messages={data.messages}
-                common={data.common}
-                search={hydrated ? search : null}
-            />
+            <>
+                <meta name="robots" content="noindex" />
+                <ResultPage
+                    lang={data.language}
+                    messages={data.messages}
+                    common={data.common}
+                    search={hydrated ? search : null}
+                />
+            </>
         :   <NotFoundPage
                 lang={data.language}
                 messages={data.messages}

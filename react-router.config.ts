@@ -30,6 +30,10 @@ export default {
         if (baseDirectory) {
             await cp(`${output}/${baseDirectory}`, output, { recursive: true });
         }
+        await cp(
+            new URL('./LICENSE', import.meta.url),
+            `${output}/licenses/project-MIT.txt`,
+        );
         const home = `${base.replace(/\/$/, '')}/en/`;
         const recovery = `<noscript><main><h1>${notFoundMessages['notFound.code']}</h1><p>${notFoundMessages['notFound.body']}</p><a href="${home}">${commonMessages['recovery.home']}</a></main></noscript>`;
 
