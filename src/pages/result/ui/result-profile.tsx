@@ -165,13 +165,11 @@ export function AxisGroup({
     axes,
     copy,
     annotate = false,
-    developer = false,
 }: {
     heading: string;
     axes: ResultAxis[];
     copy: Messages;
     annotate?: boolean;
-    developer?: boolean;
 }) {
     const [title, note] = heading.split(' — ', 2);
     return (
@@ -185,57 +183,76 @@ export function AxisGroup({
                     </span>
                 )}
             </h3>
-            <ul className="divide-y divide-border">
-                {axes.map((axis) => (
-                    <li
-                        key={axis.id}
-                        style={
-                            {
-                                '--result-axis-ink': `var(--axis-${axis.token})`,
-                            } as CSSProperties
-                        }
-                        className="grid min-w-0 items-end gap-y-2 py-3 min-[850px]:grid-cols-[minmax(160px,1fr)_minmax(0,4fr)] min-[850px]:gap-x-5"
-                    >
-                        <h4 className="flex items-center gap-2.5 font-sans text-base font-semibold min-[850px]:pb-5">
-                            <span className="grid size-7 shrink-0 place-items-center rounded border border-current bg-[color-mix(in_srgb,var(--result-axis-ink)_8%,transparent)] text-(--result-axis-ink)">
-                                <AxisIcon axis={axis.id} size={16} />
-                            </span>
-                            {axis.label}
-                        </h4>
-                        <AxisScale
-                            value={axis.score}
-                            label={axis.label}
-                            lowLabel={axis.low}
-                            highLabel={axis.high}
-                            undefinedLabel={copy['result.undefined']}
-                            valueText={
-                                axis.score === null ?
-                                    copy['result.axisUndefined'].replace(
-                                        '{axis}',
-                                        axis.label,
-                                    )
-                                :   copy['result.axisPosition']
-                                        .replace('{axis}', axis.label)
-                                        .replace('{score}', String(axis.score))
-                            }
-                            annotation={
-                                (
-                                    annotate &&
-                                    axis.id === 'regulation' &&
-                                    axis.score !== null
-                                ) ?
-                                    copy['result.youAreHere']
-                                :   undefined
-                            }
-                            className={
-                                developer ?
-                                    'text-(--camp-vibe-coders-ink)'
-                                :   'text-[var(--result-camp-ink,var(--ink))]'
-                            }
-                        />
-                    </li>
-                ))}
-            </ul>
+            <AxisList axes={axes} copy={copy} annotate={annotate} />
         </section>
+    );
+}
+
+export function AxisList({
+    axes,
+    copy,
+    annotate = false,
+    showConstruct = false,
+}: {
+    axes: ResultAxis[];
+    copy: Messages;
+    annotate?: boolean;
+    showConstruct?: boolean;
+}) {
+    return (
+        <ul className="divide-y divide-border">
+            {axes.map((axis) => (
+                <li
+                    key={axis.id}
+                    style={
+                        {
+                            '--result-axis-ink': `var(--axis-${axis.token})`,
+                        } as CSSProperties
+                    }
+                    className="grid min-w-0 items-end gap-y-2 py-3 min-[850px]:grid-cols-[minmax(160px,1fr)_minmax(0,4fr)] min-[850px]:gap-x-5"
+                >
+                    <div className="flex items-center gap-2.5 font-sans text-base font-semibold min-[850px]:pb-5">
+                        <span className="grid size-7 shrink-0 place-items-center rounded border border-current bg-[color-mix(in_srgb,var(--result-axis-ink)_8%,transparent)] text-(--result-axis-ink)">
+                            <AxisIcon axis={axis.id} size={16} />
+                        </span>
+                        <span>
+                            {axis.label}
+                            {showConstruct && (
+                                <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
+                                    {copy[`result.axis.${axis.construct}`]}
+                                </span>
+                            )}
+                        </span>
+                    </div>
+                    <AxisScale
+                        value={axis.score}
+                        label={axis.label}
+                        lowLabel={axis.low}
+                        highLabel={axis.high}
+                        undefinedLabel={copy['result.undefined']}
+                        valueText={
+                            axis.score === null ?
+                                copy['result.axisUndefined'].replace(
+                                    '{axis}',
+                                    axis.label,
+                                )
+                            :   copy['result.axisPosition']
+                                    .replace('{axis}', axis.label)
+                                    .replace('{score}', String(axis.score))
+                        }
+                        annotation={
+                            (
+                                annotate &&
+                                axis.id === 'regulation' &&
+                                axis.score !== null
+                            ) ?
+                                copy['result.youAreHere']
+                            :   undefined
+                        }
+                        className="text-[var(--result-camp-ink,var(--ink))]"
+                    />
+                </li>
+            ))}
+        </ul>
     );
 }

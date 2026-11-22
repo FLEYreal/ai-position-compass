@@ -1,4 +1,4 @@
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
 import type { Language } from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
@@ -7,6 +7,7 @@ import type { Messages } from '../i18n';
 import { presentResult, readResultQuery } from '../model/result-presentation';
 import {
     AxisGroup,
+    AxisList,
     CampComparisons,
     CampSimilarity,
     CampVoices,
@@ -83,14 +84,8 @@ export default function ResultPage({
     const primary = leadingCamp?.close ? leadingCamp : undefined;
     const comparisons = primary ? result.coreCamps.slice(1) : result.coreCamps;
     const developer = result.developer;
-    const developerLead = developer?.camps[0];
-    const developerPrimary = developerLead?.close ? developerLead : undefined;
-    const developerComparisons =
-        developer?.camps.slice(developerPrimary ? 1 : 0) ?? [];
+    const developerCamp = developer?.camp;
     const coreHasVoices = result.coreCamps.some(
-        ({ voices }) => voices.length > 0,
-    );
-    const developerHasVoices = developer?.camps.some(
         ({ voices }) => voices.length > 0,
     );
     const voicesNotice = (
@@ -204,101 +199,59 @@ export default function ResultPage({
 
             {developer ?
                 <section
-                    className="space-y-6 rounded-xl bg-secondary px-[clamp(1rem,3vw,1.625rem)] py-6"
+                    style={campPalette(
+                        developerCamp ?? { token: 'vibe-coders' },
+                    )}
+                    className="space-y-5 rounded-xl bg-(--result-camp-surface) px-[clamp(1rem,3vw,1.625rem)] py-6"
                     aria-labelledby="developer-profile"
                 >
                     <h2
                         id="developer-profile"
-                        className={`${sectionTitle} text-(--camp-vibe-coders-ink)`}
+                        className="text-xs font-medium tracking-wide text-(--result-camp-ink) uppercase"
                     >
                         {copy['result.developer.heading']}
                     </h2>
-                    {developerPrimary && (
-                        <div
-                            className="space-y-3"
-                            style={campPalette(developerPrimary)}
-                        >
+                    {developerCamp && (
+                        <div className="space-y-3">
                             <h3 className="font-heading text-[length:var(--font-size-title)] leading-tight text-(--result-camp-ink) uppercase">
-                                {developerPrimary.name}
+                                {developerCamp.name}
                             </h3>
                             <CampSimilarity
-                                camp={developerPrimary}
+                                camp={developerCamp}
                                 copy={copy}
                                 prominent
                             />
+                            {!developerCamp.close && (
+                                <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
+                                    {copy['result.developer.lowMatch']}
+                                </p>
+                            )}
                             <p className="max-w-[58ch] leading-relaxed italic">
-                                {developerPrimary.description}
+                                {developerCamp.description}
                             </p>
                             <p className="max-w-[65ch] text-sm leading-[1.85] text-muted-foreground">
-                                {developerPrimary.context}
+                                {developerCamp.context}
                             </p>
-                            <CampVoices camp={developerPrimary} copy={copy} />
+                            <CampVoices camp={developerCamp} copy={copy} />
+                            {!coreHasVoices &&
+                                developerCamp.voices.length > 0 &&
+                                voicesNotice}
                         </div>
                     )}
                     {developer.axes.every(({ score }) => score === null) ?
                         <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
                             {copy['result.developer.undefined']}
                         </p>
-                    : !developerLead ?
+                    : !developerCamp ?
                         <MatchNotice copy={copy} kind="noEligible" />
-                    :   !developerPrimary && (
-                            <MatchNotice copy={copy} kind="lowMatch" />
-                        )
-                    }
-                    <CampComparisons
-                        camps={developerComparisons}
-                        heading={
-                            developerPrimary ?
-                                copy['result.neighboring']
-                            :   copy['result.matches.heading']
-                        }
-                        start={developerPrimary ? 2 : 1}
-                        copy={copy}
-                    />
-                    {!coreHasVoices && developerHasVoices && voicesNotice}
-                    <AxisGroup
-                        heading={copy['result.values.heading']}
-                        axes={developer.axes.filter(
-                            ({ construct }) => construct === 'value',
-                        )}
-                        copy={copy}
-                        developer
-                    />
-                    <AxisGroup
-                        heading={copy['result.beliefs.heading']}
-                        axes={developer.axes.filter(
-                            ({ construct }) => construct === 'belief',
-                        )}
-                        copy={copy}
-                        developer
-                    />
+                    :   null}
+                    <AxisList axes={developer.axes} copy={copy} showConstruct />
                 </section>
             :   <p className="text-sm text-muted-foreground">
                     {copy['result.developer.skipped']}
                 </p>
             }
 
-            <details className="group border-y py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-heading text-xl [&::-webkit-details-marker]:hidden">
-                    {copy['result.methodology']}
-                    <ChevronDown
-                        aria-hidden="true"
-                        size={18}
-                        className="shrink-0 group-open:rotate-180"
-                    />
-                </summary>
-                <div className="mt-4 max-w-[65ch] space-y-2 text-sm leading-relaxed text-muted-foreground">
-                    <p>{copy['result.matchExplanation']}</p>
-                    <p>{copy['result.undefined.description']}</p>
-                    <p>{copy['result.privacy']}</p>
-                    <p>
-                        {copy['result.version'].replace(
-                            '{version}',
-                            String(result.version),
-                        )}
-                    </p>
-                </div>
-            </details>
             <ResultSharing
                 key={`${lang}:${decoded.payload}`}
                 language={lang}

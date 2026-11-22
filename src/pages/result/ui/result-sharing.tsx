@@ -70,7 +70,7 @@ export function ResultSharing({
 
     return (
         <section
-            className="space-t-5 border-t pt-6 sm:pt-8 pb-4 sm:pb-6"
+            className="space-y-5 border-t pt-6 pb-4 sm:pt-8 sm:pb-6"
             aria-labelledby="result-sharing"
         >
             <div className="flex flex-wrap items-start justify-between gap-8">
@@ -85,8 +85,8 @@ export function ResultSharing({
                         {copy['share.description']}
                     </p>
                 </div>
-                <div className="flex w-full justify-between">
-                    <div className="flex flex-wrap items-center gap-3">
+                <div className="flex w-full flex-wrap items-center justify-between gap-4">
+                    <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
                         {!result.allUndefined && (
                             <Button
                                 disabled={downloading}

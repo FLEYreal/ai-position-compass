@@ -11,11 +11,7 @@ export default {
     'result.neighboring.caption': 'Other points of overlap',
     'result.references': 'More sources',
     'result.match': '{score}% similarity',
-    'result.matchExplanation':
-        'Similarity describes distance from a camp’s positions. It is not a probability of membership.',
     'result.undefined': 'Undefined',
-    'result.undefined.description':
-        'There is not enough answered information to show a score on this axis. Unsure is not counted as neutral.',
     'result.allUndefined':
         'There is not enough answered information to calculate any axis scores.',
     'result.someUndefined':
@@ -28,18 +24,18 @@ export default {
         'Your views do not closely match any of these camps. The nearest comparisons are still shown for exploration.',
     'result.developer.skipped':
         'Developer questions were not included in this result.',
+    'result.developer.lowMatch':
+        'This is your closest developer camp, with a low similarity score.',
     'result.developer.undefined':
         'Developer questions were included, but there is not enough answered information to calculate developer axis scores.',
     'result.youAreHere': 'You are here',
+    'result.axis.value': 'Value',
+    'result.axis.belief': 'Belief',
     'result.axisPosition': '{axis}: {score} out of 100',
     'result.axisUndefined': '{axis}: Undefined',
     'result.beliefs.heading': 'Beliefs — what you expect',
     'result.values.heading': 'Values — what you prefer',
     'result.relatedVoices': 'Related public views',
-    'result.methodology': 'How these results are calculated',
-    'result.version': 'Result version: {version}',
-    'result.privacy':
-        'This result was reconstructed from the scores in the link. Individual answers are not included.',
     'share.heading': 'Share your result',
     'share.copy': 'Copy link',
     'share.copied': 'Link copied',

@@ -65,7 +65,9 @@ async function loadFonts({ result, copy, projectUrl }: DrawResultImage) {
         ...result.beliefs,
         ...(result.developer?.axes ?? []),
     ];
-    const allCamps = [...result.coreCamps, ...(result.developer?.camps ?? [])];
+    const developerCamp = result.developer?.camp;
+    const allCamps =
+        developerCamp ? [...result.coreCamps, developerCamp] : result.coreCamps;
     const campNames = allCamps.map(({ name }) => name).join(' ');
     const headingText = [
         projectName.toUpperCase(),
@@ -74,7 +76,8 @@ async function loadFonts({ result, copy, projectUrl }: DrawResultImage) {
         copy['result.values.heading'],
         copy['result.beliefs.heading'],
         copy['result.developer.heading'],
-        copy['result.matches.heading'],
+        copy['result.primary'],
+        copy['result.lowMatch.heading'],
     ].join(' ');
     const bodyText = [
         headingText,
@@ -352,23 +355,29 @@ export async function saveResultImage({
         result.developer.axes.forEach((axis, index) =>
             drawAxis(axis, margin, 940 + index * 96, true),
         );
-        if (result.developer.camps.length) {
-            text(copy['result.matches.heading'], rightColumn, 1102, {
-                font: heading(20),
-                color: accent,
-                width: columnWidth,
+        const camp = result.developer.camp;
+        if (camp) {
+            text(
+                copy[camp.close ? 'result.primary' : 'result.lowMatch.heading'],
+                rightColumn,
+                1102,
+                {
+                    font: heading(20),
+                    color: accent,
+                    width: columnWidth,
+                },
+            );
+            text(camp.name, rightColumn, 1132, {
+                font: heading(22),
+                width: 350,
             });
-        }
-        result.developer.camps.forEach((camp, index) => {
-            const y = 1132 + index * 26;
-            text(camp.name, rightColumn, y, { font: heading(22), width: 350 });
-            text(camp.similarity, size - margin, y, {
+            text(camp.similarity, size - margin, 1132, {
                 font: serif(18),
                 color: muted,
                 align: 'right',
                 width: 206,
             });
-        });
+        }
     } else {
         wrapped(
             copy['result.developer.skipped'],
