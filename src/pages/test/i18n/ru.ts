@@ -204,7 +204,7 @@ export default {
     'research.suggestions.D2':
         'Закрытая модель доступна только через сервис компании: скачать или изучить её нельзя.',
     'test.questionNumber': 'Вопрос {current} из {total}',
-    'test.progress': '{answered} из {total} вопросов пройдено',
+    'test.progress': 'Отвечено: {answered} / {total}',
     'test.progressLabel': 'Прогресс прохождения теста',
     'test.prompt': 'Насколько вы согласны?',
     'test.belief': 'Убеждение',
@@ -214,7 +214,8 @@ export default {
     'test.back': 'Назад',
     'test.next': 'Следующий вопрос',
     'test.finish': 'Завершить',
-    'test.keyboard': 'Нажмите 1–5 для выбора ответа или U, если не уверены.',
+    'test.keyboard':
+        'Нажмите 1–5 для выбора ответа или U для варианта «Затрудняюсь ответить».',
     'test.developerHeading': 'Вопросы для разработчиков',
     'test.restart': 'Начать тест заново',
     'test.loadingSaved': 'Загрузка сохранённого прогресса…',
@@ -247,7 +248,8 @@ export default {
     'research.answer-scale.unsure': 'Затрудняюсь ответить',
     'research.axes.regulation':
         'Регулирование · Свобода разработки ↔ Строгий надзор',
-    'research.axes.control': 'Контроль · Рынок ↔ Государство',
+    'research.axes.control':
+        'Контроль · Рынок ↔ Государственные и общественные институты',
     'research.axes.geopolitics':
         'Геополитика · Гонка ↔ Международное сотрудничество',
     'research.axes.openness':
