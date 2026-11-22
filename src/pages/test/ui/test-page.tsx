@@ -2,12 +2,18 @@ import { ShieldCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import {
+    encodeResultPayload,
     getSelectedQuestions,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
     useQuestionnaireStore,
 } from '@/entities/scoring';
-import { axisConstruct, suggestions, type Language } from '@/shared/config';
+import {
+    axisConstruct,
+    resultRoute,
+    suggestions,
+    type Language,
+} from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
 import {
     Button,
@@ -39,7 +45,9 @@ export default function TestPage({
 }) {
     const progress = useQuestionnaireStore();
     const storage = useQuestionnaireStorageStatus();
-    const [completionOpen, setCompletionOpen] = useState(false);
+    const [completionPayload, setCompletionPayload] = useState<string | null>(
+        null,
+    );
     const [resetFailed, setResetFailed] = useState(false);
     const [openStartAfterReset, setOpenStartAfterReset] = useState(false);
 
@@ -54,7 +62,7 @@ export default function TestPage({
 
     function restart() {
         if (progress.reset()) {
-            setCompletionOpen(false);
+            setCompletionPayload(null);
             setResetFailed(false);
             setOpenStartAfterReset(true);
         } else {
@@ -63,14 +71,16 @@ export default function TestPage({
     }
 
     function handleCompletionOpenChange(open: boolean) {
-        if (open) {
-            const result = progress.createResult();
-            if (!result) return;
-            if (import.meta.env.DEV) {
-                console.info('Questionnaire result', result);
-            }
+        if (!open) {
+            setCompletionPayload(null);
+            return;
         }
-        setCompletionOpen(open);
+        const result = progress.createResult();
+        if (!result) return;
+        if (import.meta.env.DEV) {
+            console.info('Questionnaire result', result);
+        }
+        setCompletionPayload(encodeResultPayload(result));
     }
 
     const closeLabel = common['common.close'];
@@ -151,7 +161,7 @@ export default function TestPage({
 
         return (
             <Dialog
-                open={completionOpen}
+                open={completionPayload !== null}
                 onOpenChange={handleCompletionOpenChange}
             >
                 <QuestionProgress
@@ -247,9 +257,17 @@ export default function TestPage({
                         closeLabel={closeLabel}
                         className="flex-col gap-3 sm:flex-wrap sm:justify-start"
                     >
+                        {completionPayload && (
+                            <Button asChild>
+                                <Link to={resultRoute(lang, completionPayload)}>
+                                    {copy['session.completed.view']}
+                                </Link>
+                            </Button>
+                        )}
                         <DialogClose asChild>
                             <Button
                                 onClick={progress.reviewAnswers}
+                                variant="outline"
                                 className="whitespace-normal"
                             >
                                 {copy['session.completed.edit']}

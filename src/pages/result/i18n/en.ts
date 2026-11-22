@@ -1,6 +1,56 @@
 export default {
     'result.heading': 'Your AI position',
-    'result.placeholder': 'Result link support coming later.',
+
+    'result.introduction': 'A map of your answers, not a fixed identity.',
+    'result.axes.heading': 'Your positions',
+    'result.core.heading': 'Core profile',
+    'result.developer.heading': 'Developer profile',
+    'result.matches.heading': 'Nearby camps',
+    'result.primary': 'Closest match',
+    'result.neighboring': 'Other nearby camps',
+    'result.match': '{score}% similarity',
+    'result.matchExplanation':
+        'Similarity describes distance from a camp’s positions. It is not a probability of membership.',
+    'result.undefined': 'Undefined',
+    'result.undefined.description':
+        'There is not enough answered information to show a score on this axis. Unsure is not counted as neutral.',
+    'result.allUndefined':
+        'There is not enough answered information to calculate any axis scores.',
+    'result.someUndefined':
+        'Some axes are Undefined. Camp comparisons use only the axes with scores.',
+    'result.noEligible.heading': 'Not enough information to compare camps',
+    'result.noEligible.body':
+        'Your available axis scores are shown below. No camp meets the comparison requirements for this result.',
+    'result.lowMatch.heading': 'No close camp match',
+    'result.lowMatch.body':
+        'Your views do not closely match any of these camps. The nearest comparisons are still shown for exploration.',
+    'result.developer.skipped':
+        'Developer questions were not included in this result.',
+    'result.developer.undefined':
+        'Developer questions were included, but there is not enough answered information to calculate developer axis scores.',
+    'result.youAreHere': 'You are here',
+    'result.axisPosition': '{axis}: {score} out of 100',
+    'result.axisUndefined': '{axis}: Undefined',
+    'result.beliefs.heading': 'Beliefs — what you expect',
+    'result.values.heading': 'Values — what you prefer',
+    'result.relatedVoices': 'Related public voices',
+    'result.methodology': 'How these results are calculated',
+    'result.version': 'Result version: {version}',
+    'result.privacy':
+        'This result was reconstructed from the scores in the link. Individual answers are not included.',
+    'result.retake': 'Take the questionnaire',
+    'recovery.missing.heading': 'No result in this link',
+    'recovery.missing.body':
+        'Take the questionnaire or open a complete result link.',
+    'recovery.invalid.heading': 'This result link could not be read.',
+    'recovery.invalid.body':
+        'The link may be incomplete or damaged. Ask for the full link, or take the questionnaire.',
+    'recovery.unsupported.heading': 'This result version is not supported.',
+    'recovery.unsupported.body':
+        'This application cannot display the version in this link. Check for an updated application or take the current questionnaire.',
+    'recovery.takeTest': 'Take the questionnaire',
+    'footer.disclaimer':
+        'Public voices illustrate ideas, not endorsement or membership.',
 
     // Axes
     'research.axes.regulation':

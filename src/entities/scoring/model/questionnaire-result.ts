@@ -1,12 +1,7 @@
-import {
-    coreAxes,
-    coreCamps,
-    devAxes,
-    devCamps,
-    settings,
-} from '@/shared/config';
+import { coreAxes, devAxes } from '@/shared/config';
 import { calculateAxesScore, type UserAxisScore } from './axis';
-import { findCampMatches, type CampMatch } from './camp';
+import type { CampMatch } from './camp';
+import { rankV1CampMatches } from './result-matches';
 import {
     getSelectedQuestions,
     type QuestionAnswer,
@@ -48,25 +43,11 @@ export function calculateQuestionnaireResult({
         includeDeveloper ?
             scores.slice(coreAxes.length)
         :   devAxes.map(({ id: axisId }) => ({ axisId, score: null }));
-    const { core, dev, ...commonSettings } = settings;
+    const axisScores = [...coreScores, ...devScores];
 
     return {
-        axisScores: [...coreScores, ...devScores],
+        axisScores,
         includeDeveloper,
-        campMatches: {
-            core: findCampMatches({
-                user: coreScores,
-                camps: coreCamps,
-                settings: { ...commonSettings, ...core },
-            }),
-            dev:
-                includeDeveloper ?
-                    findCampMatches({
-                        user: devScores,
-                        camps: devCamps,
-                        settings: { ...commonSettings, ...dev },
-                    })
-                :   [],
-        },
+        campMatches: rankV1CampMatches({ axisScores, includeDeveloper }),
     };
 }

@@ -44,4 +44,55 @@ describe('language routes', () => {
         await screen.findByRole('heading', { name: 'Your AI position' });
         expect(router.state.location.search).toBe('?r=example');
     });
+
+    test('renders shared scores independently of damaged saved progress', async () => {
+        localStorage.setItem('questionnaire', 'damaged');
+        try {
+            render(
+                <RouterProvider
+                    router={createMemoryRouter(routes, {
+                        initialEntries: ['/en/result?r=AQEAAQsYITJDU2Nk_yo-'],
+                    })}
+                />,
+            );
+            expect(
+                await screen.findByRole('meter', { name: 'Regulation' }),
+            ).toHaveAttribute('value', '0');
+            expect(
+                screen.getByRole('meter', { name: 'Existential risk' }),
+            ).toHaveAttribute('value', '50');
+            expect(
+                screen.getByRole('group', {
+                    name: 'Open-source preference: Undefined',
+                }),
+            ).toHaveTextContent('Undefined');
+            expect(localStorage.getItem('questionnaire')).toBe('damaged');
+        } finally {
+            localStorage.removeItem('questionnaire');
+        }
+    });
+
+    test.each([
+        ['', 'No result in this link'],
+        ['?r=', 'This result link could not be read.'],
+        [
+            '?r=AQEAAQsYITJDU2Nk_yo-&r=AQEAAQsYITJDU2Nk_yo-',
+            'This result link could not be read.',
+        ],
+        ['?r=AgEAAQsYITJDU2Nk_yo-', 'This result version is not supported.'],
+    ])('shows recovery for /en/result%s', async (search, explanation) => {
+        render(
+            <RouterProvider
+                router={createMemoryRouter(routes, {
+                    initialEntries: [`/en/result${search}`],
+                })}
+            />,
+        );
+        expect(
+            await screen.findByRole('heading', { name: explanation }),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('link', { name: 'Take the questionnaire' }),
+        ).toHaveAttribute('href', '/en/test');
+    });
 });

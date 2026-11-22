@@ -23,6 +23,7 @@ export {
     useQuestionnaireStore,
 } from './model/questionnaire-store';
 export type { QuestionnaireResult } from './model/questionnaire-result';
+export { rankV1CampMatches } from './model/result-matches';
 export {
     decodeResultPayload,
     encodeResultPayload,

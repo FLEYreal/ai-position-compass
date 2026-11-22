@@ -1,5 +1,6 @@
 export { isLanguage, type Language } from './language';
 export { projectName } from './project';
+export { resultRoute } from './result-route';
 export { languageFromPathname } from './language';
 export {
     type ModelId,
@@ -44,6 +45,7 @@ export {
     devPeople,
     people,
     settings,
+    resultV1Scoring,
     questionnaireVersion,
     scoringConfig,
     getQuestionCount,

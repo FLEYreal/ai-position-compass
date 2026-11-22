@@ -217,6 +217,7 @@ export default {
     'test.restart': 'Restart questionnaire',
     'test.loadingSaved': 'Loading saved progress…',
     'session.completed.heading': 'You have completed this questionnaire.',
+    'session.completed.view': 'View my results',
     'session.completed.edit': 'Review my answers',
     'session.restart.heading': 'Start again?',
     'session.restart.description':

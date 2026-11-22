@@ -9,6 +9,7 @@ export function AxisScale({
     highLabel,
     annotation,
     undefinedLabel,
+    valueText,
     className,
 }: {
     value: number | null;
@@ -17,6 +18,7 @@ export function AxisScale({
     highLabel: string;
     annotation?: string;
     undefinedLabel: string;
+    valueText?: string;
     className?: string;
 }) {
     const coordinate =
@@ -42,7 +44,7 @@ export function AxisScale({
                         )}
                     >
                         <AxisUndefined
-                            label={label}
+                            label={valueText ?? label}
                             message={undefinedLabel}
                             className="w-full"
                         />
@@ -54,7 +56,7 @@ export function AxisScale({
                             max="100"
                             value={coordinate}
                             aria-label={label}
-                            aria-valuetext={`${coordinate} / 100 · ${lowLabel} — ${highLabel}`}
+                            aria-valuetext={`${valueText ?? `${coordinate} / 100`} · ${lowLabel} — ${highLabel}`}
                         />
                         <Ruler
                             value={coordinate}
