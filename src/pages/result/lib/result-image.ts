@@ -127,12 +127,24 @@ export async function saveResultImage({
 }: DrawResultImage & { language: Language }) {
     const tokenStyles = getComputedStyle(document.documentElement);
     const token = (name: string) => tokenStyles.getPropertyValue(name).trim();
+    const primary =
+        result.coreCamps[0]?.close ? result.coreCamps[0] : undefined;
+    const neighbors = primary ? result.coreCamps.slice(1) : result.coreCamps;
+    const campInks = new Map(
+        result.coreCamps.map((camp) => [
+            camp.id,
+            token(`--camp-${camp.token}-ink`),
+        ]),
+    );
     const paper = token('--share-paper');
     const ink = token('--share-ink');
     const muted = token('--share-muted');
     const rule = token('--share-rule');
     const tick = token('--share-tick');
-    const accent = token('--share-accent');
+    const accent = primary ? campInks.get(primary.id)! : ink;
+    const openingPaper = token(
+        primary ? `--camp-${primary.token}-surface` : '--paper-raised',
+    );
     const developerInk = token('--share-developer-ink');
     const axes = [
         ...result.values,
@@ -143,7 +155,7 @@ export async function saveResultImage({
         loadImage(`${import.meta.env.BASE_URL}favicon.svg`),
         Promise.all(
             axes.map(async (axis) => {
-                const color = token(`--axis-${axis.token}-light`);
+                const color = token(`--axis-${axis.token}`);
                 return [
                     axis.id,
                     { color, icon: await loadAxisIcon(axis.id, color) },
@@ -289,10 +301,6 @@ export async function saveResultImage({
         }
     }
 
-    const primary =
-        result.coreCamps[0]?.close ? result.coreCamps[0] : undefined;
-    const neighbors = primary ? result.coreCamps.slice(1) : result.coreCamps;
-
     function drawOpening() {
         ctx.drawImage(mascot, margin, 28, 45, 45);
         text(projectName.toUpperCase(), 128, 61, {
@@ -380,7 +388,7 @@ export async function saveResultImage({
         const firstBaseline = comparisonsRuleY + 39;
         neighbors.forEach((camp, index) => {
             const x = margin + index * columnStep;
-            const color = token(`--camp-${camp.token}-ink-light`);
+            const color = campInks.get(camp.id)!;
             const end = wrapped(
                 camp.name.toUpperCase(),
                 x,
@@ -406,7 +414,7 @@ export async function saveResultImage({
     const openingBottom = Math.max(355, openingEnd + 23);
     ctx.save();
     ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = token('--share-accent-surface');
+    ctx.fillStyle = openingPaper;
     ctx.fillRect(0, 0, size, openingBottom);
     ctx.fillStyle = paper;
     ctx.fillRect(0, 0, size, size);
