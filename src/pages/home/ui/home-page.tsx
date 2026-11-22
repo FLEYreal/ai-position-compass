@@ -2,6 +2,8 @@ import { ArrowRight, Clock3, ListChecks, ShieldCheck } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import {
+    encodeResultPayload,
+    getLocalResultState,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
     useQuestionnaireStore,
@@ -9,6 +11,7 @@ import {
 import {
     getCompletionTime,
     getQuestionCount,
+    resultRoute,
     type Language,
 } from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
@@ -50,6 +53,19 @@ export default function Home({
         void navigate(testPath);
     }
 
+    async function viewResult() {
+        const progress = useQuestionnaireStore.getState();
+        const result = progress.createResult();
+        if (!result) {
+            void navigate(testPath);
+            return;
+        }
+        const state = await getLocalResultState(progress);
+        void navigate(resultRoute(lang, encodeResultPayload(result)), {
+            state,
+        });
+    }
+
     const opening = (
         <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 min-[851px]:grid-cols-[1.05fr_1fr]">
             <div className="min-w-0 self-end">
@@ -79,12 +95,12 @@ export default function Home({
             <div className="min-w-0 max-[850px]:mx-auto max-[850px]:w-full max-[850px]:max-w-[480px] min-[851px]:col-start-2 min-[851px]:row-span-2 min-[851px]:row-start-1">
                 <Collage
                     className="m-0"
-                    caption={copy['artwork.caption']}
+                    caption={common['artwork.caption']}
                     messages={{
-                        description: copy['artwork.description'],
-                        pauseAction: copy['artwork.pause'],
-                        resumeAction: copy['artwork.play'],
-                        punchcard: copy['artwork.punchcard'],
+                        description: common['artwork.description'],
+                        pauseAction: common['artwork.pause'],
+                        resumeAction: common['artwork.play'],
+                        punchcard: common['artwork.punchcard'],
                     }}
                 />
             </div>
@@ -100,13 +116,16 @@ export default function Home({
                 <div className="mt-6">
                     {storage === 'pending' ?
                         <Button disabled>{common['common.loading']}</Button>
+                    : status === 'finished' && !needsRecovery ?
+                        <Button onClick={() => void viewResult()}>
+                            {copy['session.completed.view']}
+                            <ArrowRight aria-hidden="true" />
+                        </Button>
                     : needsRecovery || status !== 'not-started' ?
                         <Button asChild>
                             <Link to={testPath}>
                                 {needsRecovery ?
                                     copy['storage.reset']
-                                : status === 'finished' ?
-                                    copy['session.completed.view']
                                 :   copy['session.resume.action']}
                                 <ArrowRight aria-hidden="true" />
                             </Link>

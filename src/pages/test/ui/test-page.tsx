@@ -1,20 +1,30 @@
 import { ShieldCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import {
+    encodeResultPayload,
+    getLocalResultState,
+    type LocalResultState,
+    type QuestionResponse,
     getSelectedQuestions,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
     useQuestionnaireStore,
 } from '@/entities/scoring';
-import { axisConstruct, suggestions, type Language } from '@/shared/config';
+import {
+    axisConstruct,
+    resultRoute,
+    suggestions,
+    type Language,
+} from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
 import {
     Button,
     Dialog,
-    DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
+    DialogHeader,
     DialogTitle,
     QuestionProgress,
 } from '@/shared/ui';
@@ -39,7 +49,12 @@ export default function TestPage({
 }) {
     const progress = useQuestionnaireStore();
     const storage = useQuestionnaireStorageStatus();
-    const [completionOpen, setCompletionOpen] = useState(false);
+    const { state } = useLocation();
+    const [completion, setCompletion] = useState<{
+        payload: string;
+        state: LocalResultState | undefined;
+    } | null>(null);
+
     const [resetFailed, setResetFailed] = useState(false);
     const [openStartAfterReset, setOpenStartAfterReset] = useState(false);
 
@@ -54,7 +69,7 @@ export default function TestPage({
 
     function restart() {
         if (progress.reset()) {
-            setCompletionOpen(false);
+            setCompletion(null);
             setResetFailed(false);
             setOpenStartAfterReset(true);
         } else {
@@ -62,25 +77,29 @@ export default function TestPage({
         }
     }
 
-    function handleCompletionOpenChange(open: boolean) {
-        if (open) {
-            const result = progress.createResult();
-            if (!result) return;
-            if (import.meta.env.DEV) {
-                console.info('Questionnaire result', result);
-            }
+    async function handleCompletionOpenChange(open: boolean) {
+        if (!open) {
+            setCompletion(null);
+            return;
         }
-        setCompletionOpen(open);
+        const current = useQuestionnaireStore.getState();
+        const result = current.createResult();
+        if (!result) return;
+        if (import.meta.env.DEV) {
+            console.info('Questionnaire result', result);
+        }
+        const state = await getLocalResultState(current);
+        setCompletion({ payload: encodeResultPayload(result), state });
     }
 
     const closeLabel = common['common.close'];
     const cancelLabel = common['common.cancel'];
     const restartAction = (
         <QuestionnaireConfirmation
-            label={copy['test.restart']}
-            heading={copy['session.restart.heading']}
-            description={copy['session.restart.description']}
-            confirmation={copy['session.restart.confirm']}
+            label={common['test.restart']}
+            heading={common['session.restart.heading']}
+            description={common['session.restart.description']}
+            confirmation={common['session.restart.confirm']}
             closeLabel={closeLabel}
             cancelLabel={cancelLabel}
             onConfirm={restart}
@@ -119,7 +138,7 @@ export default function TestPage({
                     />
                     {resetFailed && (
                         <p role="alert" className="w-full">
-                            {copy['storage.resetFailed']}
+                            {common['storage.resetFailed']}
                         </p>
                     )}
                 </QuestionnaireStatus>
@@ -132,7 +151,10 @@ export default function TestPage({
                     label={startMessages['start.begin']}
                     messages={startMessages}
                     common={common}
-                    openOnMount={openStartAfterReset}
+                    openOnMount={
+                        openStartAfterReset ||
+                        state?.showQuestionnaireWelcome === true
+                    }
                     onStart={progress.start}
                 />
             );
@@ -149,10 +171,20 @@ export default function TestPage({
         const answered = Object.keys(progress.answersById).length;
         const atLast = index === questions.length - 1;
 
+        function answer(response: QuestionResponse) {
+            progress.answerQuestion(question.id, response);
+            if (response !== 'unsure') return;
+            if (atLast) {
+                void handleCompletionOpenChange(true);
+            } else {
+                progress.nextQuestion();
+            }
+        }
+
         return (
             <Dialog
-                open={completionOpen}
-                onOpenChange={handleCompletionOpenChange}
+                open={completion !== null}
+                onOpenChange={(open) => void handleCompletionOpenChange(open)}
             >
                 <QuestionProgress
                     total={questions.length}
@@ -220,9 +252,7 @@ export default function TestPage({
                     }}
                     atFirst={index === 0}
                     atLast={atLast}
-                    onAnswer={(response) =>
-                        progress.answerQuestion(question.id, response)
-                    }
+                    onAnswer={answer}
                     onBack={progress.previousQuestion}
                     onContinue={progress.nextQuestion}
                 />
@@ -234,28 +264,42 @@ export default function TestPage({
                         />
                         {common['test.privacy']}
                     </p>
-                    {restartAction}
-                </div>
-                <DialogContent
-                    closeLabel={closeLabel}
-                    aria-describedby={undefined}
-                >
-                    <DialogTitle className="font-heading">
-                        {copy['session.completed.heading']}
-                    </DialogTitle>
-                    <DialogFooter
-                        closeLabel={closeLabel}
-                        className="flex-col gap-3 sm:flex-wrap sm:justify-start"
-                    >
-                        <DialogClose asChild>
+                    <div className="flex flex-wrap gap-2">
+                        {progress.status === 'finished' && (
                             <Button
+                                variant="outline"
                                 onClick={progress.reviewAnswers}
-                                className="whitespace-normal"
+                                className="max-w-full whitespace-normal"
                             >
                                 {copy['session.completed.edit']}
                             </Button>
-                        </DialogClose>
+                        )}
                         {restartAction}
+                    </div>
+                </div>
+                <DialogContent closeLabel={closeLabel}>
+                    <DialogHeader>
+                        <DialogTitle className="font-heading">
+                            {copy['session.completed.heading']}
+                        </DialogTitle>
+                        <DialogDescription>
+                            {copy['session.completed.description']}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter
+                        closeLabel={closeLabel}
+                        className="items-start sm:justify-start"
+                    >
+                        {completion && (
+                            <Button asChild className="whitespace-normal">
+                                <Link
+                                    to={resultRoute(lang, completion.payload)}
+                                    state={completion.state}
+                                >
+                                    {copy['session.completed.view']}
+                                </Link>
+                            </Button>
+                        )}
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

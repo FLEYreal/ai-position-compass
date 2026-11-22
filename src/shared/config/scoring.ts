@@ -8,7 +8,7 @@ export type CoreAxisDefinition = { readonly id: string };
 export type DevAxisDefinition = { readonly id: string };
 export type AxisDefinition = { readonly id: string; readonly modelId: ModelId };
 
-export const coreAxes = [
+const v1CoreAxes = [
     { id: 'regulation' },
     { id: 'control' },
     { id: 'geopolitics' },
@@ -21,11 +21,14 @@ export const coreAxes = [
     { id: 'surveillance' },
 ] as const satisfies CoreAxisDefinition[];
 
-export const devAxes = [
+const v1DevAxes = [
     { id: 'openSourcePreference' },
     { id: 'aiDelegation' },
     { id: 'displacementRisk' },
 ] as const satisfies DevAxisDefinition[];
+
+export const coreAxes = v1CoreAxes;
+export const devAxes = v1DevAxes;
 
 // Merge all axes together and add a model id
 export const axes = [
@@ -41,7 +44,7 @@ export type CoreAxisId = (typeof coreAxes)[number]['id'];
 export type DevAxisId = (typeof devAxes)[number]['id'];
 export type AxisId = (typeof axes)[number]['id'];
 
-export const axisConstruct = {
+const v1AxisConstruct = {
     regulation: 'value',
     control: 'value',
     geopolitics: 'value',
@@ -56,6 +59,8 @@ export const axisConstruct = {
     aiDelegation: 'value',
     displacementRisk: 'belief',
 } as const satisfies Record<AxisId, 'belief' | 'value'>;
+
+export const axisConstruct = v1AxisConstruct;
 
 /* --- QUESTIONS --- */
 export type QuestionDefinition<TAxisId extends AxisId = AxisId> = {
@@ -683,7 +688,8 @@ export type CampDefinition<TAxisId extends AxisId = AxisId> = {
     }[];
 };
 
-export const coreCamps = [
+// Published positions belong to result format v1. Preserve them when adding a new version.
+const v1CoreCamps = [
     {
         id: 'accelerationists',
         positions: [
@@ -843,7 +849,7 @@ export const coreCamps = [
     },
 ] as const satisfies CampDefinition<CoreAxisId>[];
 
-export const devCamps = [
+const v1DevCamps = [
     {
         id: 'vibeCoders',
         positions: [
@@ -899,6 +905,9 @@ export const devCamps = [
 export type ModeledCampDefinition = CampDefinition & {
     readonly modelId: ModelId;
 };
+export const coreCamps = v1CoreCamps;
+export const devCamps = v1DevCamps;
+
 export const camps = [
     ...coreCamps.map(
         (camp) =>
@@ -1314,7 +1323,7 @@ export type Setting = {
     wildcardOffset?: number; // Pull similarity down if camp doesn't have the position user has a position on; Otherwise, camps with few defined axis positions will get prioritized
 };
 
-export const settings: Setting & Record<ModelId, Setting> = {
+const v1Settings: Setting & Record<ModelId, Setting> = {
     campMatchThreshold: 70,
     wildcardOffset: 20,
     core: {
@@ -1325,6 +1334,17 @@ export const settings: Setting & Record<ModelId, Setting> = {
         axesThreshold: 2,
         axesMatchThreshold: 2,
     },
+} as const;
+
+export const settings = v1Settings;
+
+export const resultV1Scoring = {
+    coreAxes: v1CoreAxes,
+    devAxes: v1DevAxes,
+    axisConstruct: v1AxisConstruct,
+    coreCamps: v1CoreCamps,
+    devCamps: v1DevCamps,
+    settings: v1Settings,
 } as const;
 
 /* --- VERSION --- */

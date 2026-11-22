@@ -12,7 +12,7 @@ export function SiteHeader({
     language: Language;
     messages: Messages;
 }) {
-    const { pathname, search, hash } = useLocation();
+    const { pathname, search, hash, state } = useLocation();
     const { resolvedTheme, toggleTheme } = useTheme();
     const lastSpace = projectName.lastIndexOf(' ');
     const themeLabel =
@@ -68,6 +68,11 @@ export function SiteHeader({
                         >
                             <Link
                                 to={languagePath(next)}
+                                state={
+                                    /\/result\/?$/.test(pathname) ? state : (
+                                        undefined
+                                    )
+                                }
                                 lang={next}
                                 hrefLang={next}
                                 aria-current={

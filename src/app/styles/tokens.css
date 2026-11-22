@@ -67,25 +67,39 @@
     --camp-skeptics-surface: #e1e0f0;
 
     /* Primary color of each axis */
-    --axis-regulation: #64548c;
-    --axis-control: #965274;
-    --axis-geopolitics: #356e83;
-    --axis-openness: #92702a;
-    --axis-capability: #b45135;
-    --axis-existential-risk: #6c6288;
-    --axis-ecology: #4f7438;
-    --axis-creativity: #945f8b;
-    --axis-labor: #97602e;
-    --axis-surveillance: #3e7181;
-    --axis-open-source-preference: #4d7450;
-    --axis-ai-delegation: #715c92;
-    --axis-displacement-risk: #a25345;
+    --axis-regulation-light: #64548c;
+    --axis-regulation: var(--axis-regulation-light);
+    --axis-control-light: #965274;
+    --axis-control: var(--axis-control-light);
+    --axis-geopolitics-light: #356e83;
+    --axis-geopolitics: var(--axis-geopolitics-light);
+    --axis-openness-light: #92702a;
+    --axis-openness: var(--axis-openness-light);
+    --axis-capability-light: #b45135;
+    --axis-capability: var(--axis-capability-light);
+    --axis-existential-risk-light: #6c6288;
+    --axis-existential-risk: var(--axis-existential-risk-light);
+    --axis-ecology-light: #4f7438;
+    --axis-ecology: var(--axis-ecology-light);
+    --axis-creativity-light: #945f8b;
+    --axis-creativity: var(--axis-creativity-light);
+    --axis-labor-light: #97602e;
+    --axis-labor: var(--axis-labor-light);
+    --axis-surveillance-light: #3e7181;
+    --axis-surveillance: var(--axis-surveillance-light);
+    --axis-open-source-preference-light: #4d7450;
+    --axis-open-source-preference: var(--axis-open-source-preference-light);
+    --axis-ai-delegation-light: #715c92;
+    --axis-ai-delegation: var(--axis-ai-delegation-light);
+    --axis-displacement-risk-light: #a25345;
+    --axis-displacement-risk: var(--axis-displacement-risk-light);
 
     --share-paper: #f5f2e9;
     --share-ink: #24261f;
     --share-muted: #5e6558;
     --share-rule: #b8beb0;
-    --share-tick: #a6ae9e;
+    --share-tick: #dcdfd1;
+    --share-developer-ink: #87536d;
     --space-micro: 5px;
     --space-xs: 8px;
     --space-sm: 12px;
@@ -231,6 +245,13 @@
     --axis-open-source-preference: #acd2af;
     --axis-ai-delegation: #c8b2ea;
     --axis-displacement-risk: #efb2a5;
+
+    --share-paper: var(--paper);
+    --share-ink: var(--ink);
+    --share-muted: var(--muted-ink);
+    --share-rule: var(--rule);
+    --share-tick: #3b3b31;
+    --share-developer-ink: #d3adc3;
 
     color-scheme: dark;
 }

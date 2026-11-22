@@ -1,5 +1,10 @@
 /* eslint-disable react-refresh/only-export-components -- React Router route exports. */
-import { useLoaderData, type LoaderFunctionArgs } from 'react-router';
+import { useSyncExternalStore } from 'react';
+import {
+    useLoaderData,
+    useLocation,
+    type LoaderFunctionArgs,
+} from 'react-router';
 import { ResultPage, loadMessages } from '@/pages/result';
 import {
     NotFoundPage,
@@ -23,7 +28,7 @@ async function loadRouteMessages({ params }: LoaderFunctionArgs) {
         kind: 'page' as const,
         language,
         messages: await loadMessages(language),
-        homeLabel: common['recovery.home'],
+        common,
     };
 }
 
@@ -34,13 +39,23 @@ export async function clientLoader(args: LoaderFunctionArgs) {
     return loadRouteMessages(args);
 }
 
+// Static HTML has no visitor query. Read it after the first hydration render.
+const subscribe = () => () => {};
+
 export default function Route() {
     const data = useLoaderData<typeof loader>();
+    const { search } = useLocation();
+    const hydrated = useSyncExternalStore(
+        subscribe,
+        () => true,
+        () => false,
+    );
     return data.kind === 'page' ?
             <ResultPage
                 lang={data.language}
                 messages={data.messages}
-                homeLabel={data.homeLabel}
+                common={data.common}
+                search={hydrated ? search : null}
             />
         :   <NotFoundPage
                 lang={data.language}

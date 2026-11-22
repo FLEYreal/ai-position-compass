@@ -23,8 +23,15 @@ export {
     useQuestionnaireStore,
 } from './model/questionnaire-store';
 export type { QuestionnaireResult } from './model/questionnaire-result';
+export { rankV1CampMatches } from './model/result-matches';
 export {
     decodeResultPayload,
     encodeResultPayload,
     type ResultUrlDecodeResult,
 } from './model/result-url-codec';
+export { loadQuestionnaireMessages, type QuestionnaireMessages } from './i18n';
+export {
+    getLocalResultState,
+    readLocalResultProgress,
+    type LocalResultState,
+} from './model/local-result';

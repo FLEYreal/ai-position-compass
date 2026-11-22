@@ -40,7 +40,7 @@ export { PaperClip } from './paper-clip';
 export { GitHubMark } from './github-mark';
 export { Collage } from './collage';
 export { AxisIcon } from './axis-icon';
-export type { AxisId } from './axis-presentation';
+export { axisNodes, type AxisId } from './axis-presentation';
 export { UiPalette } from './ui-palette';
 
 export { Separator } from './separator';
