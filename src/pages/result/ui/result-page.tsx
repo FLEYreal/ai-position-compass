@@ -202,12 +202,12 @@ export default function ResultPage({
                     style={campPalette(
                         developerCamp ?? { token: 'vibe-coders' },
                     )}
-                    className="space-y-5 rounded-xl bg-(--result-camp-surface) px-[clamp(1rem,3vw,1.625rem)] py-6"
+                    className="space-y-4 rounded-xl bg-(--result-camp-surface) px-[clamp(1rem,3vw,1.625rem)] py-8"
                     aria-labelledby="developer-profile"
                 >
                     <h2
                         id="developer-profile"
-                        className="text-xs font-medium tracking-wide text-(--result-camp-ink) uppercase"
+                        className="text-xs font-medium tracking-wide text-muted-foreground uppercase"
                     >
                         {copy['result.developer.heading']}
                     </h2>
