@@ -21,13 +21,17 @@
     --shadow-disclosure: 0 12px 34px #16130e26;
 
     /* Distinct, neutral camp palettes: ink and surface pairs. */
-    --camp-accelerationists-ink: #6a332a;
+    --camp-accelerationists-ink-light: #6a332a;
+    --camp-accelerationists-ink: var(--camp-accelerationists-ink-light);
     --camp-accelerationists-surface: #f0e2e0;
-    --camp-securitists-ink: #2a4a6a;
+    --camp-securitists-ink-light: #2a4a6a;
+    --camp-securitists-ink: var(--camp-securitists-ink-light);
     --camp-securitists-surface: #e0e8f0;
-    --camp-safety-camp-ink: #2a6a52;
+    --camp-safety-camp-ink-light: #2a6a52;
+    --camp-safety-camp-ink: var(--camp-safety-camp-ink-light);
     --camp-safety-camp-surface: #e0f0ea;
-    --camp-pause-camp-ink: #4c2a6a;
+    --camp-pause-camp-ink-light: #4c2a6a;
+    --camp-pause-camp-ink: var(--camp-pause-camp-ink-light);
     --camp-pause-camp-surface: #e9e0f0;
     --camp-cautious-builders-ink-light: #3d6652;
     --camp-cautious-builders-ink: var(--camp-cautious-builders-ink-light);
@@ -35,25 +39,37 @@
     --camp-cautious-builders-surface: var(
         --camp-cautious-builders-surface-light
     );
-    --camp-guarded-optimists-ink: #456a86;
+    --camp-guarded-optimists-ink-light: #456a86;
+    --camp-guarded-optimists-ink: var(--camp-guarded-optimists-ink-light);
     --camp-guarded-optimists-surface: #e1e9ef;
-    --camp-ethics-camp-ink: #6a2a3a;
+    --camp-ethics-camp-ink-light: #6a2a3a;
+    --camp-ethics-camp-ink: var(--camp-ethics-camp-ink-light);
     --camp-ethics-camp-surface: #f0e0e4;
-    --camp-normal-technology-camp-ink: #845c27;
+    --camp-normal-technology-camp-ink-light: #845c27;
+    --camp-normal-technology-camp-ink: var(
+        --camp-normal-technology-camp-ink-light
+    );
     --camp-normal-technology-camp-surface: #eee4d1;
-    --camp-hype-skeptics-ink: #2a5c6a;
+    --camp-hype-skeptics-ink-light: #2a5c6a;
+    --camp-hype-skeptics-ink: var(--camp-hype-skeptics-ink-light);
     --camp-hype-skeptics-surface: #e0edf0;
-    --camp-populists-ink: #6a3f2a;
+    --camp-populists-ink-light: #6a3f2a;
+    --camp-populists-ink: var(--camp-populists-ink-light);
     --camp-populists-surface: #f0e5e0;
-    --camp-creatives-copyright-ink: #6a2a5f;
+    --camp-creatives-copyright-ink-light: #6a2a5f;
+    --camp-creatives-copyright-ink: var(--camp-creatives-copyright-ink-light);
     --camp-creatives-copyright-surface: #f0e0ed;
-    --camp-unconcerned-ink: #626a2a;
+    --camp-unconcerned-ink-light: #626a2a;
+    --camp-unconcerned-ink: var(--camp-unconcerned-ink-light);
     --camp-unconcerned-surface: #eef0e0;
-    --camp-existential-worriers-ink: #3c2a6a;
+    --camp-existential-worriers-ink-light: #3c2a6a;
+    --camp-existential-worriers-ink: var(--camp-existential-worriers-ink-light);
     --camp-existential-worriers-surface: #e5e0f0;
-    --camp-labor-critics-ink: #6a482a;
+    --camp-labor-critics-ink-light: #6a482a;
+    --camp-labor-critics-ink: var(--camp-labor-critics-ink-light);
     --camp-labor-critics-surface: #f0e8e0;
-    --camp-surveillance-critics-ink: #2a646a;
+    --camp-surveillance-critics-ink-light: #2a646a;
+    --camp-surveillance-critics-ink: var(--camp-surveillance-critics-ink-light);
     --camp-surveillance-critics-surface: #e0eff0;
     --camp-vibe-coders-ink: #6a2a4f;
     --camp-vibe-coders-surface: #f0e0e9;
@@ -102,7 +118,8 @@
     --share-ink: #24261f;
     --share-muted: #5e6558;
     --share-rule: #b8beb0;
-    --share-tick: #a6ae9e;
+    --share-tick: #dcdfd1;
+    --share-developer-ink: #87536d;
     --share-accent: var(--camp-cautious-builders-ink-light);
     --share-accent-surface: var(--camp-cautious-builders-surface-light);
     --space-micro: 5px;

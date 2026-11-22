@@ -63,6 +63,8 @@ export default {
     'share.fontFailed':
         'Не удалось загрузить шрифты для изображения. Попробуйте скачать его ещё раз.',
     'share.imageTitle': 'Моя позиция по ИИ',
+    'share.imageValues': 'Ценности',
+    'share.imageBeliefs': 'Убеждения',
     'share.imagePrivacy':
         'В изображение вошли итоговые оценки без отдельных ответов.',
     'share.noScores': 'Для изображения нет рассчитанных оценок.',

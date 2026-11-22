@@ -63,6 +63,8 @@ export default {
     'share.fontFailed':
         'The image fonts could not be loaded. Try again before downloading.',
     'share.imageTitle': 'My AI Position Compass',
+    'share.imageValues': 'Values',
+    'share.imageBeliefs': 'Beliefs',
     'share.imagePrivacy': 'Scores only — individual answers are not included.',
     'share.noScores':
         'There are no calculated scores to include in this image.',

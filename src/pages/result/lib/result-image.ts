@@ -11,8 +11,12 @@ import { downloadBlob } from './download-blob';
 const size = 1400;
 const margin = 70;
 const columnWidth = 570;
-const rightColumn = size - margin - columnWidth;
 const innerWidth = size - margin * 2;
+const rightEdge = size - margin;
+const rightColumn = rightEdge - columnWidth;
+const coreRowHeight = 110;
+const developerRowHeight = 96;
+const comparisonsRuleY = 1240;
 
 const heading = (size: number) => `600 ${size}px "Oswald Variable"`;
 const serif = (size: number) => `400 ${size}px "Noto Serif Variable"`;
@@ -60,39 +64,37 @@ type DrawResultImage = {
 const names = (camp: ResultCamp) =>
     camp.voices.map(({ name }) => name).join(' · ');
 
+function imageHeadings(copy: Messages) {
+    return [
+        copy['share.imageValues'],
+        copy['share.imageBeliefs'],
+        copy['result.developer.heading'],
+    ].map((label) => label.toUpperCase());
+}
+
 async function loadFonts({ result, copy, projectUrl }: DrawResultImage) {
     const allAxes = [
         ...result.values,
         ...result.beliefs,
         ...(result.developer?.axes ?? []),
     ];
-    const developerCamp = result.developer?.camp;
-    const allCamps =
-        developerCamp ? [...result.coreCamps, developerCamp] : result.coreCamps;
-    const campNames = allCamps.map(({ name }) => name).join(' ');
     const headingText = [
         projectName.toUpperCase(),
-        campNames,
-        copy['share.imageTitle'],
-        copy['result.values.heading'],
-        copy['result.beliefs.heading'],
-        copy['result.developer.heading'],
-        copy['result.primary'],
-        copy['result.lowMatch.heading'],
+        ...result.coreCamps.map(({ name }) => name.toUpperCase()),
+        copy['share.imageTitle'].toUpperCase(),
+        ...imageHeadings(copy),
+        '0123456789%',
     ].join(' ');
     const bodyText = [
         headingText,
         projectUrl,
         ...allAxes.flatMap(({ label, low, high }) => [label, low, high]),
-        ...allCamps.flatMap((camp) => [
-            camp.description,
-            camp.similarity,
-            names(camp),
-        ]),
+        ...result.coreCamps.flatMap((camp) => [camp.description, names(camp)]),
         copy['result.lowMatch.heading'],
         copy['result.noEligible.heading'],
+        copy['result.similarityLabel'].toUpperCase(),
+        copy['result.relatedVoices'],
         copy['result.undefined'],
-        copy['footer.disclaimer'],
         copy['share.imagePrivacy'],
         '0123456789% · —',
     ].join(' ');
@@ -131,6 +133,7 @@ export async function saveResultImage({
     const rule = token('--share-rule');
     const tick = token('--share-tick');
     const accent = token('--share-accent');
+    const developerInk = token('--share-developer-ink');
     const axes = [
         ...result.values,
         ...result.beliefs,
@@ -206,7 +209,7 @@ export async function saveResultImage({
         const { label, low, high, score } = axis;
         const valueLabel =
             score === null ? copy['result.undefined'] : `${score}%`;
-        const valueFont = serif(compact ? 20 : 22);
+        const valueFont = serif(score === null ? 22 : 24);
         ctx.font = valueFont;
         const valueWidth = ctx.measureText(valueLabel).width;
         const annotated = score !== null && axis.id === 'regulation';
@@ -222,12 +225,23 @@ export async function saveResultImage({
             align: 'right',
         });
 
-        const barY = y + 17;
+        const barY = y + 18;
+        const barHeight = 11;
+        ctx.beginPath();
+        ctx.roundRect(x, barY, columnWidth, barHeight, barHeight / 2);
         ctx.fillStyle = tick;
-        ctx.fillRect(x, barY, columnWidth, 9);
-        if (score !== null) {
+        ctx.fill();
+        if (score !== null && score > 0) {
+            ctx.beginPath();
+            ctx.roundRect(
+                x,
+                barY,
+                (columnWidth * score) / 100,
+                barHeight,
+                barHeight / 2,
+            );
             ctx.fillStyle = color;
-            ctx.fillRect(x, barY, (columnWidth * score) / 100, 9);
+            ctx.fill();
         }
 
         const endpointFont = serif(17);
@@ -275,115 +289,171 @@ export async function saveResultImage({
         }
     }
 
-    ctx.fillStyle = paper;
-    ctx.fillRect(0, 0, size, size);
-    ctx.fillStyle = token('--share-accent-surface');
-    ctx.fillRect(0, 0, size, 363);
-    ctx.drawImage(mascot, margin, 28, 45, 45);
-    text(projectName.toUpperCase(), 128, 61, {
-        font: heading(29),
-        color: accent,
-        width: 425,
-    });
-    text(projectUrl, size - margin, 61, {
-        font: serif(20),
-        color: accent,
-        align: 'right',
-        width: 725,
-    });
-    line(margin, 88, innerWidth, accent);
-
     const primary =
         result.coreCamps[0]?.close ? result.coreCamps[0] : undefined;
-    const title = primary?.name ?? copy['share.imageTitle'];
-    const titleEnd = wrapped(
-        title,
-        margin,
-        166,
-        innerWidth,
-        66,
-        heading(62),
-        accent,
-    );
-    if (primary) {
-        text(primary.similarity, margin, titleEnd + 48, {
-            font: heading(32),
+    const neighbors = primary ? result.coreCamps.slice(1) : result.coreCamps;
+
+    function drawOpening() {
+        ctx.drawImage(mascot, margin, 28, 45, 45);
+        text(projectName.toUpperCase(), 128, 61, {
+            font: heading(29),
             color: accent,
+            width: 425,
         });
-        const descriptionEnd = wrapped(
-            primary.description,
+        text(projectUrl, rightEdge, 61, {
+            font: serif(20),
+            color: accent,
+            align: 'right',
+            width: 725,
+        });
+        line(margin, 88, innerWidth, accent);
+
+        const title = primary?.name ?? copy['share.imageTitle'];
+        const firstBaseline = 170;
+        const titleEnd = wrapped(
+            title.toUpperCase(),
             margin,
-            titleEnd + 88,
-            innerWidth,
-            28,
-            serif(23),
+            firstBaseline,
+            primary ? innerWidth - 270 : innerWidth,
+            77,
+            heading(80),
+            accent,
         );
-        if (primary.voices.length) {
-            text(names(primary), margin, descriptionEnd + 31, {
-                font: serif(20),
-                color: muted,
+        if (primary) {
+            const scoreBaseline = (firstBaseline + titleEnd) / 2 + 16;
+            text(`${primary.score}%`, rightEdge, scoreBaseline, {
+                font: heading(88),
+                color: accent,
+                align: 'right',
+                width: 248,
             });
+            text(
+                copy['result.similarityLabel'].toUpperCase(),
+                rightEdge,
+                scoreBaseline + 32,
+                { font: serif(18), color: accent, align: 'right', width: 248 },
+            );
+            const descriptionEnd = wrapped(
+                primary.description,
+                margin,
+                Math.max(titleEnd + 46, scoreBaseline + 62),
+                innerWidth - 220,
+                29,
+                serif(23),
+            );
+            if (!primary.voices.length) return descriptionEnd;
+
+            return wrapped(
+                `${copy['result.relatedVoices']}: ${names(primary)}`,
+                margin,
+                descriptionEnd + 33,
+                innerWidth,
+                24,
+                serif(20),
+                accent,
+            );
         }
-    } else {
+
         const notice =
-            result.coreCamps.length ?
+            neighbors.length ?
                 copy['result.lowMatch.heading']
             :   copy['result.noEligible.heading'];
-        wrapped(notice, margin, titleEnd + 51, innerWidth, 28, serif(25));
+        return wrapped(
+            notice,
+            margin,
+            titleEnd + 52,
+            innerWidth,
+            30,
+            serif(25),
+        );
     }
 
-    text(copy['result.values.heading'], margin, 416, {
-        font: heading(29),
+    function drawComparisons() {
+        if (!neighbors.length) return;
+
+        line(margin, comparisonsRuleY, innerWidth);
+        const gap = 45;
+        const width =
+            neighbors.length === 3 ? (innerWidth - gap * 2) / 3 : columnWidth;
+        const columnStep =
+            neighbors.length === 3 ? width + gap : rightColumn - margin;
+        const firstBaseline = comparisonsRuleY + 39;
+        neighbors.forEach((camp, index) => {
+            const x = margin + index * columnStep;
+            const color = token(`--camp-${camp.token}-ink-light`);
+            const end = wrapped(
+                camp.name.toUpperCase(),
+                x,
+                firstBaseline,
+                width - 84,
+                27,
+                heading(25),
+                color,
+            );
+            text(`${camp.score}%`, x + width, firstBaseline, {
+                font: heading(26),
+                color,
+                align: 'right',
+            });
+            if (camp.voices.length) {
+                wrapped(names(camp), x, end + 28, width, 21, serif(18), color);
+            }
+        });
+    }
+
+    // Draw the header wash beneath the text once its localized height is known.
+    const openingEnd = drawOpening();
+    const openingBottom = Math.max(355, openingEnd + 23);
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = token('--share-accent-surface');
+    ctx.fillRect(0, 0, size, openingBottom);
+    ctx.fillStyle = paper;
+    ctx.fillRect(0, 0, size, size);
+    ctx.restore();
+
+    const [valuesHeading, beliefsHeading, developerHeading] =
+        imageHeadings(copy);
+    const groupBaseline = openingBottom + 45;
+    const firstAxisBaseline = groupBaseline + 50;
+    text(valuesHeading, margin, groupBaseline, {
+        font: heading(28),
+        color: accent,
         width: columnWidth,
     });
-    text(copy['result.beliefs.heading'], rightColumn, 416, {
-        font: heading(29),
+    text(beliefsHeading, rightColumn, groupBaseline, {
+        font: heading(28),
+        color: accent,
         width: columnWidth,
     });
     result.values.forEach((axis, index) =>
-        drawAxis(axis, margin, 466 + index * 110),
+        drawAxis(axis, margin, firstAxisBaseline + index * coreRowHeight),
     );
     result.beliefs.forEach((axis, index) =>
-        drawAxis(axis, rightColumn, 466 + index * 110),
+        drawAxis(axis, rightColumn, firstAxisBaseline + index * coreRowHeight),
     );
 
+    const developerBaseline =
+        firstAxisBaseline + result.values.length * coreRowHeight - 15;
     if (result.developer) {
-        text(copy['result.developer.heading'], margin, 890, {
-            font: heading(27),
-            color: accent,
+        text(developerHeading, margin, developerBaseline, {
+            font: heading(24),
+            color: developerInk,
             width: columnWidth,
         });
         result.developer.axes.forEach((axis, index) =>
-            drawAxis(axis, margin, 940 + index * 96, true),
+            drawAxis(
+                axis,
+                margin,
+                developerBaseline + 45 + index * developerRowHeight,
+                true,
+            ),
         );
-        const camp = result.developer.camp;
-        if (camp) {
-            text(
-                copy[camp.close ? 'result.primary' : 'result.lowMatch.heading'],
-                rightColumn,
-                1102,
-                {
-                    font: heading(20),
-                    color: accent,
-                    width: columnWidth,
-                },
-            );
-            text(camp.name, rightColumn, 1132, {
-                font: heading(22),
-                width: 350,
-            });
-            text(camp.similarity, size - margin, 1132, {
-                font: serif(18),
-                color: muted,
-                align: 'right',
-                width: 206,
-            });
-        }
     } else {
         wrapped(
             copy['result.developer.skipped'],
             margin,
-            1030,
+            developerBaseline + 128,
             columnWidth,
             41,
             handwritten(35),
@@ -391,40 +461,8 @@ export async function saveResultImage({
         );
     }
 
-    const neighbors = primary ? result.coreCamps.slice(1) : result.coreCamps;
-    if (neighbors.length) {
-        line(margin, 1205, innerWidth);
-        const gap = 35;
-        const width =
-            (innerWidth - gap * (neighbors.length - 1)) / neighbors.length;
-        neighbors.forEach((camp, index) => {
-            const x = margin + index * (width + gap);
-            const end = wrapped(
-                camp.name,
-                x,
-                1244,
-                width,
-                25,
-                heading(24),
-                accent,
-            );
-            text(camp.similarity, x, end + 26, { font: serif(19), width });
-            if (camp.voices.length)
-                text(names(camp), x, end + 51, {
-                    font: serif(17),
-                    color: muted,
-                    width,
-                });
-        });
-    }
-    const hasVoices = result.coreCamps.some(({ voices }) => voices.length > 0);
-    if (hasVoices) {
-        text(copy['footer.disclaimer'], margin, 1342, {
-            font: serif(16),
-            color: muted,
-        });
-    }
-    text(copy['share.imagePrivacy'], margin, 1373, {
+    drawComparisons();
+    text(copy['share.imagePrivacy'], margin, 1370, {
         font: serif(17),
         color: muted,
     });
