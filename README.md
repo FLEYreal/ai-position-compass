@@ -1,5 +1,7 @@
 # AI Position Compass
 
+![AI Position Compass landing page](./readme-cover.png)
+
 AI Position Compass maps what you expect from artificial intelligence and what you want to happen. The test is available in English and Russian, with 66 core questions and an optional 15-question module about software development. It is an exploratory tool and has no scientific validation.
 
 [Take the test in English](https://fleyreal.github.io/ai-position-compass/en/) · [Пройти тест на русском](https://fleyreal.github.io/ai-position-compass/ru/)
