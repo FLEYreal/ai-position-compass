@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import {
     encodeResultPayload,
+    getLocalResultState,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
     useQuestionnaireStore,
@@ -52,11 +53,17 @@ export default function Home({
         void navigate(testPath);
     }
 
-    function viewResult() {
-        const result = useQuestionnaireStore.getState().createResult();
-        void navigate(
-            result ? resultRoute(lang, encodeResultPayload(result)) : testPath,
-        );
+    async function viewResult() {
+        const progress = useQuestionnaireStore.getState();
+        const result = progress.createResult();
+        if (!result) {
+            void navigate(testPath);
+            return;
+        }
+        const state = await getLocalResultState(progress);
+        void navigate(resultRoute(lang, encodeResultPayload(result)), {
+            state,
+        });
     }
 
     const opening = (
@@ -110,7 +117,7 @@ export default function Home({
                     {storage === 'pending' ?
                         <Button disabled>{common['common.loading']}</Button>
                     : status === 'finished' && !needsRecovery ?
-                        <Button onClick={viewResult}>
+                        <Button onClick={() => void viewResult()}>
                             {copy['session.completed.view']}
                             <ArrowRight aria-hidden="true" />
                         </Button>

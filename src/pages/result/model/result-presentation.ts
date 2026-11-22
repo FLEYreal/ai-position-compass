@@ -20,7 +20,7 @@ const v1CampCopy = [
     })),
 ];
 
-type DecodedResult = Extract<ResultUrlDecodeResult, { ok: true }>;
+export type DecodedResult = Extract<ResultUrlDecodeResult, { ok: true }>;
 
 export function readResultQuery(search: string) {
     const payloads = new URLSearchParams(search).getAll('r');

@@ -1,28 +1,40 @@
-import { ArrowRight, Download, Link2 } from 'lucide-react';
+import { ArrowRight, Link2 } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useHref } from 'react-router';
+import { Link, useHref, useLocation } from 'react-router';
 import { resultRoute, type Language } from '@/shared/config';
 import { Button, Input } from '@/shared/ui';
 import type { Messages } from '../i18n';
-import type { ResultPresentation } from '../model/result-presentation';
+import type {
+    DecodedResult,
+    ResultPresentation,
+} from '../model/result-presentation';
+import { ResultDownloadMenu } from './result-download-menu';
 import type { Messages as CommonMessages } from '@/shared/i18n';
 
-type ExportStatus = 'generating' | 'downloaded' | 'fontFailed' | 'exportFailed';
+type ExportStatus =
+    | 'generating'
+    | 'downloaded'
+    | 'fontFailed'
+    | 'exportFailed'
+    | 'jsonDownloaded'
+    | 'jsonScoresDownloaded'
+    | 'jsonFailed';
 
 export function ResultSharing({
     language,
-    payload,
+    decoded,
     copy,
     common,
     result,
 }: {
     language: Language;
-    payload: string;
+    decoded: DecodedResult & { payload: string };
     copy: Messages;
     common: CommonMessages;
     result: ResultPresentation;
 }) {
-    const sharePath = useHref(resultRoute(language, payload));
+    const sharePath = useHref(resultRoute(language, decoded.payload));
+    const { state } = useLocation();
     const projectPath = useHref('/');
     const [copyStatus, setCopyStatus] = useState<'copied' | 'copyFailed'>();
     const [manualLink, setManualLink] = useState<string>();
@@ -68,6 +80,30 @@ export function ResultSharing({
         }
     }
 
+    async function downloadJson() {
+        setExportStatus('generating');
+        try {
+            const { saveResultJson } = await import('../lib/result-json');
+            const availability = await saveResultJson({
+                language,
+                decoded,
+                copy,
+                result,
+                locationState: state,
+                projectUrl:
+                    import.meta.env.VITE_PUBLIC_PROJECT_URL ||
+                    new URL(projectPath, window.location.origin).href,
+            });
+            setExportStatus(
+                availability === 'included' ? 'jsonDownloaded' : (
+                    'jsonScoresDownloaded'
+                ),
+            );
+        } catch {
+            setExportStatus('jsonFailed');
+        }
+    }
+
     return (
         <section
             className="space-y-5 border-t pt-6 pb-4 sm:pt-8 sm:pb-6"
@@ -87,18 +123,13 @@ export function ResultSharing({
                 </div>
                 <div className="flex w-full flex-wrap items-center justify-between gap-4">
                     <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
-                        {!result.allUndefined && (
-                            <Button
-                                disabled={downloading}
-                                onClick={() => void downloadImage()}
-                                className="max-w-full bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] text-background whitespace-normal hover:bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] hover:brightness-110"
-                            >
-                                <Download aria-hidden="true" />
-                                {downloading ?
-                                    copy['share.generating']
-                                :   copy['share.image']}
-                            </Button>
-                        )}
+                        <ResultDownloadMenu
+                            copy={copy}
+                            busy={downloading}
+                            allUndefined={result.allUndefined}
+                            onImage={() => void downloadImage()}
+                            onJson={() => void downloadJson()}
+                        />
                         <Button
                             variant="outline"
                             onClick={() => void copyLink()}
@@ -116,11 +147,6 @@ export function ResultSharing({
                     </Link>
                 </div>
             </div>
-            {result.allUndefined && (
-                <p className="text-sm text-muted-foreground">
-                    {copy['share.noScores']}
-                </p>
-            )}
             <div
                 role="status"
                 className="space-y-2 text-sm text-muted-foreground"

@@ -44,8 +44,19 @@ export default {
     'share.linkLabel': 'Result link',
     'share.description':
         'Share your scores without sharing individual answers.',
-    'share.image': 'Download result image',
-    'share.generating': 'Preparing image…',
+    'share.download': 'Download result',
+    'share.format': 'Choose a format',
+    'share.png': 'Result card · PNG',
+    'share.png.description': 'A card with your scores and nearby camps.',
+    'share.json': 'Result data · JSON',
+    'share.json.description':
+        'Scores, camp comparisons, and question answers when available.',
+    'share.downloadPrivacy': 'Files are created in your browser.',
+    'share.jsonDownloaded': 'JSON download started. It includes your answers.',
+    'share.jsonScoresDownloaded':
+        'JSON download started. Only scores and comparisons are available for this result.',
+    'share.jsonFailed': 'Could not create the JSON file. Try again.',
+    'share.generating': 'Preparing download…',
     'share.downloaded': 'Image download started.',
     'share.exportFailed':
         'The result image could not be created. Try again or copy the result link.',

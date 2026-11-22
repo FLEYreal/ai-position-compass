@@ -6,6 +6,7 @@ import type {
     ResultCamp,
     ResultPresentation,
 } from '../model/result-presentation';
+import { downloadBlob } from './download-blob';
 
 const size = 1400;
 const margin = 70;
@@ -434,15 +435,5 @@ export async function saveResultImage({
             else reject(new Error('Canvas produced no image'));
         }, 'image/png');
     });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `ai-position-compass-${language}.png`;
-    document.body.append(anchor);
-    try {
-        anchor.click();
-    } finally {
-        anchor.remove();
-        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
+    downloadBlob(blob, `ai-position-compass-${language}.png`);
 }

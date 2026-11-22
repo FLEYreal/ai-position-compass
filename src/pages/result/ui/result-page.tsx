@@ -255,7 +255,7 @@ export default function ResultPage({
             <ResultSharing
                 key={`${lang}:${decoded.payload}`}
                 language={lang}
-                payload={decoded.payload}
+                decoded={decoded}
                 copy={copy}
                 common={common}
                 result={result}

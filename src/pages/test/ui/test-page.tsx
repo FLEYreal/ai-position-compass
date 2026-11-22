@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import {
     encodeResultPayload,
+    getLocalResultState,
+    type LocalResultState,
     getSelectedQuestions,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
@@ -46,9 +48,11 @@ export default function TestPage({
 }) {
     const progress = useQuestionnaireStore();
     const storage = useQuestionnaireStorageStatus();
-    const [completionPayload, setCompletionPayload] = useState<string | null>(
-        null,
-    );
+    const [completion, setCompletion] = useState<{
+        payload: string;
+        state: LocalResultState | undefined;
+    } | null>(null);
+
     const [resetFailed, setResetFailed] = useState(false);
     const [openStartAfterReset, setOpenStartAfterReset] = useState(false);
 
@@ -63,7 +67,7 @@ export default function TestPage({
 
     function restart() {
         if (progress.reset()) {
-            setCompletionPayload(null);
+            setCompletion(null);
             setResetFailed(false);
             setOpenStartAfterReset(true);
         } else {
@@ -71,9 +75,9 @@ export default function TestPage({
         }
     }
 
-    function handleCompletionOpenChange(open: boolean) {
+    async function handleCompletionOpenChange(open: boolean) {
         if (!open) {
-            setCompletionPayload(null);
+            setCompletion(null);
             return;
         }
         const result = progress.createResult();
@@ -81,7 +85,8 @@ export default function TestPage({
         if (import.meta.env.DEV) {
             console.info('Questionnaire result', result);
         }
-        setCompletionPayload(encodeResultPayload(result));
+        const state = await getLocalResultState(progress);
+        setCompletion({ payload: encodeResultPayload(result), state });
     }
 
     const closeLabel = common['common.close'];
@@ -162,8 +167,8 @@ export default function TestPage({
 
         return (
             <Dialog
-                open={completionPayload !== null}
-                onOpenChange={handleCompletionOpenChange}
+                open={completion !== null}
+                onOpenChange={(open) => void handleCompletionOpenChange(open)}
             >
                 <QuestionProgress
                     total={questions.length}
@@ -271,9 +276,12 @@ export default function TestPage({
                         closeLabel={closeLabel}
                         className="items-start sm:justify-start"
                     >
-                        {completionPayload && (
+                        {completion && (
                             <Button asChild className="whitespace-normal">
-                                <Link to={resultRoute(lang, completionPayload)}>
+                                <Link
+                                    to={resultRoute(lang, completion.payload)}
+                                    state={completion.state}
+                                >
                                     {copy['session.completed.view']}
                                 </Link>
                             </Button>

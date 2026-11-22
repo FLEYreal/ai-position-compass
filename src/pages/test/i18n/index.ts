@@ -1,8 +1,15 @@
+import {
+    loadQuestionnaireMessages,
+    type QuestionnaireMessages,
+} from '@/entities/scoring';
 import type { Language } from '@/shared/config';
 
-export type Messages = typeof import('./en').default;
+export type Messages = typeof import('./en').default & QuestionnaireMessages;
 
 export async function loadMessages(language: Language): Promise<Messages> {
-    return (language === 'ru' ? await import('./ru') : await import('./en'))
-        .default;
+    const [interfaceCopy, questionnaire] = await Promise.all([
+        language === 'ru' ? import('./ru') : import('./en'),
+        loadQuestionnaireMessages(language),
+    ]);
+    return { ...interfaceCopy.default, ...questionnaire };
 }
