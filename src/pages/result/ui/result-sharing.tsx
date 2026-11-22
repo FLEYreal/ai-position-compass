@@ -1,5 +1,5 @@
 import { ArrowRight, Link2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useHref, useLocation } from 'react-router';
 import { resultRoute, type Language } from '@/shared/config';
 import { Button, Input } from '@/shared/ui';
@@ -13,11 +13,11 @@ import type { Messages as CommonMessages } from '@/shared/i18n';
 
 type ExportStatus =
     | 'generating'
-    | 'downloaded'
+    | 'imageReady'
     | 'fontFailed'
     | 'exportFailed'
-    | 'jsonDownloaded'
-    | 'jsonScoresDownloaded'
+    | 'jsonReady'
+    | 'jsonScoresReady'
     | 'jsonFailed';
 
 export function ResultSharing({
@@ -38,8 +38,21 @@ export function ResultSharing({
     const projectPath = useHref('/');
     const [copyStatus, setCopyStatus] = useState<'copied' | 'copyFailed'>();
     const [manualLink, setManualLink] = useState<string>();
-    const [exportStatus, setExportStatus] = useState<ExportStatus>();
-    const downloading = exportStatus === 'generating';
+    const [exportStatus, setExportStatus] = useState<{ kind: ExportStatus }>();
+    const downloading = exportStatus?.kind === 'generating';
+
+    useEffect(() => {
+        const kind = exportStatus?.kind;
+        if (
+            kind !== 'imageReady' &&
+            kind !== 'jsonReady' &&
+            kind !== 'jsonScoresReady'
+        )
+            return;
+
+        const timer = window.setTimeout(() => setExportStatus(undefined), 5000);
+        return () => window.clearTimeout(timer);
+    }, [exportStatus]);
 
     async function copyLink() {
         const link = new URL(sharePath, window.location.origin).href;
@@ -54,7 +67,7 @@ export function ResultSharing({
     }
 
     async function downloadImage() {
-        setExportStatus('generating');
+        setExportStatus({ kind: 'generating' });
         try {
             const { saveResultImage, ResultImageFontError } =
                 await import('../lib/result-image');
@@ -67,21 +80,22 @@ export function ResultSharing({
                         import.meta.env.VITE_PUBLIC_PROJECT_URL ||
                         new URL(projectPath, window.location.origin).href,
                 });
-                setExportStatus('downloaded');
+                setExportStatus({ kind: 'imageReady' });
             } catch (error) {
-                setExportStatus(
-                    error instanceof ResultImageFontError ? 'fontFailed' : (
-                        'exportFailed'
-                    ),
-                );
+                setExportStatus({
+                    kind:
+                        error instanceof ResultImageFontError ? 'fontFailed' : (
+                            'exportFailed'
+                        ),
+                });
             }
         } catch {
-            setExportStatus('exportFailed');
+            setExportStatus({ kind: 'exportFailed' });
         }
     }
 
     async function downloadJson() {
-        setExportStatus('generating');
+        setExportStatus({ kind: 'generating' });
         try {
             const { saveResultJson } = await import('../lib/result-json');
             const availability = await saveResultJson({
@@ -94,13 +108,14 @@ export function ResultSharing({
                     import.meta.env.VITE_PUBLIC_PROJECT_URL ||
                     new URL(projectPath, window.location.origin).href,
             });
-            setExportStatus(
-                availability === 'included' ? 'jsonDownloaded' : (
-                    'jsonScoresDownloaded'
-                ),
-            );
+            setExportStatus({
+                kind:
+                    availability === 'included' ? 'jsonReady' : (
+                        'jsonScoresReady'
+                    ),
+            });
         } catch {
-            setExportStatus('jsonFailed');
+            setExportStatus({ kind: 'jsonFailed' });
         }
     }
 
@@ -152,7 +167,7 @@ export function ResultSharing({
                 className="space-y-2 text-sm text-muted-foreground"
             >
                 {copyStatus && <p>{copy[`share.${copyStatus}`]}</p>}
-                {exportStatus && <p>{copy[`share.${exportStatus}`]}</p>}
+                {exportStatus && <p>{copy[`share.${exportStatus.kind}`]}</p>}
             </div>
             {manualLink && (
                 <Input

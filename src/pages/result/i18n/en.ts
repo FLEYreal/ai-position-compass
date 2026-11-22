@@ -52,12 +52,11 @@ export default {
     'share.json.description':
         'Scores, camp comparisons, and question answers when available.',
     'share.downloadPrivacy': 'Files are created in your browser.',
-    'share.jsonDownloaded': 'JSON download started. It includes your answers.',
-    'share.jsonScoresDownloaded':
-        'JSON download started. Only scores and comparisons are available for this result.',
+    'share.jsonReady': 'JSON is ready. It includes your answers.',
+    'share.jsonScoresReady': 'JSON is ready with scores and comparisons.',
     'share.jsonFailed': 'Could not create the JSON file. Try again.',
     'share.generating': 'Preparing download…',
-    'share.downloaded': 'Image download started.',
+    'share.imageReady': 'Image is ready.',
     'share.exportFailed':
         'The result image could not be created. Try again or copy the result link.',
     'share.fontFailed':

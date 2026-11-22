@@ -51,13 +51,11 @@ export default {
     'share.json.description':
         'Оценки, сходство с лагерями и ответы на вопросы, если они доступны.',
     'share.downloadPrivacy': 'Файлы создаются в вашем браузере.',
-    'share.jsonDownloaded':
-        'Скачивание JSON началось. Файл содержит ваши ответы.',
-    'share.jsonScoresDownloaded':
-        'Скачивание JSON началось. Для этого результата доступны только оценки и сравнения с лагерями.',
+    'share.jsonReady': 'Файл JSON готов и содержит ваши ответы.',
+    'share.jsonScoresReady': 'Файл JSON с оценками и сравнениями готов.',
     'share.jsonFailed': 'Не удалось создать файл JSON. Попробуйте ещё раз.',
     'share.generating': 'Подготавливаем файл…',
-    'share.downloaded': 'Скачивание изображения началось.',
+    'share.imageReady': 'Изображение готово.',
     'share.exportFailed':
         'Не удалось создать изображение результата. Попробуйте ещё раз или скопируйте ссылку.',
     'share.fontFailed':
