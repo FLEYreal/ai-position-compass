@@ -1,6 +1,6 @@
 import { ShieldCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import {
     encodeResultPayload,
     getLocalResultState,
@@ -49,6 +49,7 @@ export default function TestPage({
 }) {
     const progress = useQuestionnaireStore();
     const storage = useQuestionnaireStorageStatus();
+    const { state } = useLocation();
     const [completion, setCompletion] = useState<{
         payload: string;
         state: LocalResultState | undefined;
@@ -95,10 +96,10 @@ export default function TestPage({
     const cancelLabel = common['common.cancel'];
     const restartAction = (
         <QuestionnaireConfirmation
-            label={copy['test.restart']}
-            heading={copy['session.restart.heading']}
-            description={copy['session.restart.description']}
-            confirmation={copy['session.restart.confirm']}
+            label={common['test.restart']}
+            heading={common['session.restart.heading']}
+            description={common['session.restart.description']}
+            confirmation={common['session.restart.confirm']}
             closeLabel={closeLabel}
             cancelLabel={cancelLabel}
             onConfirm={restart}
@@ -137,7 +138,7 @@ export default function TestPage({
                     />
                     {resetFailed && (
                         <p role="alert" className="w-full">
-                            {copy['storage.resetFailed']}
+                            {common['storage.resetFailed']}
                         </p>
                     )}
                 </QuestionnaireStatus>
@@ -150,7 +151,10 @@ export default function TestPage({
                     label={startMessages['start.begin']}
                     messages={startMessages}
                     common={common}
-                    openOnMount={openStartAfterReset}
+                    openOnMount={
+                        openStartAfterReset ||
+                        state?.showQuestionnaireWelcome === true
+                    }
                     onStart={progress.start}
                 />
             );

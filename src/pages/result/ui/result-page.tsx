@@ -1,8 +1,14 @@
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import {
+    restoreQuestionnaireProgress,
+    useQuestionnaireStore,
+} from '@/entities/scoring';
 import type { Language } from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
 import { Button, Collage } from '@/shared/ui';
+import { QuestionnaireConfirmation } from '@/widgets/questionnaire-status';
 import type { Messages } from '../i18n';
 import { presentResult, readResultQuery } from '../model/result-presentation';
 import {
@@ -39,6 +45,9 @@ export default function ResultPage({
     search: string | null;
 }) {
     const heading = copy['result.heading'];
+    const navigate = useNavigate();
+    const [resetFailed, setResetFailed] = useState(false);
+
     if (search === null) {
         return (
             <section className="space-y-4 py-10">
@@ -94,6 +103,37 @@ export default function ResultPage({
         </p>
     );
 
+    async function restart() {
+        setResetFailed(false);
+        await restoreQuestionnaireProgress();
+        if (!useQuestionnaireStore.getState().reset()) {
+            setResetFailed(true);
+            return;
+        }
+        await navigate(`/${lang}/test`, {
+            state: { showQuestionnaireWelcome: true },
+        });
+    }
+
+    const restartAction = (
+        <div className="space-y-2">
+            <QuestionnaireConfirmation
+                label={common['test.restart']}
+                heading={common['session.restart.heading']}
+                description={common['session.restart.description']}
+                confirmation={common['session.restart.confirm']}
+                closeLabel={common['common.close']}
+                cancelLabel={common['common.cancel']}
+                onConfirm={() => void restart()}
+            />
+            {resetFailed && (
+                <p role="alert" className="max-w-[55ch] text-sm">
+                    {common['storage.resetFailed']}
+                </p>
+            )}
+        </div>
+    );
+
     return (
         <div
             style={primary ? campPalette(primary) : undefined}
@@ -105,7 +145,7 @@ export default function ResultPage({
                     <h1 className="font-heading text-[clamp(2.625rem,6vw,4.875rem)] leading-[1.06] font-semibold tracking-tight text-[var(--result-camp-ink,var(--ink))] text-balance wrap-break-word uppercase [&:lang(ru)]:text-[clamp(2rem,5vw,4.0625rem)] max-[560px]:[&:lang(ru)]:text-[clamp(2rem,9.8vw,3.125rem)]">
                         {primary?.name ?? heading}
                     </h1>
-                    {primary && (
+                    {primary ?
                         <>
                             <div
                                 aria-hidden="true"
@@ -126,7 +166,19 @@ export default function ResultPage({
                                 <CampVoices camp={primary} copy={copy} />
                             </div>
                         </>
-                    )}
+                    :   <>
+                            <p className="max-w-[52ch] text-sm leading-relaxed text-muted-foreground">
+                                {
+                                    copy[
+                                        leadingCamp ?
+                                            'result.lowMatch.body'
+                                        :   'result.noEligible.summary'
+                                    ]
+                                }
+                            </p>
+                            {restartAction}
+                        </>
+                    }
                 </div>
                 <Collage
                     variant="result"
@@ -140,17 +192,11 @@ export default function ResultPage({
                 />
             </section>
 
-            {(leadingCamp || !result.allUndefined) && (
+            {(comparisons.length > 0 || coreHasVoices) && (
                 <section className="space-y-4" aria-labelledby="core-profile">
                     <h2 id="core-profile" className="sr-only">
                         {copy['result.core.heading']}
                     </h2>
-                    {leadingCamp && !primary && (
-                        <MatchNotice copy={copy} kind="lowMatch" />
-                    )}
-                    {!leadingCamp && !result.allUndefined && (
-                        <MatchNotice copy={copy} kind="noEligible" />
-                    )}
                     <CampComparisons
                         camps={comparisons}
                         heading={
@@ -243,7 +289,14 @@ export default function ResultPage({
                             {copy['result.developer.undefined']}
                         </p>
                     : !developerCamp ?
-                        <MatchNotice copy={copy} kind="noEligible" />
+                        <div className="space-y-1">
+                            <h3 className="font-heading text-2xl">
+                                {copy['result.noEligible.heading']}
+                            </h3>
+                            <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
+                                {copy['result.noEligible.body']}
+                            </p>
+                        </div>
                     :   null}
                     <AxisList axes={developer.axes} copy={copy} showConstruct />
                 </section>
@@ -259,26 +312,8 @@ export default function ResultPage({
                 copy={copy}
                 common={common}
                 result={result}
+                restartAction={primary ? restartAction : undefined}
             />
-        </div>
-    );
-}
-
-function MatchNotice({
-    copy,
-    kind,
-}: {
-    copy: Messages;
-    kind: 'noEligible' | 'lowMatch';
-}) {
-    return (
-        <div className="space-y-1">
-            <h3 className="font-heading text-2xl">
-                {copy[`result.${kind}.heading`]}
-            </h3>
-            <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-                {copy[`result.${kind}.body`]}
-            </p>
         </div>
     );
 }

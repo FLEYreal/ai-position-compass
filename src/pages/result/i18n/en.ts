@@ -19,9 +19,11 @@ export default {
     'result.noEligible.heading': 'Not enough information to compare camps',
     'result.noEligible.body':
         'Your available axis scores are shown below. No camp meets the comparison requirements for this result.',
+    'result.noEligible.summary':
+        'There aren’t enough scored axes to reliably match your answers to a camp.',
     'result.lowMatch.heading': 'No close camp match',
     'result.lowMatch.body':
-        'Your views do not closely match any of these camps. The nearest comparisons are still shown for exploration.',
+        'Your answers didn’t closely match any camp. You can explore the nearest comparisons below.',
     'result.developer.skipped':
         'Developer questions were not included in this result.',
     'result.developer.lowMatch':

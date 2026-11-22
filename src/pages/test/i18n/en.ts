@@ -29,17 +29,12 @@ export default {
     'test.keyboard':
         'Press 1–5 to choose an answer, or U to answer Unsure and continue.',
     'test.developerHeading': 'Developer questions',
-    'test.restart': 'Restart questionnaire',
     'test.loadingSaved': 'Loading saved progress…',
     'session.completed.heading': 'You have completed this questionnaire.',
     'session.completed.description':
         'You can now see what your answers reveal about your views on AI.',
     'session.completed.view': 'View my results',
     'session.completed.edit': 'Review my answers',
-    'session.restart.heading': 'Start again?',
-    'session.restart.description':
-        'This will delete your saved answers and start a new questionnaire. Your language and appearance preferences will stay the same.',
-    'session.restart.confirm': 'Delete answers and restart',
     'storage.unavailable':
         'Progress cannot be saved in this browser. You can continue, but closing or reloading this page may lose your answers.',
     'storage.saveFailed':
@@ -53,8 +48,6 @@ export default {
         'These answers cannot be safely used with the current questionnaire. Clear the saved progress to start again.',
     'storage.reset': 'Clear saved progress',
     'storage.reset.confirm': 'Clear saved progress and start again?',
-    'storage.resetFailed':
-        'Saved progress could not be cleared. Check your browser’s storage settings and try again.',
     'research.axes.regulation':
         'Regulation · Let them build ↔ Strict oversight',
     'research.axes.control': 'Control · Market ↔ Public institutions',

@@ -1,5 +1,5 @@
 import { ArrowRight, Link2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useHref, useLocation } from 'react-router';
 import { resultRoute, type Language } from '@/shared/config';
 import { Button, Input } from '@/shared/ui';
@@ -26,12 +26,14 @@ export function ResultSharing({
     copy,
     common,
     result,
+    restartAction,
 }: {
     language: Language;
     decoded: DecodedResult & { payload: string };
     copy: Messages;
     common: CommonMessages;
     result: ResultPresentation;
+    restartAction?: ReactNode;
 }) {
     const sharePath = useHref(resultRoute(language, decoded.payload));
     const { state } = useLocation();
@@ -152,6 +154,7 @@ export function ResultSharing({
                         >
                             <Link2 aria-hidden="true" /> {copy['share.copy']}
                         </Button>
+                        {restartAction}
                     </div>
                     <Link
                         className="inline-flex items-center gap-1 text-sm text-ring underline underline-offset-4"
