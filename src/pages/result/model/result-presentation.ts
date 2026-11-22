@@ -38,15 +38,15 @@ function presentCamps(matches: CampMatch[], copy: Messages) {
     return matches.slice(0, 3).map((match) => {
         // Ranking and presentation use the same retained v1 camp definitions.
         const { id, key } = v1CampCopy.find(({ id }) => id === match.id)!;
+        const score = Math.round(match.match);
         return {
             id,
             token: tokenName(id),
             name: copy[`${key}.name`],
             description: copy[`${key}.description`],
-            similarity: copy['result.match'].replace(
-                '{score}',
-                String(Math.round(match.match)),
-            ),
+            context: copy[`${key}.context`],
+            score,
+            similarity: copy['result.match'].replace('{score}', String(score)),
             close: match.passesThreshold,
             voices: people
                 .filter(({ campIds }) =>

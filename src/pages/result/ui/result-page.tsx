@@ -5,7 +5,12 @@ import type { Messages as CommonMessages } from '@/shared/i18n';
 import { Button, Collage } from '@/shared/ui';
 import type { Messages } from '../i18n';
 import { presentResult, readResultQuery } from '../model/result-presentation';
-import { AxisGroup, CampComparisons, CampVoices } from './result-profile';
+import {
+    AxisGroup,
+    CampComparisons,
+    CampSimilarity,
+    CampVoices,
+} from './result-profile';
 import { campPalette } from './camp-palette';
 import { ResultSharing } from './result-sharing';
 
@@ -77,44 +82,54 @@ export default function ResultPage({
     const leadingCamp = result.coreCamps[0];
     const primary = leadingCamp?.close ? leadingCamp : undefined;
     const comparisons = primary ? result.coreCamps.slice(1) : result.coreCamps;
-    const sourceLabel = common['common.source'];
-    const hasVoices = [
-        ...result.coreCamps,
-        ...(result.developer?.camps ?? []),
-    ].some(({ voices }) => voices.length > 0);
+    const developer = result.developer;
+    const developerLead = developer?.camps[0];
+    const developerPrimary = developerLead?.close ? developerLead : undefined;
+    const developerComparisons =
+        developer?.camps.slice(developerPrimary ? 1 : 0) ?? [];
+    const coreHasVoices = result.coreCamps.some(
+        ({ voices }) => voices.length > 0,
+    );
+    const developerHasVoices = developer?.camps.some(
+        ({ voices }) => voices.length > 0,
+    );
+    const voicesNotice = (
+        <p className="max-w-[80ch] text-xs leading-relaxed text-muted-foreground">
+            {copy['footer.disclaimer']}
+        </p>
+    );
 
     return (
-        <div className="space-y-[clamp(2.75rem,6vw,5rem)]">
+        <div
+            style={primary ? campPalette(primary) : undefined}
+            className="space-y-[clamp(2rem,4.5vw,3.5rem)]"
+        >
             <title>{heading}</title>
-            <section
-                style={primary ? campPalette(primary) : undefined}
-                className="grid items-center gap-6 rounded-xl bg-[var(--result-camp-surface,var(--paper-raised))] px-[clamp(1.25rem,4vw,2.25rem)] py-[clamp(1.75rem,5vw,2.5rem)] min-[800px]:grid-cols-[1.05fr_1fr] min-[800px]:rounded-t-none"
-            >
+            <section className="grid items-center gap-5 rounded-xl bg-[var(--result-camp-surface,var(--paper-raised))] px-[clamp(1.1875rem,4vw,2.1875rem)] py-[clamp(1.625rem,4vw,2.5rem)] min-[800px]:grid-cols-[1.05fr_1fr] min-[800px]:rounded-t-none">
                 <div className="min-w-0 space-y-4">
-                    <h1 className="font-heading text-[clamp(2.4rem,6vw,4.875rem)] leading-[1.06] font-semibold tracking-tight text-[var(--result-camp-ink,var(--ink))] text-balance break-words uppercase [&:lang(ru)]:text-[clamp(2rem,5vw,4.0625rem)]">
+                    <h1 className="font-heading text-[clamp(2.625rem,6vw,4.875rem)] leading-[1.06] font-semibold tracking-tight text-[var(--result-camp-ink,var(--ink))] text-balance wrap-break-word uppercase [&:lang(ru)]:text-[clamp(2rem,5vw,4.0625rem)] max-[560px]:[&:lang(ru)]:text-[clamp(2rem,9.8vw,3.125rem)]">
                         {primary?.name ?? heading}
                     </h1>
                     {primary && (
                         <>
-                            <p className="text-xl font-semibold text-(--result-camp-ink) tabular-nums">
-                                <span className="sr-only">
-                                    {copy['result.primary']}{' '}
-                                </span>
-                                {primary.similarity}
-                            </p>
+                            <div
+                                aria-hidden="true"
+                                className="h-1 w-24 bg-(--result-camp-ink)"
+                            />
+                            <CampSimilarity
+                                camp={primary}
+                                copy={copy}
+                                prominent
+                            />
                             <p className="max-w-[50ch] leading-relaxed italic">
                                 {primary.description}
                             </p>
-                            <CampVoices
-                                camp={primary}
-                                copy={copy}
-                                sourceLabel={sourceLabel}
-                            />
+                            <p className="max-w-[55ch] text-sm leading-[1.85] text-muted-foreground">
+                                {primary.context}
+                            </p>
+                            <CampVoices camp={primary} copy={copy} />
                         </>
                     )}
-                    <p className="max-w-[55ch] text-sm leading-relaxed">
-                        {copy['result.introduction']}
-                    </p>
                 </div>
                 <Collage
                     variant="result"
@@ -124,124 +139,136 @@ export default function ResultPage({
                         resumeAction: common['artwork.play'],
                         punchcard: common['artwork.punchcard'],
                     }}
-                    className="min-w-0"
+                    className="min-w-0 max-[799px]:mx-auto max-[799px]:max-w-[390px]"
                 />
             </section>
 
-            <section className="space-y-5" aria-labelledby="core-profile">
-                <h2 className={sectionTitle} id="core-profile">
-                    {copy['result.core.heading']}
-                </h2>
-                {leadingCamp && !primary && (
-                    <div className="space-y-1">
-                        <h3 className="font-heading text-2xl">
-                            {copy['result.lowMatch.heading']}
-                        </h3>
-                        <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-                            {copy['result.lowMatch.body']}
-                        </p>
-                    </div>
-                )}
-                {!leadingCamp && !result.allUndefined && (
-                    <div className="space-y-1">
-                        <h3 className="font-heading text-2xl">
-                            {copy['result.noEligible.heading']}
-                        </h3>
-                        <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-                            {copy['result.noEligible.body']}
-                        </p>
-                    </div>
-                )}
-                <CampComparisons
-                    camps={comparisons}
-                    heading={
-                        primary ?
-                            copy['result.neighboring']
-                        :   copy['result.matches.heading']
-                    }
-                    copy={copy}
-                    sourceLabel={sourceLabel}
-                />
-                <div className="space-y-5 pt-3">
-                    <h3 className="font-heading text-2xl">
-                        {copy['result.axes.heading']}
-                    </h3>
-                    {result.someUndefined && (
-                        <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-                            {result.allUndefined ?
-                                copy['result.allUndefined']
-                            :   copy['result.someUndefined']}
-                        </p>
+            {(leadingCamp || !result.allUndefined) && (
+                <section className="space-y-4" aria-labelledby="core-profile">
+                    <h2 id="core-profile" className="sr-only">
+                        {copy['result.core.heading']}
+                    </h2>
+                    {leadingCamp && !primary && (
+                        <MatchNotice copy={copy} kind="lowMatch" />
                     )}
-                    <AxisGroup
-                        heading={copy['result.values.heading']}
-                        axes={result.values}
+                    {!leadingCamp && !result.allUndefined && (
+                        <MatchNotice copy={copy} kind="noEligible" />
+                    )}
+                    <CampComparisons
+                        camps={comparisons}
+                        heading={
+                            primary ?
+                                copy['result.neighboring']
+                            :   copy['result.matches.heading']
+                        }
+                        caption={
+                            primary ?
+                                copy['result.neighboring.caption']
+                            :   undefined
+                        }
+                        start={primary ? 2 : 1}
                         copy={copy}
-                        annotate
                     />
-                    <AxisGroup
-                        heading={copy['result.beliefs.heading']}
-                        axes={result.beliefs}
-                        copy={copy}
-                    />
-                </div>
+                    {coreHasVoices && voicesNotice}
+                </section>
+            )}
+
+            <section
+                className="space-y-6 sm:space-y-8"
+                aria-labelledby="result-axes"
+            >
+                <h2 className="sr-only" id="result-axes">
+                    {copy['result.axes.heading']}
+                </h2>
+                {result.someUndefined && (
+                    <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
+                        {result.allUndefined ?
+                            copy['result.allUndefined']
+                        :   copy['result.someUndefined']}
+                    </p>
+                )}
+                <AxisGroup
+                    heading={copy['result.values.heading']}
+                    axes={result.values}
+                    copy={copy}
+                    annotate
+                />
+                <AxisGroup
+                    heading={copy['result.beliefs.heading']}
+                    axes={result.beliefs}
+                    copy={copy}
+                />
             </section>
 
-            {result.developer ?
+            {developer ?
                 <section
-                    className="space-y-5"
+                    className="space-y-6 rounded-xl bg-secondary px-[clamp(1rem,3vw,1.625rem)] py-6"
                     aria-labelledby="developer-profile"
                 >
-                    <h2 id="developer-profile" className={sectionTitle}>
+                    <h2
+                        id="developer-profile"
+                        className={`${sectionTitle} text-(--camp-vibe-coders-ink)`}
+                    >
                         {copy['result.developer.heading']}
                     </h2>
-                    {(
-                        result.developer.axes.every(
-                            ({ score }) => score === null,
-                        )
-                    ) ?
+                    {developerPrimary && (
+                        <div
+                            className="space-y-3"
+                            style={campPalette(developerPrimary)}
+                        >
+                            <h3 className="font-heading text-[length:var(--font-size-title)] leading-tight text-(--result-camp-ink) uppercase">
+                                {developerPrimary.name}
+                            </h3>
+                            <CampSimilarity
+                                camp={developerPrimary}
+                                copy={copy}
+                                prominent
+                            />
+                            <p className="max-w-[58ch] leading-relaxed italic">
+                                {developerPrimary.description}
+                            </p>
+                            <p className="max-w-[65ch] text-sm leading-[1.85] text-muted-foreground">
+                                {developerPrimary.context}
+                            </p>
+                            <CampVoices camp={developerPrimary} copy={copy} />
+                        </div>
+                    )}
+                    {developer.axes.every(({ score }) => score === null) ?
                         <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
                             {copy['result.developer.undefined']}
                         </p>
-                    : result.developer.camps.length === 0 ?
-                        <div className="space-y-1">
-                            <h3 className="font-heading text-2xl">
-                                {copy['result.noEligible.heading']}
-                            </h3>
-                            <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-                                {copy['result.noEligible.body']}
-                            </p>
-                        </div>
-                    :   !result.developer.camps[0].close && (
-                            <div className="space-y-1">
-                                <h3 className="font-heading text-2xl">
-                                    {copy['result.lowMatch.heading']}
-                                </h3>
-                                <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-                                    {copy['result.lowMatch.body']}
-                                </p>
-                            </div>
+                    : !developerLead ?
+                        <MatchNotice copy={copy} kind="noEligible" />
+                    :   !developerPrimary && (
+                            <MatchNotice copy={copy} kind="lowMatch" />
                         )
                     }
                     <CampComparisons
-                        camps={result.developer.camps}
-                        heading={copy['result.matches.heading']}
+                        camps={developerComparisons}
+                        heading={
+                            developerPrimary ?
+                                copy['result.neighboring']
+                            :   copy['result.matches.heading']
+                        }
+                        start={developerPrimary ? 2 : 1}
                         copy={copy}
-                        sourceLabel={sourceLabel}
                     />
+                    {!coreHasVoices && developerHasVoices && voicesNotice}
                     <AxisGroup
                         heading={copy['result.values.heading']}
-                        axes={result.developer.axes.filter(
+                        axes={developer.axes.filter(
                             ({ construct }) => construct === 'value',
                         )}
                         copy={copy}
+                        developer
                     />
                     <AxisGroup
                         heading={copy['result.beliefs.heading']}
-                        axes={result.developer.axes.filter(
+                        axes={developer.axes.filter(
                             ({ construct }) => construct === 'belief',
                         )}
                         copy={copy}
+                        developer
                     />
                 </section>
             :   <p className="text-sm text-muted-foreground">
@@ -249,34 +276,27 @@ export default function ResultPage({
                 </p>
             }
 
-            <div className="space-y-4">
-                <details className="group border-y py-4">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-heading text-xl [&::-webkit-details-marker]:hidden">
-                        {copy['result.methodology']}
-                        <ChevronDown
-                            aria-hidden="true"
-                            size={18}
-                            className="shrink-0 group-open:rotate-180"
-                        />
-                    </summary>
-                    <div className="mt-4 max-w-[65ch] space-y-2 text-sm leading-relaxed text-muted-foreground">
-                        <p>{copy['result.matchExplanation']}</p>
-                        <p>{copy['result.undefined.description']}</p>
-                        <p>{copy['result.privacy']}</p>
-                        <p>
-                            {copy['result.version'].replace(
-                                '{version}',
-                                String(result.version),
-                            )}
-                        </p>
-                    </div>
-                </details>
-                {hasVoices && (
-                    <p className="max-w-[65ch] text-sm text-muted-foreground">
-                        {copy['footer.disclaimer']}
+            <details className="group border-y py-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-heading text-xl [&::-webkit-details-marker]:hidden">
+                    {copy['result.methodology']}
+                    <ChevronDown
+                        aria-hidden="true"
+                        size={18}
+                        className="shrink-0 group-open:rotate-180"
+                    />
+                </summary>
+                <div className="mt-4 max-w-[65ch] space-y-2 text-sm leading-relaxed text-muted-foreground">
+                    <p>{copy['result.matchExplanation']}</p>
+                    <p>{copy['result.undefined.description']}</p>
+                    <p>{copy['result.privacy']}</p>
+                    <p>
+                        {copy['result.version'].replace(
+                            '{version}',
+                            String(result.version),
+                        )}
                     </p>
-                )}
-            </div>
+                </div>
+            </details>
             <ResultSharing
                 key={`${lang}:${decoded.payload}`}
                 language={lang}
@@ -284,12 +304,34 @@ export default function ResultPage({
                 copy={copy}
                 result={result}
             />
-            <Link
-                className="inline-block text-sm text-ring underline"
-                to={`/${lang}/test`}
-            >
-                {copy['result.retake']}
-            </Link>
+            <div className="flex justify-end">
+                <Link
+                    className="inline-flex items-center gap-1 text-sm text-ring underline underline-offset-4"
+                    to={`/${lang}/`}
+                >
+                    {common['recovery.home']}{' '}
+                    <ArrowRight aria-hidden="true" size={14} />
+                </Link>
+            </div>
+        </div>
+    );
+}
+
+function MatchNotice({
+    copy,
+    kind,
+}: {
+    copy: Messages;
+    kind: 'noEligible' | 'lowMatch';
+}) {
+    return (
+        <div className="space-y-1">
+            <h3 className="font-heading text-2xl">
+                {copy[`result.${kind}.heading`]}
+            </h3>
+            <p className="max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
+                {copy[`result.${kind}.body`]}
+            </p>
         </div>
     );
 }

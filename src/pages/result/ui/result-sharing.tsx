@@ -1,6 +1,6 @@
 import { Download, Link2 } from 'lucide-react';
 import { useState } from 'react';
-import { useHref } from 'react-router';
+import { Link, useHref } from 'react-router';
 import { resultRoute, type Language } from '@/shared/config';
 import { Button, Input } from '@/shared/ui';
 import type { Messages } from '../i18n';
@@ -74,7 +74,7 @@ export function ResultSharing({
                 <div className="min-w-0 space-y-2">
                     <h2
                         id="result-sharing"
-                        className="font-heading text-[clamp(1.75rem,4vw,2.5rem)] leading-tight"
+                        className="font-heading text-[clamp(1.75rem,4vw,2.5rem)] leading-tight text-[var(--result-camp-ink,var(--ink))] uppercase"
                     >
                         {copy['share.heading']}
                     </h2>
@@ -87,7 +87,7 @@ export function ResultSharing({
                         <Button
                             disabled={downloading}
                             onClick={() => void downloadImage()}
-                            className="max-w-full bg-(--camp-cautious-builders-ink) text-background whitespace-normal hover:bg-(--camp-cautious-builders-ink) hover:brightness-110"
+                            className="max-w-full bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] text-background whitespace-normal hover:bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] hover:brightness-110"
                         >
                             <Download aria-hidden="true" />
                             {downloading ?
@@ -102,6 +102,12 @@ export function ResultSharing({
                     >
                         <Link2 aria-hidden="true" /> {copy['share.copy']}
                     </Button>
+                    <Link
+                        to={`/${language}/test`}
+                        className="text-sm text-ring underline underline-offset-4"
+                    >
+                        {copy['result.retake']}
+                    </Link>
                 </div>
             </div>
             {result.allUndefined && (
