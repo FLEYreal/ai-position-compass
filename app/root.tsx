@@ -14,13 +14,13 @@ import { ThemeProvider } from '../src/app/providers/theme-provider';
 import { themeBootstrapScript } from '../src/shared/lib/theme';
 import { AppShell } from '../src/app/ui/app-shell';
 import { loadMessages } from '../src/app/i18n';
-import { languageFromPathname } from '../src/shared/config';
+import { isLanguage, languageFromPathname } from '../src/shared/config';
 
-async function loadShellMessages({ request }: LoaderFunctionArgs) {
-    const language = languageFromPathname(
-        new URL(request.url).pathname,
-        import.meta.env.BASE_URL,
-    );
+async function loadShellMessages({ params, url }: LoaderFunctionArgs) {
+    const language =
+        isLanguage(params.lang) ?
+            params.lang
+        :   languageFromPathname(url.pathname, import.meta.env.BASE_URL);
     return { language, messages: await loadMessages(language) };
 }
 

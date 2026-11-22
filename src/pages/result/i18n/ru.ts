@@ -5,7 +5,8 @@ export default {
     // Axes
     'research.axes.regulation':
         'Регулирование · Свобода разработки ↔ Строгий надзор',
-    'research.axes.control': 'Контроль · Рынок ↔ Государство',
+    'research.axes.control':
+        'Контроль · Рынок ↔ Государственные и общественные институты',
     'research.axes.geopolitics':
         'Геополитика · Гонка ↔ Международное сотрудничество',
     'research.axes.openness':

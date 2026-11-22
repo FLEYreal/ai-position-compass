@@ -16,15 +16,18 @@ import {
     type QuestionResponse,
 } from './questionnaire-progress';
 
+const storageName = 'questionnaire';
 const storageVersion = 1;
 
 type QuestionnaireStore = QuestionnaireProgress & {
+    start: (includeDeveloper: boolean) => void;
+    reviewAnswers: () => void;
     answerQuestion: (questionId: string, response: QuestionResponse) => void;
     getCurrentQuestion: () => ModeledQuestionDefinition | null;
     nextQuestion: () => void;
     previousQuestion: () => void;
     createResult: () => QuestionnaireResult | null;
-    reset: (includeDeveloper?: boolean) => void;
+    reset: (includeDeveloper?: boolean) => boolean;
 };
 
 type StorageStatus =
@@ -108,6 +111,23 @@ export const useQuestionnaireStore = create<QuestionnaireStore>()(
     persist<QuestionnaireStore, [], [], unknown>(
         (set, get) => ({
             ...newQuestionnaireProgress(),
+            start: (includeDeveloper) => {
+                if (canEdit() && get().status === 'not-started') {
+                    set({
+                        ...newQuestionnaireProgress(includeDeveloper),
+                        status: 'in-process',
+                    });
+                }
+            },
+            reviewAnswers: () => {
+                const { status, includeDeveloper } = get();
+                if (canEdit() && status === 'finished') {
+                    set({
+                        currentQuestionId:
+                            getSelectedQuestions(includeDeveloper)[0].id,
+                    });
+                }
+            },
             answerQuestion: (questionId, response) => {
                 const { answersById, includeDeveloper } = get();
                 if (
@@ -172,13 +192,21 @@ export const useQuestionnaireStore = create<QuestionnaireStore>()(
                 return result;
             },
             reset: (includeDeveloper) => {
-                if (storageStatus.getState() !== 'pending') {
-                    set(newQuestionnaireProgress(includeDeveloper));
+                const status = storageStatus.getState();
+                if (status === 'pending') return false;
+                if (status === 'invalid' || status === 'incompatible') {
+                    try {
+                        progressStorage.removeItem?.(storageName);
+                    } catch {
+                        return false;
+                    }
                 }
+                set(newQuestionnaireProgress(includeDeveloper));
+                return true;
             },
         }),
         {
-            name: 'questionnaire',
+            name: storageName,
             version: storageVersion,
             skipHydration: true,
             storage: progressStorage,

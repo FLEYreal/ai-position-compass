@@ -11,6 +11,7 @@ export {
     findCampMatches,
 } from './model/camp';
 export {
+    getSelectedQuestions,
     type AnswerValue,
     type QuestionAnswer,
     type QuestionnaireProgress,

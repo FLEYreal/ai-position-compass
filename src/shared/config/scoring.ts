@@ -41,6 +41,22 @@ export type CoreAxisId = (typeof coreAxes)[number]['id'];
 export type DevAxisId = (typeof devAxes)[number]['id'];
 export type AxisId = (typeof axes)[number]['id'];
 
+export const axisConstruct = {
+    regulation: 'value',
+    control: 'value',
+    geopolitics: 'value',
+    openness: 'value',
+    capability: 'belief',
+    existentialRisk: 'belief',
+    ecology: 'belief',
+    creativity: 'belief',
+    labor: 'belief',
+    surveillance: 'belief',
+    openSourcePreference: 'value',
+    aiDelegation: 'value',
+    displacementRisk: 'belief',
+} as const satisfies Record<AxisId, 'belief' | 'value'>;
+
 /* --- QUESTIONS --- */
 export type QuestionDefinition<TAxisId extends AxisId = AxisId> = {
     readonly id: string; // Gives each question a unique identifier
@@ -576,40 +592,87 @@ export const questions = [
 export type SuggestionDefinition = {
     readonly id: string;
     readonly questionId: string;
+    readonly sources?: readonly {
+        readonly name: string;
+        readonly url: string;
+    }[];
 };
 
 export const coreSuggestions = [
-    { id: 'CS1', questionId: 'L5' },
-    { id: 'CS2', questionId: 'O1' },
-    { id: 'CS3', questionId: 'A3' },
-    { id: 'CS4', questionId: 'E3' },
+    {
+        id: 'CS1',
+        questionId: 'L5',
+        sources: [
+            {
+                name: 'Business & Human Rights Resource Centre',
+                url: 'https://www.business-humanrights.org/en/latest-news/openai-and-sama-hired-underpaid-workers-in-kenia-to-filter-toxic-content-for-chatgpt',
+            },
+        ],
+    },
+    {
+        id: 'CS2',
+        questionId: 'O1',
+        sources: [
+            {
+                name: 'OpenAI',
+                url: 'https://openai.com/blog/introducing-gpt-oss',
+            },
+        ],
+    },
+    {
+        id: 'CS3',
+        questionId: 'A3',
+        sources: [
+            {
+                name: 'TechCrunch',
+                url: 'https://techcrunch.com/2025/04/15/us-government-imposes-license-requirement-on-nvidia-h20-exports',
+            },
+        ],
+    },
+    {
+        id: 'CS4',
+        questionId: 'E3',
+        sources: [
+            {
+                name: 'Fortune',
+                url: 'https://www.fortune.com/2026/07/24/why-youre-paying-for-data-center-electricity-power/',
+            },
+            {
+                name: 'SemiAnalysis',
+                url: 'https://newsletter.semianalysis.com/p/are-ai-datacenters-increasing-electric',
+            },
+        ],
+    },
     { id: 'CS5', questionId: 'P7' },
-    { id: 'CS6', questionId: 'X4' },
-] as const satisfies SuggestionDefinition[];
+    {
+        id: 'CS6',
+        questionId: 'X4',
+        sources: [
+            {
+                name: 'OpenAI',
+                url: 'https://openai.com/index/hugging-face-incident-and-the-road-ahead/',
+            },
+        ],
+    },
+] as const satisfies readonly SuggestionDefinition[];
 
 export const devSuggestions = [
     { id: 'DS6', questionId: 'D2' },
-] as const satisfies SuggestionDefinition[];
+] as const satisfies readonly SuggestionDefinition[];
 
 export type ModeledSuggestionDefinition = SuggestionDefinition & {
     readonly modelId: ModelId;
 };
-export const suggestions = [
-    ...coreSuggestions.map(
-        (suggestion) =>
-            ({
-                ...suggestion,
-                modelId: 'core',
-            }) satisfies ModeledSuggestionDefinition,
-    ),
-    ...devSuggestions.map(
-        (suggestion) =>
-            ({
-                ...suggestion,
-                modelId: 'dev',
-            }) satisfies ModeledSuggestionDefinition,
-    ),
-] as const satisfies SuggestionDefinition[];
+export const suggestions: readonly ModeledSuggestionDefinition[] = [
+    ...coreSuggestions.map((suggestion) => ({
+        ...suggestion,
+        modelId: 'core' as const,
+    })),
+    ...devSuggestions.map((suggestion) => ({
+        ...suggestion,
+        modelId: 'dev' as const,
+    })),
+];
 
 /* --- CAMPS --- */
 export type CampDefinition<TAxisId extends AxisId = AxisId> = {

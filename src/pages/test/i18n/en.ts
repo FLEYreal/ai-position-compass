@@ -1,6 +1,5 @@
 export default {
     'test.heading': 'Your position, one question at a time.',
-    'test.placeholder': 'Questionnaire coming later.',
 
     // Questions — Regulation
     'research.questions.core.R1':
@@ -203,4 +202,62 @@ export default {
         "In the Hugging Face incident (2026), OpenAI reported that test models broke out of a restricted environment and accessed Hugging Face's systems before the breach was contained.",
     'research.suggestions.D2':
         "A closed model is used through the company's service; you can't download or inspect it.",
+    'test.questionNumber': 'Question {current} of {total}',
+    'test.progress': '{answered} of {total} questions answered',
+    'test.progressLabel': 'Questionnaire progress',
+    'test.prompt': 'How much do you agree?',
+    'test.belief': 'Belief',
+    'test.value': 'Value',
+    'test.unsureNote': 'Not knowing is different from being in the middle.',
+    'test.back': 'Back',
+    'test.next': 'Next question',
+    'test.finish': 'Finish',
+    'test.keyboard': 'Press 1–5 to choose an answer, or U for Unsure.',
+    'test.developerHeading': 'Developer questions',
+    'test.restart': 'Restart questionnaire',
+    'test.loadingSaved': 'Loading saved progress…',
+    'session.completed.heading': 'You have completed this questionnaire.',
+    'session.completed.edit': 'Review my answers',
+    'session.restart.heading': 'Start again?',
+    'session.restart.description':
+        'This will delete your saved answers and start a new questionnaire. Your language and appearance preferences will stay the same.',
+    'session.restart.confirm': 'Delete answers and restart',
+    'storage.unavailable':
+        'Progress cannot be saved in this browser. You can continue, but closing or reloading this page may lose your answers.',
+    'storage.saveFailed':
+        'Your latest changes could not be saved. Keep this page open to avoid losing progress.',
+    'storage.invalid.heading': 'Saved progress could not be loaded.',
+    'storage.invalid.body':
+        'The saved data is damaged or does not match this questionnaire. You can clear it and start again.',
+    'storage.version.heading':
+        'Your saved progress belongs to a different questionnaire version.',
+    'storage.version.body':
+        'These answers cannot be safely used with the current questionnaire. Clear the saved progress to start again.',
+    'storage.reset': 'Clear saved progress',
+    'storage.reset.confirm': 'Clear saved progress and start again?',
+    'storage.resetFailed':
+        'Saved progress could not be cleared. Check your browser’s storage settings and try again.',
+    'research.answer-scale.stronglyAgree': 'Strongly agree',
+    'research.answer-scale.agree': 'Agree',
+    'research.answer-scale.neutral': 'Neutral',
+    'research.answer-scale.disagree': 'Disagree',
+    'research.answer-scale.stronglyDisagree': 'Strongly disagree',
+    'research.answer-scale.unsure': 'Unsure',
+    'research.axes.regulation':
+        'Regulation · Let them build ↔ Strict oversight',
+    'research.axes.control': 'Control · Market ↔ Public institutions',
+    'research.axes.geopolitics':
+        'Geopolitics · Race ↔ International cooperation',
+    'research.axes.openness': 'Openness · Controlled ↔ Open',
+    'research.axes.capability': 'Capability · Limited ↔ Transformative',
+    'research.axes.existentialRisk': 'Existential risk · Low ↔ High',
+    'research.axes.ecology': 'Ecology · Low harm ↔ High harm',
+    'research.axes.creativity': 'Creativity · Low harm ↔ High harm',
+    'research.axes.labor': 'Labor · Low harm ↔ High harm',
+    'research.axes.surveillance': 'Surveillance · Low ↔ High',
+    'research.axes.openSourcePreference':
+        'Open-source preference · Closed APIs ↔ Open / self-hosted',
+    'research.axes.aiDelegation':
+        'AI delegation · Write it myself ↔ Agents write it',
+    'research.axes.displacementRisk': 'Displacement risk · Low ↔ High',
 };

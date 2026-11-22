@@ -162,3 +162,57 @@ test('returns the v1 axis order and undefined developer scores for a core-only r
     ]);
     expect(result?.campMatches.dev).toEqual([]);
 });
+
+test('restores a started developer questionnaire before its first answer', async () => {
+    await useQuestionnaireStore.persist.rehydrate();
+
+    const { start } = useQuestionnaireStore.getState();
+    start(true);
+    start(false);
+
+    await useQuestionnaireStore.persist.rehydrate();
+
+    expect(useQuestionnaireStore.getState()).toMatchObject({
+        answersById: {},
+        currentQuestionId: coreQuestions[0].id,
+        includeDeveloper: true,
+        status: 'in-process',
+    });
+});
+
+test('keeps damaged progress available for another clear attempt if removal fails', async () => {
+    localStorage.setItem('questionnaire', 'damaged data');
+    await useQuestionnaireStore.persist.rehydrate();
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementationOnce(() => {
+        throw new DOMException('Storage is blocked', 'SecurityError');
+    });
+
+    const { reset } = useQuestionnaireStore.getState();
+    expect(reset()).toBe(false);
+    expect(localStorage.getItem('questionnaire')).toBe('damaged data');
+    expect(reset()).toBe(true);
+
+    await useQuestionnaireStore.persist.rehydrate();
+    expect(useQuestionnaireStore.getState().status).toBe('not-started');
+});
+
+test('rejects a saved position reached by skipping unanswered questions', async () => {
+    await useQuestionnaireStore.persist.rehydrate();
+    const saved = JSON.stringify({
+        version: 1,
+        state: {
+            questionnaireVersion: 1,
+            answersById: { K6: 0 },
+            currentQuestionId: 'K6',
+            status: 'in-process',
+            includeDeveloper: false,
+        },
+    });
+    localStorage.setItem('questionnaire', saved);
+    await useQuestionnaireStore.persist.rehydrate();
+
+    useQuestionnaireStore.getState().start(true);
+
+    expect(useQuestionnaireStore.getState().status).toBe('not-started');
+    expect(localStorage.getItem('questionnaire')).toBe(saved);
+});

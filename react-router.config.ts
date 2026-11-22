@@ -1,6 +1,5 @@
 import type { Config } from '@react-router/dev/config';
-import { cp, writeFile } from 'node:fs/promises';
-import { siteIconLinks } from './src/app/config/site-icons';
+import { cp, readFile, writeFile } from 'node:fs/promises';
 import notFoundMessages from './src/pages/not-found/i18n/en';
 import commonMessages from './src/shared/i18n/en';
 
@@ -23,26 +22,22 @@ export default {
     ],
     buildEnd: async ({ reactRouterConfig }) => {
         const baseDirectory = base.replace(/^\/+|\/+$/g, '');
+        const output = `${reactRouterConfig.buildDirectory}/client`;
+        const fallbackFile =
+            baseDirectory ? 'index.html' : '__spa-fallback.html';
+        // Read the SPA shell before copying the prerendered base directory.
+        const fallback = await readFile(`${output}/${fallbackFile}`, 'utf8');
         if (baseDirectory) {
-            await cp(
-                `${reactRouterConfig.buildDirectory}/client/${baseDirectory}`,
-                `${reactRouterConfig.buildDirectory}/client`,
-                { recursive: true },
-            );
+            await cp(`${output}/${baseDirectory}`, output, { recursive: true });
         }
         const home = `${base.replace(/\/$/, '')}/en/`;
-        const icons = siteIconLinks(`${base.replace(/\/$/, '')}/`)
-            .map(
-                (link) =>
-                    `<link ${Object.entries(link)
-                        .map(([key, value]) => `${key}="${value}"`)
-                        .join(' ')}>`,
-            )
-            .join('');
-        const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${icons}<title>${notFoundMessages['notFound.code']}</title></head><body><main><h1>${notFoundMessages['notFound.code']}</h1><a href="${home}">${commonMessages['recovery.home']}</a></main></body></html>`;
+        const recovery = `<noscript><main><h1>${notFoundMessages['notFound.code']}</h1><p>${notFoundMessages['notFound.body']}</p><a href="${home}">${commonMessages['recovery.home']}</a></main></noscript>`;
+
+        // GitHub Pages serves 404.html at the requested URL, letting the
+        // router choose the matching language and render the recovery page.
         await writeFile(
-            `${reactRouterConfig.buildDirectory}/client/404.html`,
-            html,
+            `${output}/404.html`,
+            fallback.replace('</body>', `${recovery}</body>`),
         );
     },
 } satisfies Config;
