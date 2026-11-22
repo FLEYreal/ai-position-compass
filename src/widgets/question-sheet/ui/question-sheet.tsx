@@ -256,10 +256,9 @@ export function QuestionSheet({
                 </RadioGroup>
                 <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
                     <Button
-                        variant={
-                            response === 'unsure' ? 'secondary' : 'outline'
-                        }
+                        variant="outline"
                         size="sm"
+                        className="aria-pressed:border-ring aria-pressed:bg-[var(--soft-orange)] aria-pressed:hover:bg-[var(--soft-orange)]"
                         aria-pressed={response === 'unsure'}
                         aria-keyshortcuts="U"
                         aria-describedby={`${unsureNote} ${shortcuts}`}
