@@ -158,6 +158,7 @@ The presentation of axis scores, camp comparisons, and PNG exports.
 
 1. Follow the local `DESIGN.md` for composition. Lay out the image for browser canvas using local or embedded fonts and allow room for long camp text.
 2. Draw the real scores, named poles, applicable developer results, deployed project URL, and required notices.
+3. Use the eligible camp comparisons shown on the results page for any camp entries in the image. Retain their display order. When no camps qualify, show the axis profile alone.
 
 #### Context
 
