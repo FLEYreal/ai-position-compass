@@ -127,7 +127,9 @@ export default function ResultPage({
                             <p className="max-w-[55ch] text-sm leading-[1.85] text-muted-foreground">
                                 {primary.context}
                             </p>
-                            <CampVoices camp={primary} copy={copy} />
+                            <div className="mt-5 pt-4">
+                                <CampVoices camp={primary} copy={copy} />
+                            </div>
                         </>
                     )}
                 </div>
@@ -302,17 +304,9 @@ export default function ResultPage({
                 language={lang}
                 payload={decoded.payload}
                 copy={copy}
+                common={common}
                 result={result}
             />
-            <div className="flex justify-end">
-                <Link
-                    className="inline-flex items-center gap-1 text-sm text-ring underline underline-offset-4"
-                    to={`/${lang}/`}
-                >
-                    {common['recovery.home']}{' '}
-                    <ArrowRight aria-hidden="true" size={14} />
-                </Link>
-            </div>
         </div>
     );
 }

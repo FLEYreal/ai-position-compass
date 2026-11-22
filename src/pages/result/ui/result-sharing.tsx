@@ -1,10 +1,11 @@
-import { Download, Link2 } from 'lucide-react';
+import { ArrowRight, Download, Link2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useHref } from 'react-router';
 import { resultRoute, type Language } from '@/shared/config';
 import { Button, Input } from '@/shared/ui';
 import type { Messages } from '../i18n';
 import type { ResultPresentation } from '../model/result-presentation';
+import type { Messages as CommonMessages } from '@/shared/i18n';
 
 type ExportStatus = 'generating' | 'downloaded' | 'fontFailed' | 'exportFailed';
 
@@ -12,11 +13,13 @@ export function ResultSharing({
     language,
     payload,
     copy,
+    common,
     result,
 }: {
     language: Language;
     payload: string;
     copy: Messages;
+    common: CommonMessages;
     result: ResultPresentation;
 }) {
     const sharePath = useHref(resultRoute(language, payload));
@@ -67,11 +70,11 @@ export function ResultSharing({
 
     return (
         <section
-            className="space-y-5 border-y py-6 sm:py-8"
+            className="space-t-5 border-t pt-6 sm:pt-8 pb-4 sm:pb-6"
             aria-labelledby="result-sharing"
         >
-            <div className="flex flex-wrap items-start justify-between gap-5">
-                <div className="min-w-0 space-y-2">
+            <div className="flex flex-wrap items-start justify-between gap-8">
+                <div className="min-w-0 space-y-4">
                     <h2
                         id="result-sharing"
                         className="font-heading text-[clamp(1.75rem,4vw,2.5rem)] leading-tight text-[var(--result-camp-ink,var(--ink))] uppercase"
@@ -82,31 +85,34 @@ export function ResultSharing({
                         {copy['share.description']}
                     </p>
                 </div>
-                <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
-                    {!result.allUndefined && (
+                <div className="flex w-full justify-between">
+                    <div className="flex flex-wrap items-center gap-3">
+                        {!result.allUndefined && (
+                            <Button
+                                disabled={downloading}
+                                onClick={() => void downloadImage()}
+                                className="max-w-full bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] text-background whitespace-normal hover:bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] hover:brightness-110"
+                            >
+                                <Download aria-hidden="true" />
+                                {downloading ?
+                                    copy['share.generating']
+                                :   copy['share.image']}
+                            </Button>
+                        )}
                         <Button
-                            disabled={downloading}
-                            onClick={() => void downloadImage()}
-                            className="max-w-full bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] text-background whitespace-normal hover:bg-[var(--result-camp-ink,var(--camp-cautious-builders-ink))] hover:brightness-110"
+                            variant="outline"
+                            onClick={() => void copyLink()}
+                            className="max-w-full whitespace-normal"
                         >
-                            <Download aria-hidden="true" />
-                            {downloading ?
-                                copy['share.generating']
-                            :   copy['share.image']}
+                            <Link2 aria-hidden="true" /> {copy['share.copy']}
                         </Button>
-                    )}
-                    <Button
-                        variant="outline"
-                        onClick={() => void copyLink()}
-                        className="max-w-full whitespace-normal"
-                    >
-                        <Link2 aria-hidden="true" /> {copy['share.copy']}
-                    </Button>
+                    </div>
                     <Link
-                        to={`/${language}/test`}
-                        className="text-sm text-ring underline underline-offset-4"
+                        className="inline-flex items-center gap-1 text-sm text-ring underline underline-offset-4"
+                        to={`/${language}/`}
                     >
-                        {copy['result.retake']}
+                        {common['recovery.home']}{' '}
+                        <ArrowRight aria-hidden="true" size={14} />
                     </Link>
                 </div>
             </div>

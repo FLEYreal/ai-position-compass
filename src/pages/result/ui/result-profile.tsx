@@ -75,7 +75,7 @@ export function CampVoices({
                 ))}
             </ul>
             {additionalSources.length > 0 && (
-                <details className="pt-0.5 text-xs text-muted-foreground">
+                <details className="pt-2 text-xs text-muted-foreground">
                     <summary className="w-fit cursor-pointer">
                         {copy['result.references']}
                     </summary>
@@ -113,7 +113,7 @@ export function CampComparisons({
     if (camps.length === 0) return null;
     return (
         <section className="space-y-5">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-foreground pb-2">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b pb-2">
                 <h3 className="font-heading text-[length:var(--font-size-headline)] leading-tight text-[var(--result-camp-ink,var(--ink))] uppercase">
                     {heading}
                 </h3>
@@ -149,7 +149,7 @@ export function CampComparisons({
                             {camp.description}
                         </p>
                         {camp.voices.length > 0 && (
-                            <div className="mt-5 border-t pt-4">
+                            <div className="mt-5 pt-4">
                                 <CampVoices camp={camp} copy={copy} />
                             </div>
                         )}
@@ -176,7 +176,7 @@ export function AxisGroup({
     const [title, note] = heading.split(' — ', 2);
     return (
         <section>
-            <h3 className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-foreground pb-2 font-heading text-[length:var(--font-size-headline)] leading-tight text-[var(--result-camp-ink,var(--ink))]">
+            <h3 className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b pb-2 font-heading text-[length:var(--font-size-headline)] leading-tight text-[var(--result-camp-ink,var(--ink))]">
                 <span className="uppercase">{title}</span>
                 {note && (
                     <span className="font-sans text-xs font-normal text-muted-foreground">

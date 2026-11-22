@@ -31,7 +31,7 @@ function RadioGroupItem({
             className={
                 asChild ? className : (
                     cn(
-                        'aspect-square size-4 shrink-0 rounded-full border border-foreground text-ring focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/40',
+                        'aspect-square size-4 shrink-0 rounded-full border text-ring focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/40',
                         className,
                     )
                 )

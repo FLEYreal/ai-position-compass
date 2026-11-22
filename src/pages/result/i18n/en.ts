@@ -40,9 +40,8 @@ export default {
     'result.version': 'Result version: {version}',
     'result.privacy':
         'This result was reconstructed from the scores in the link. Individual answers are not included.',
-    'result.retake': 'Take the questionnaire',
     'share.heading': 'Share your result',
-    'share.copy': 'Copy result link',
+    'share.copy': 'Copy link',
     'share.copied': 'Link copied',
     'share.copyFailed':
         'The link could not be copied automatically. Select and copy it below.',
