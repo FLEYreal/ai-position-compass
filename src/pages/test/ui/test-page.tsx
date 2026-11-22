@@ -18,9 +18,10 @@ import type { Messages as CommonMessages } from '@/shared/i18n';
 import {
     Button,
     Dialog,
-    DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
+    DialogHeader,
     DialogTitle,
     QuestionProgress,
 } from '@/shared/ui';
@@ -244,36 +245,39 @@ export default function TestPage({
                         />
                         {common['test.privacy']}
                     </p>
-                    {restartAction}
+                    <div className="flex flex-wrap gap-2">
+                        {progress.status === 'finished' && (
+                            <Button
+                                variant="outline"
+                                onClick={progress.reviewAnswers}
+                                className="max-w-full whitespace-normal"
+                            >
+                                {copy['session.completed.edit']}
+                            </Button>
+                        )}
+                        {restartAction}
+                    </div>
                 </div>
-                <DialogContent
-                    closeLabel={closeLabel}
-                    aria-describedby={undefined}
-                >
-                    <DialogTitle className="font-heading">
-                        {copy['session.completed.heading']}
-                    </DialogTitle>
+                <DialogContent closeLabel={closeLabel}>
+                    <DialogHeader>
+                        <DialogTitle className="font-heading">
+                            {copy['session.completed.heading']}
+                        </DialogTitle>
+                        <DialogDescription>
+                            {copy['session.completed.description']}
+                        </DialogDescription>
+                    </DialogHeader>
                     <DialogFooter
                         closeLabel={closeLabel}
-                        className="flex-col gap-3 sm:flex-wrap sm:justify-start"
+                        className="items-start sm:justify-start"
                     >
                         {completionPayload && (
-                            <Button asChild>
+                            <Button asChild className="whitespace-normal">
                                 <Link to={resultRoute(lang, completionPayload)}>
                                     {copy['session.completed.view']}
                                 </Link>
                             </Button>
                         )}
-                        <DialogClose asChild>
-                            <Button
-                                onClick={progress.reviewAnswers}
-                                variant="outline"
-                                className="whitespace-normal"
-                            >
-                                {copy['session.completed.edit']}
-                            </Button>
-                        </DialogClose>
-                        {restartAction}
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

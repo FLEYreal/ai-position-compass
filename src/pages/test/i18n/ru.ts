@@ -220,6 +220,8 @@ export default {
     'test.restart': 'Начать тест заново',
     'test.loadingSaved': 'Загрузка сохранённого прогресса…',
     'session.completed.heading': 'Вы завершили тест.',
+    'session.completed.description':
+        'Теперь вы можете узнать, что ваши ответы говорят о ваших взглядах на ИИ.',
     'session.completed.view': 'Посмотреть результаты',
     'session.completed.edit': 'Просмотреть мои ответы',
     'session.restart.heading': 'Начать заново?',
