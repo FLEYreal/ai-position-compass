@@ -15,6 +15,7 @@ import type { Messages as CommonMessages } from '@/shared/i18n';
 import { Button, Collage } from '@/shared/ui';
 import { StartDialog, type StartMessages } from '@/widgets/start-dialog';
 import type { Messages } from '../i18n';
+import { StudySections } from './study-sections';
 
 export default function Home({
     lang,
@@ -49,27 +50,32 @@ export default function Home({
         void navigate(testPath);
     }
 
-    return (
+    const opening = (
         <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 min-[851px]:grid-cols-[1.05fr_1fr]">
-            <h1 className="min-w-0 self-end font-heading text-[clamp(37px,6.7vw,96px)] leading-[var(--line-height-display)] font-semibold tracking-[var(--letter-spacing-display)] text-balance uppercase max-[560px]:text-[clamp(42px,10vw,65px)]">
-                {lead} <span className="block">{question}</span>{' '}
-                <span className="relative inline-block max-w-full pb-[0.15em]">
-                    {emphasis}
-                    <svg
-                        aria-hidden="true"
-                        viewBox="0 0 560 23"
-                        preserveAspectRatio="none"
-                        className="absolute bottom-0 left-0 h-[0.22em] w-full text-[var(--orange)]"
-                    >
-                        <path
-                            d="M4 15Q183 1 350 9T553 8M18 20Q270 10 520 18"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                        />
-                    </svg>
-                </span>
-            </h1>
+            <div className="min-w-0 self-end">
+                <p className="mb-3 text-sm font-semibold tracking-wider text-[var(--orange-ink)] uppercase">
+                    {copy['home.eyebrow']}
+                </p>
+                <h1 className="font-heading text-[clamp(37px,6.7vw,96px)] leading-[var(--line-height-display)] font-semibold tracking-[var(--letter-spacing-display)] text-balance uppercase max-[560px]:text-[clamp(42px,10vw,65px)]">
+                    {lead} <span className="block">{question}</span>{' '}
+                    <span className="relative inline-block max-w-full pb-[0.15em]">
+                        {emphasis}
+                        <svg
+                            aria-hidden="true"
+                            viewBox="0 0 560 23"
+                            preserveAspectRatio="none"
+                            className="absolute bottom-0 left-0 h-[0.22em] w-full text-[var(--orange)]"
+                        >
+                            <path
+                                d="M4 15Q183 1 350 9T553 8M18 20Q270 10 520 18"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                            />
+                        </svg>
+                    </span>
+                </h1>
+            </div>
             <div className="min-w-0 max-[850px]:mx-auto max-[850px]:w-full max-[850px]:max-w-[480px] min-[851px]:col-start-2 min-[851px]:row-span-2 min-[851px]:row-start-1">
                 <Collage
                     className="m-0"
@@ -138,5 +144,12 @@ export default function Home({
                 </ul>
             </div>
         </section>
+    );
+
+    return (
+        <>
+            {opening}
+            <StudySections copy={copy} />
+        </>
     );
 }
