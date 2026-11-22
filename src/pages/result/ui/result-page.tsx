@@ -7,6 +7,7 @@ import type { Messages } from '../i18n';
 import { presentResult, readResultQuery } from '../model/result-presentation';
 import { AxisGroup, CampComparisons, CampVoices } from './result-profile';
 import { campPalette } from './camp-palette';
+import { ResultSharing } from './result-sharing';
 
 const recoveryCopy = {
     missing: ['recovery.missing.heading', 'recovery.missing.body'],
@@ -276,6 +277,13 @@ export default function ResultPage({
                     </p>
                 )}
             </div>
+            <ResultSharing
+                key={`${lang}:${decoded.payload}`}
+                language={lang}
+                payload={decoded.payload}
+                copy={copy}
+                result={result}
+            />
             <Link
                 className="inline-block text-sm text-ring underline"
                 to={`/${lang}/test`}

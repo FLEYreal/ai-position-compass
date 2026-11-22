@@ -39,6 +39,25 @@ export default {
     'result.privacy':
         'This result was reconstructed from the scores in the link. Individual answers are not included.',
     'result.retake': 'Take the questionnaire',
+    'share.heading': 'Share your result',
+    'share.copy': 'Copy result link',
+    'share.copied': 'Link copied',
+    'share.copyFailed':
+        'The link could not be copied automatically. Select and copy it below.',
+    'share.linkLabel': 'Result link',
+    'share.description':
+        'Share your scores without sharing individual answers.',
+    'share.image': 'Download result image',
+    'share.generating': 'Preparing image…',
+    'share.downloaded': 'Image download started.',
+    'share.exportFailed':
+        'The result image could not be created. Try again or copy the result link.',
+    'share.fontFailed':
+        'The image fonts could not be loaded. Try again before downloading.',
+    'share.imageTitle': 'My AI Position Compass',
+    'share.imagePrivacy': 'Scores only — individual answers are not included.',
+    'share.noScores':
+        'There are no calculated scores to include in this image.',
     'recovery.missing.heading': 'No result in this link',
     'recovery.missing.body':
         'Take the questionnaire or open a complete result link.',
