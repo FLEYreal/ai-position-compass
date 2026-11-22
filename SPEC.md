@@ -34,6 +34,7 @@ The app's stack, localized routes, static hosting, accessibility, and privacy.
 #### Rules
 
 - Run the app as a static GitHub Pages site without a backend. Keep raw answers in the browser and out of URLs, APIs, analytics, and remote logs. Shared result URLs carry only derived scores and the fields needed to decode them. Keep personal pilot data private.
+- Deploy to GitHub Pages only on pushes to `main`, the [release-only branch](WORKFLOW.md#git-review-and-cleanup).
 - Support English and Russian, light and dark themes, responsive layouts, keyboard access, and reduced motion. Preserve presentation preferences across navigation and language changes. Retain software, asset, and font licences and attribution.
 - Use pnpm, React, TypeScript, Vite, Tailwind, shadcn/ui with Radix, and Zustand. Use Tailwind utilities for components. Reserve global CSS for tokens, fonts, Tailwind configuration, and base styles.
 - Use React Router framework mode with `ssr: false` and static prerendering. Each locale has home, `test`, and singular `result` routes. Unlocalized entry points redirect to a supported locale. Run browser-only APIs in the browser.
@@ -42,7 +43,7 @@ The app's stack, localized routes, static hosting, accessibility, and privacy.
 
 **Change a route or deployment base.** When either changes, check the production output to catch paths that break under the deployment base.
 
-1. Align the router and asset bases through `PUBLIC_BASE_PATH`. GitHub project Pages uses `/ai-position-compass/`.
+1. Align the router and asset bases through `PUBLIC_BASE_PATH`. The Pages workflow supplies the configured base path (normally `/ai-position-compass/`) and the public site URL for canonical and social metadata.
 2. Verify direct links, correct-language HTML before hydration, base-path assets, and 404 recovery.
 
 **Adapt a UI component.** When the UI needs a component, reuse existing primitives to keep interactions consistent.
@@ -54,7 +55,7 @@ The app's stack, localized routes, static hosting, accessibility, and privacy.
 
 - The public source is released under the [MIT licence](LICENSE).
 - Tests use Vitest and React Testing Library. See the [CI workflow](.github/workflows/ci.yml) for checks.
-- Design assets and attribution are in `../design/src/`, `../design/public/`, and `../design/CREDITS.md`, relative to the canonical checkout.
+- See the [published artwork credits](public/ASSET-CREDITS.txt) and [software and font notices](public/licenses/). The build adds the project MIT text and bundled dependency notices.
 
 ### Structure and translations
 
@@ -203,7 +204,7 @@ The URL payload, validation, and compatibility across result versions.
 - Define the saved-progress schema and migrations.
 - Calibrate the wildcard penalty and close-match threshold during the pilot.
 - Review EN/RU wording for real results, Undefined axes, low matches, storage notices, and recovery before use.
-- Confirm the deployed URL before setting canonical URLs and social metadata.
+- Verify canonical URLs and social metadata on the first GitHub Pages deployment.
 
 ### Deferred
 

@@ -113,7 +113,7 @@ Branch roles, local commits, pull requests, releases, and worktree cleanup.
 
 ### Rules
 
-- `main` holds deployable releases and `dev` integrates reviewed features. Feature PRs target `dev`. Use focused PRs and Conventional Commits. Make one commit per fix or completed feature with its directly related tests. Keep independent changes in separate commits.
+- `main` is reserved for releases. Pushes to `main` deploy to GitHub Pages. `dev` integrates reviewed features. Feature PRs target `dev`. Use focused PRs and Conventional Commits. Make one commit per fix or completed feature with its directly related tests. Keep independent changes in separate commits.
 - Keep showcases, demonstrations, galleries, fixtures, and their integration out of submissions to `dev` unless the owner approves them. Keep review copies and integration hunks visible and unstaged. Use explicit staging paths and avoid blanket ignore patterns for source files.
 - Keep worktrees available while their PRs are awaiting review. Never force-push, rewrite shared history, or delete unmerged work.
 
@@ -133,7 +133,9 @@ Branch roles, local commits, pull requests, releases, and worktree cleanup.
 **Release or bring back a fix.** When transferring changes between shared branches, use a PR so the owner can review them.
 
 1. Choose the direction. Use `dev` into `main` for a release or carry the `main`-only fix into `dev`.
-2. Submit the PR through owner review. The owner uses a merge commit for release PRs.
+2. Before the first release, the owner selects **GitHub Actions** under **Settings → Pages → Build and deployment → Source**.
+3. Submit the PR through owner review. The owner uses a merge commit for release PRs.
+4. For a release, verify that the [GitHub Pages workflow](.github/workflows/pages.yml) succeeds and check the deployed URL.
 
 **Clean up a merged feature.** After a PR merges, verify the work is retained before removing the worktree.
 
