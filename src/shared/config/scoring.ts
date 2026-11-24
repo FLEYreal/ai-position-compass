@@ -1408,7 +1408,7 @@ export function getQuestionCount(type?: ModelId) {
 
 // Returns in minutes
 export function getCompletionTime(type?: ModelId) {
-    const secondsMultiplier = 15; // Estimation on how many seconds it takes a user to complete one question.
+    const secondsMultiplier = 30; // Estimation on how many seconds it takes a user to complete one question.
     return Math.floor((getQuestionCount(type) * secondsMultiplier) / 60);
 }
 
