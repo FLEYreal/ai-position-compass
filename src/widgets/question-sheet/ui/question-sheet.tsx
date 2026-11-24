@@ -1,9 +1,16 @@
-import { ArrowLeft, ArrowRight, Check, CircleHelp } from 'lucide-react';
+import {
+    ArrowLeft,
+    ArrowRight,
+    Check,
+    CircleHelp,
+    Command,
+} from 'lucide-react';
 import { useEffect, useId, useRef } from 'react';
 import type { AnswerValue, QuestionResponse } from '@/entities/scoring';
 import type { AxisId, SuggestionDefinition } from '@/shared/config';
 import { cn } from '@/shared/lib';
 import {
+    AxisExplanation,
     AxisIcon,
     Button,
     DialogTrigger,
@@ -22,6 +29,7 @@ export function QuestionSheet({
     construct,
     axis,
     axisLabel,
+    axisDescription,
     developerLabel,
     hint,
     response,
@@ -39,6 +47,7 @@ export function QuestionSheet({
     construct: string;
     axis: AxisId;
     axisLabel: string;
+    axisDescription: string;
     developerLabel?: string;
     hint?: { text: string; sources: SuggestionDefinition['sources'] };
     response: QuestionResponse | undefined;
@@ -104,11 +113,9 @@ export function QuestionSheet({
 
             event.preventDefault();
             onAnswer(next);
-            if (next !== 'unsure') {
-                answers.current
-                    ?.querySelector<HTMLElement>(`[data-answer="${next}"]`)
-                    ?.focus();
-            }
+            answers.current
+                ?.querySelector<HTMLElement>(`[data-answer="${next}"]`)
+                ?.focus();
         }
 
         window.addEventListener('keydown', handleShortcut);
@@ -143,13 +150,21 @@ export function QuestionSheet({
                 <span className="rounded-sm bg-foreground px-2 py-1 text-background">
                     {construct}
                 </span>
-                <span
-                    className="inline-flex items-center gap-1.5 rounded-sm border border-current/40 bg-current/10 px-2 py-1"
-                    style={{ color: `var(--axis-${axisToken})` }}
+                <AxisExplanation
+                    key={id}
+                    label={axisLabel}
+                    description={axisDescription}
                 >
-                    <AxisIcon axis={axis} size={15} />
-                    {axisLabel}
-                </span>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-auto min-h-7 min-w-0 max-w-full justify-start gap-1.5 rounded-sm border-current/40 bg-current/10 px-2 py-1 text-left text-[length:var(--font-size-construct)] whitespace-normal hover:bg-current/15 aria-expanded:bg-current/15"
+                        style={{ color: `var(--axis-${axisToken})` }}
+                    >
+                        <AxisIcon axis={axis} className="size-[15px]" />
+                        {axisLabel}
+                    </Button>
+                </AxisExplanation>
             </div>
             <h2
                 ref={heading}
@@ -161,7 +176,7 @@ export function QuestionSheet({
             {hint && (
                 <aside
                     id={hintId}
-                    className="mt-4 flex items-start gap-[13px] rounded-[7px] bg-[var(--paper-deep)] px-[19px] py-[17px] text-[13px] leading-[1.85] max-[560px]:gap-[9px] max-[560px]:px-3 max-[560px]:py-3.5 max-[560px]:text-xs"
+                    className="my-8 flex items-start gap-[13px] rounded-[7px] border border-primary bg-[var(--paper-deep)] px-4 py-3 text-sm leading-relaxed max-[560px]:gap-[9px] max-[560px]:px-3"
                 >
                     <CircleHelp
                         aria-hidden="true"
@@ -245,9 +260,10 @@ export function QuestionSheet({
                                 </span>
                                 {choices[index]}
                                 <kbd
-                                    className="text-xs text-muted-foreground"
+                                    className="inline-flex items-center gap-1.5 px-1.5 py-0.5 font-mono text-xs text-muted-foreground"
                                     aria-hidden="true"
                                 >
+                                    <Command className="size-3.5" />
                                     {index + 1}
                                 </kbd>
                             </button>

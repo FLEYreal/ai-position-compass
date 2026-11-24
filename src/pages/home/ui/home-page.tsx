@@ -168,7 +168,10 @@ export default function Home({
     return (
         <>
             {opening}
-            <StudySections copy={copy} />
+            <StudySections
+                copy={copy}
+                axisDescriptions={common.axisDescriptions}
+            />
         </>
     );
 }

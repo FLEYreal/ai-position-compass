@@ -36,8 +36,7 @@ export default {
     'test.back': 'Назад',
     'test.next': 'Следующий вопрос',
     'test.finish': 'Завершить',
-    'test.keyboard':
-        '1–5 — выбор ответа. U — «Затрудняюсь ответить» и сразу дальше.',
+    'test.keyboard': '1–5 — выбрать ответ, U — «Затрудняюсь ответить».',
     'test.developerHeading': 'Вопросы для разработчиков',
     'session.completed.heading': 'Вы завершили тест.',
     'session.completed.description':

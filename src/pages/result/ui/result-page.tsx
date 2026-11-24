@@ -226,12 +226,14 @@ export default function ResultPage({
                     heading={copy['result.values.heading']}
                     axes={result.values}
                     copy={copy}
+                    axisDescriptions={common.axisDescriptions}
                     annotate
                 />
                 <AxisGroup
                     heading={copy['result.beliefs.heading']}
                     axes={result.beliefs}
                     copy={copy}
+                    axisDescriptions={common.axisDescriptions}
                 />
             </section>
 
@@ -290,7 +292,12 @@ export default function ResultPage({
                             </p>
                         </div>
                     :   null}
-                    <AxisList axes={developer.axes} copy={copy} showConstruct />
+                    <AxisList
+                        axes={developer.axes}
+                        copy={copy}
+                        axisDescriptions={common.axisDescriptions}
+                        showConstruct
+                    />
                 </section>
             :   <p className="text-sm text-muted-foreground">
                     {copy['result.developer.skipped']}

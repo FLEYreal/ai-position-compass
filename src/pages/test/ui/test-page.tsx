@@ -5,7 +5,6 @@ import {
     encodeResultPayload,
     getLocalResultState,
     type LocalResultState,
-    type QuestionResponse,
     getSelectedQuestions,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
@@ -169,16 +168,6 @@ export default function TestPage({
         const answered = Object.keys(progress.answersById).length;
         const atLast = index === questions.length - 1;
 
-        function answer(response: QuestionResponse) {
-            progress.answerQuestion(question.id, response);
-            if (response !== 'unsure') return;
-            if (atLast) {
-                void handleCompletionOpenChange(true);
-            } else {
-                progress.nextQuestion();
-            }
-        }
-
         return (
             <Dialog
                 open={completion !== null}
@@ -216,6 +205,7 @@ export default function TestPage({
                     axisLabel={
                         copy[`research.axes.${question.axisId}`].split(' · ')[0]
                     }
+                    axisDescription={common.axisDescriptions[question.axisId]}
                     developerLabel={
                         question.modelId === 'dev' ?
                             copy['test.developerHeading']
@@ -250,7 +240,9 @@ export default function TestPage({
                     }}
                     atFirst={index === 0}
                     atLast={atLast}
-                    onAnswer={answer}
+                    onAnswer={(response) =>
+                        progress.answerQuestion(question.id, response)
+                    }
                     onBack={progress.previousQuestion}
                     onContinue={progress.nextQuestion}
                 />

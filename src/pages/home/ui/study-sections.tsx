@@ -10,6 +10,7 @@ import {
 } from '@/shared/config';
 import { AxisIcon, Separator } from '@/shared/ui';
 import { cn } from '@/shared/lib';
+import type { Messages as CommonMessages } from '@/shared/i18n';
 import type { Messages } from '../i18n';
 
 const coreCount = getQuestionCount('core');
@@ -42,15 +43,16 @@ const sectionHeading =
 
 function AxisDefinitions({
     axes,
-    definitions,
+    names,
+    descriptions,
 }: {
     axes: ReadonlyArray<{ id: AxisId }>;
-    definitions: Messages['axes']['axes'];
+    names: Messages['axes']['axes'];
+    descriptions: CommonMessages['axisDescriptions'];
 }) {
     return (
         <dl className="min-w-0 divide-y divide-border md:grid md:grid-rows-subgrid md:[grid-row:2/-1]">
             {axes.map(({ id }) => {
-                const { name, description } = definitions[id];
                 const token = id.replace(
                     /[A-Z]/g,
                     (letter) => '-' + letter.toLowerCase(),
@@ -64,10 +66,10 @@ function AxisDefinitions({
                             <span style={{ color: `var(--axis-${token})` }}>
                                 <AxisIcon axis={id} />
                             </span>
-                            <span>{name}</span>
+                            <span>{names[id]}</span>
                         </dt>
                         <dd className="col-start-2 text-sm leading-relaxed text-muted-foreground">
-                            {description}
+                            {descriptions[id]}
                         </dd>
                     </div>
                 );
@@ -76,7 +78,13 @@ function AxisDefinitions({
     );
 }
 
-export function StudySections({ copy }: { copy: Messages }) {
+export function StudySections({
+    copy,
+    axisDescriptions,
+}: {
+    copy: Messages;
+    axisDescriptions: CommonMessages['axisDescriptions'];
+}) {
     const axesCopy = copy.axes;
     const axisGroups = [
         {
@@ -185,7 +193,8 @@ export function StudySections({ copy }: { copy: Messages }) {
                             </div>
                             <AxisDefinitions
                                 axes={axes}
-                                definitions={axesCopy.axes}
+                                names={axesCopy.axes}
+                                descriptions={axisDescriptions}
                             />
                         </div>
                     ))}
