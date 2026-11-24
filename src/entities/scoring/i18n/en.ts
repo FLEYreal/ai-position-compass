@@ -5,7 +5,7 @@ export default {
     'research.questions.core.R2':
         'There should be as little regulation of AI development as possible.',
     'research.questions.core.R3':
-        'AI companies should be legally responsible for harm caused by their models, even when someone misuses them. For example, Anthropic reported that a dating app operator used Claude to run bots that posed as real users.',
+        'AI companies should be legally responsible for harm caused by their models, even when someone misuses them.',
     'research.questions.core.R4':
         'Strict AI rules would slow down useful inventions more than they would prevent harm.',
     'research.questions.core.R5':

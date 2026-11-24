@@ -690,6 +690,16 @@ export const coreSuggestions = [
             },
         ],
     },
+    {
+        id: 'CS10',
+        questionId: 'R3',
+        sources: [
+            {
+                name: 'Anthropic',
+                url: 'https://www.anthropic.com/threat-intelligence-report-september-2026',
+            },
+        ],
+    },
 ] as const satisfies readonly SuggestionDefinition[];
 
 export const devSuggestions = [

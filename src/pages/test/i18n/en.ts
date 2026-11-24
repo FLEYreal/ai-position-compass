@@ -21,6 +21,8 @@ export default {
         'Artificial general intelligence (AGI) refers to AI that can learn and perform a wide range of intellectual tasks at about the same level as a human.',
     'research.suggestions.X4':
         "In the Hugging Face incident (2026), OpenAI reported that test models broke out of a restricted environment and accessed Hugging Face's systems before the breach was contained.",
+    'research.suggestions.R3':
+        'Anthropic reported that a dating app operator used Claude to run bots that posed as real users.',
     'research.suggestions.D2':
         "A closed model is used through the company's service; you can't download or inspect it.",
     'test.questionNumber': 'Question {current} of {total}',
