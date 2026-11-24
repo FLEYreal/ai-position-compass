@@ -603,6 +603,13 @@ export type SuggestionDefinition = {
     }[];
 };
 
+const downloadableModelsSources = [
+    {
+        name: 'OpenAI',
+        url: 'https://openai.com/blog/introducing-gpt-oss',
+    },
+] as const;
+
 export const coreSuggestions = [
     {
         id: 'CS1',
@@ -617,12 +624,7 @@ export const coreSuggestions = [
     {
         id: 'CS2',
         questionId: 'O1',
-        sources: [
-            {
-                name: 'OpenAI',
-                url: 'https://openai.com/blog/introducing-gpt-oss',
-            },
-        ],
+        sources: downloadableModelsSources,
     },
     {
         id: 'CS3',
@@ -656,6 +658,35 @@ export const coreSuggestions = [
             {
                 name: 'OpenAI',
                 url: 'https://openai.com/index/hugging-face-incident-and-the-road-ahead/',
+            },
+        ],
+    },
+    {
+        id: 'CS7',
+        questionId: 'O3',
+        sources: downloadableModelsSources,
+    },
+    {
+        id: 'CS8',
+        questionId: 'X6',
+        sources: [
+            {
+                name: 'Wikipedia (EN)',
+                url: 'https://en.wikipedia.org/wiki/Superintelligence',
+            },
+            {
+                name: 'Википедия (RU)',
+                url: 'https://ru.wikipedia.org/wiki/Искусственный_сверхинтеллект',
+            },
+        ],
+    },
+    {
+        id: 'CS9',
+        questionId: 'C3',
+        sources: [
+            {
+                name: 'Levels of AGI',
+                url: 'https://proceedings.mlr.press/v235/morris24b.html',
             },
         ],
     },
@@ -1348,7 +1379,7 @@ export const resultV1Scoring = {
 } as const;
 
 /* --- VERSION --- */
-export const questionnaireVersion: number = 1;
+export const questionnaireVersion: number = 2;
 
 /* --- CONFIG --- */
 export const scoringConfig = {

@@ -3,7 +3,11 @@ import {
     restoreQuestionnaireProgress,
     useQuestionnaireStore,
 } from '@/entities/scoring';
-import { coreQuestions, devQuestions } from '@/shared/config';
+import {
+    coreQuestions,
+    devQuestions,
+    questionnaireVersion,
+} from '@/shared/config';
 
 beforeEach(() => {
     localStorage.clear();
@@ -19,7 +23,7 @@ test('restores responses and saves only questionnaire progress', async () => {
         JSON.stringify({
             version: 1,
             state: {
-                questionnaireVersion: 1,
+                questionnaireVersion,
                 answersById: { S7: 0 },
                 currentQuestionId: 'K6',
                 status: 'in-process',
@@ -40,7 +44,7 @@ test('restores responses and saves only questionnaire progress', async () => {
     expect(JSON.parse(localStorage.getItem('questionnaire')!)).toEqual({
         version: 1,
         state: {
-            questionnaireVersion: 1,
+            questionnaireVersion,
             answersById: { S7: 0, K6: 'unsure' },
             currentQuestionId: 'K6',
             status: 'in-process',
@@ -83,31 +87,34 @@ test('creates a result from the current responses and keeps rankings separate', 
     expect(useQuestionnaireStore.getState().status).toBe('finished');
 });
 
-test('keeps incompatible progress in storage until a confirmed reset', async () => {
-    const incompatible = JSON.stringify({
-        version: 1,
-        state: {
-            questionnaireVersion: 999,
-            answersById: { S7: 1 },
-            currentQuestionId: 'S7',
-            status: 'in-process',
-            includeDeveloper: false,
-        },
-    });
-    localStorage.setItem('questionnaire', incompatible);
-    await useQuestionnaireStore.persist.rehydrate();
+test.each([1, 999])(
+    'keeps incompatible questionnaire version %i in storage until a confirmed reset',
+    async (version) => {
+        const incompatible = JSON.stringify({
+            version: 1,
+            state: {
+                questionnaireVersion: version,
+                answersById: { S7: 1 },
+                currentQuestionId: 'S7',
+                status: 'in-process',
+                includeDeveloper: false,
+            },
+        });
+        localStorage.setItem('questionnaire', incompatible);
+        await useQuestionnaireStore.persist.rehydrate();
 
-    const { answerQuestion, createResult, reset } =
-        useQuestionnaireStore.getState();
-    answerQuestion('S7', 0.5);
+        const { answerQuestion, createResult, reset } =
+            useQuestionnaireStore.getState();
+        answerQuestion('S7', 0.5);
 
-    expect(createResult()).toBeNull();
-    expect(localStorage.getItem('questionnaire')).toBe(incompatible);
+        expect(createResult()).toBeNull();
+        expect(localStorage.getItem('questionnaire')).toBe(incompatible);
 
-    reset();
-    await useQuestionnaireStore.persist.rehydrate();
-    expect(useQuestionnaireStore.getState().answersById).toEqual({});
-});
+        reset();
+        await useQuestionnaireStore.persist.rehydrate();
+        expect(useQuestionnaireStore.getState().answersById).toEqual({});
+    },
+);
 
 test('keeps the live answer when storage cannot save it', async () => {
     await useQuestionnaireStore.persist.rehydrate();
@@ -201,7 +208,7 @@ test('rejects a saved position reached by skipping unanswered questions', async 
     const saved = JSON.stringify({
         version: 1,
         state: {
-            questionnaireVersion: 1,
+            questionnaireVersion,
             answersById: { K6: 0 },
             currentQuestionId: 'K6',
             status: 'in-process',
