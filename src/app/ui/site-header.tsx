@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router';
 import { Moon, Sun } from 'lucide-react';
-import { projectName, type Language } from '@/shared/config';
+import { projectName, resultPath, type Language } from '@/shared/config';
 import { useTheme } from '@/shared/lib/theme';
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui';
 import type { Messages } from '../i18n';
@@ -13,6 +13,7 @@ export function SiteHeader({
     messages: Messages;
 }) {
     const { pathname, search, hash, state } = useLocation();
+    const isResult = /^\/(?:en\/|ru\/)?result\/?$/.test(pathname);
     const { resolvedTheme, toggleTheme } = useTheme();
     const lastSpace = projectName.lastIndexOf(' ');
     const themeLabel =
@@ -25,6 +26,7 @@ export function SiteHeader({
         :   copy['theme.tooltip.toLight'];
     function languagePath(next: Language) {
         // Preserve the route and shared result payload; unknown routes stay unknown.
+        if (isResult) return { pathname: resultPath(next), search, hash };
         const path =
             /^\/(en|ru)(?=\/|$)/.test(pathname) ?
                 pathname.replace(/^\/(en|ru)(?=\/|$)/, `/${next}`)
@@ -68,11 +70,7 @@ export function SiteHeader({
                         >
                             <Link
                                 to={languagePath(next)}
-                                state={
-                                    /\/result\/?$/.test(pathname) ? state : (
-                                        undefined
-                                    )
-                                }
+                                state={isResult ? state : undefined}
                                 lang={next}
                                 hrefLang={next}
                                 aria-current={

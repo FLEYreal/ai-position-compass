@@ -42,6 +42,7 @@ describe('language routes', () => {
         });
         render(<RouterProvider router={router} />);
         await screen.findByRole('heading', { name: 'Your AI position' });
+        expect(router.state.location.pathname).toBe('/en/result/');
         expect(router.state.location.search).toBe('?r=example');
     });
 
