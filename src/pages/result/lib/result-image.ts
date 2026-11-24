@@ -83,7 +83,7 @@ async function loadFonts({ result, copy, projectUrl }: DrawResultImage) {
         ...result.coreCamps.map(({ name }) => name.toUpperCase()),
         copy['share.imageTitle'].toUpperCase(),
         ...imageHeadings(copy),
-        '0123456789%',
+        '0123456789.%',
     ].join(' ');
     const bodyText = [
         headingText,
@@ -96,7 +96,7 @@ async function loadFonts({ result, copy, projectUrl }: DrawResultImage) {
         copy['result.relatedVoices'],
         copy['result.undefined'],
         copy['share.imagePrivacy'],
-        '0123456789% · —',
+        '0123456789.% · —',
     ].join(' ');
 
     try {
@@ -389,17 +389,21 @@ export async function saveResultImage({
         neighbors.forEach((camp, index) => {
             const x = margin + index * columnStep;
             const color = campInks.get(camp.id)!;
+            const scoreLabel = `${camp.score}%`;
+            const scoreFont = heading(26);
+            ctx.font = scoreFont;
+            const scoreWidth = ctx.measureText(scoreLabel).width;
             const end = wrapped(
                 camp.name.toUpperCase(),
                 x,
                 firstBaseline,
-                width - 84,
+                width - scoreWidth - 12,
                 27,
                 heading(25),
                 color,
             );
-            text(`${camp.score}%`, x + width, firstBaseline, {
-                font: heading(26),
+            text(scoreLabel, x + width, firstBaseline, {
+                font: scoreFont,
                 color,
                 align: 'right',
             });
