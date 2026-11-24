@@ -115,7 +115,7 @@ export default function Home({
                 </section>
                 <div className="mt-6">
                     {storage === 'pending' ?
-                        <Button disabled>{common['common.loading']}</Button>
+                        <div aria-hidden="true" className="min-h-[52px]" />
                     : status === 'finished' && !needsRecovery ?
                         <Button onClick={() => void viewResult()}>
                             {copy['session.completed.view']}

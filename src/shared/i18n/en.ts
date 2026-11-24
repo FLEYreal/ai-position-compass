@@ -8,7 +8,6 @@ export default {
     'recovery.home': 'Back to Home',
     'common.close': 'Close',
     'common.cancel': 'Cancel',
-    'common.loading': 'Loading…',
     'common.source': 'Source',
     'common.sources': 'Sources',
     'home.abstract.body':

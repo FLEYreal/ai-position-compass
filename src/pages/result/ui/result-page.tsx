@@ -48,15 +48,7 @@ export default function ResultPage({
     const navigate = useNavigate();
     const [resetFailed, setResetFailed] = useState(false);
 
-    if (search === null) {
-        return (
-            <section className="space-y-4 py-10">
-                <title>{heading}</title>
-                <h1 className={sectionTitle}>{heading}</h1>
-                <p role="status">{common['common.loading']}</p>
-            </section>
-        );
-    }
+    if (search === null) return null;
 
     const decoded = readResultQuery(search);
     if (!decoded.ok) {

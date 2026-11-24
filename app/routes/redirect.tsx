@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { resultPath } from '@/shared/config';
 
 export default function RedirectToEnglish() {
@@ -12,5 +12,5 @@ export default function RedirectToEnglish() {
     useEffect(() => {
         navigate(destination, { replace: true });
     }, [destination, navigate]);
-    return <Link to={destination}>English</Link>;
+    return null;
 }

@@ -20,7 +20,7 @@ export function AppShell({
     const page = pathname.replace(/\/$/, '').split('/').at(-1);
     return (
         <TooltipProvider delayDuration={200}>
-            <div className="mx-auto flex min-h-dvh w-[calc(100%-96px)] max-w-[1280px] flex-col max-[800px]:w-[calc(100%-44px)] max-[560px]:w-[calc(100%-36px)]">
+            <div className="mx-auto flex min-h-dvh w-[calc(100%-96px)] max-w-[1280px] flex-col has-[main:empty]:invisible max-[800px]:w-[calc(100%-44px)] max-[560px]:w-[calc(100%-36px)]">
                 <a
                     href="#main"
                     className="sr-only z-50 rounded bg-card p-3 text-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"

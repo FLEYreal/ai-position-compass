@@ -8,7 +8,6 @@ export default {
     'recovery.home': 'На главную',
     'common.close': 'Закрыть',
     'common.cancel': 'Отменить',
-    'common.loading': 'Загрузка…',
     'common.source': 'Источник',
     'common.sources': 'Источники',
     'home.abstract.body':

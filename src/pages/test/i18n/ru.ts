@@ -39,7 +39,6 @@ export default {
     'test.keyboard':
         '1–5 — выбор ответа. U — «Затрудняюсь ответить» и сразу дальше.',
     'test.developerHeading': 'Вопросы для разработчиков',
-    'test.loadingSaved': 'Загрузка сохранённого прогресса…',
     'session.completed.heading': 'Вы завершили тест.',
     'session.completed.description':
         'Теперь вы можете узнать, что ваши ответы говорят о ваших взглядах на ИИ.',

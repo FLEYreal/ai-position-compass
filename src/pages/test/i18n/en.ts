@@ -38,7 +38,6 @@ export default {
     'test.keyboard':
         'Press 1–5 to choose an answer, or U to answer Unsure and continue.',
     'test.developerHeading': 'Developer questions',
-    'test.loadingSaved': 'Loading saved progress…',
     'session.completed.heading': 'You have completed this questionnaire.',
     'session.completed.description':
         'You can now see what your answers reveal about your views on AI.',

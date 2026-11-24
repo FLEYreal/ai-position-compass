@@ -62,6 +62,8 @@ export default function TestPage({
         void restoreQuestionnaireProgress();
     }, []);
 
+    if (storage === 'pending') return null;
+
     const storageNotice =
         storage === 'unavailable' ? copy['storage.unavailable']
         : storage === 'save-failed' ? copy['storage.saveFailed']
@@ -107,10 +109,6 @@ export default function TestPage({
     );
 
     function renderQuestionnaire() {
-        if (storage === 'pending') {
-            return <p role="status">{copy['test.loadingSaved']}</p>;
-        }
-
         if (storage === 'invalid' || storage === 'incompatible') {
             const invalid = storage === 'invalid';
             const heading =
@@ -326,17 +324,16 @@ export default function TestPage({
                 </p>
             )}
             {renderQuestionnaire()}
-            {storage !== 'pending' &&
-                (progress.status === 'not-started' ||
-                    storage === 'invalid' ||
-                    storage === 'incompatible') && (
-                    <Link
-                        className="block w-fit text-sm text-ring underline"
-                        to={`/${lang}/`}
-                    >
-                        {common['recovery.home']}
-                    </Link>
-                )}
+            {(progress.status === 'not-started' ||
+                storage === 'invalid' ||
+                storage === 'incompatible') && (
+                <Link
+                    className="block w-fit text-sm text-ring underline"
+                    to={`/${lang}/`}
+                >
+                    {common['recovery.home']}
+                </Link>
+            )}
         </div>
     );
 }

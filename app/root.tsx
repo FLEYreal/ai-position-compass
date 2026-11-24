@@ -47,6 +47,7 @@ export default function Root() {
     const { language, messages } = useLoaderData<typeof loader>();
     const { pathname } = useLocation();
     const isHome = pathname.replace(/\/$/, '') === `/${language}`;
+    const isRedirect = /^\/(?:test\/?|result\/?)?$/.test(pathname);
     const description = messages['footer.description'];
     return (
         <html lang={language} suppressHydrationWarning>
@@ -94,9 +95,12 @@ export default function Root() {
             </head>
             <body>
                 <ThemeProvider>
-                    <AppShell language={language} messages={messages}>
+                    {isRedirect ?
                         <Outlet />
-                    </AppShell>
+                    :   <AppShell language={language} messages={messages}>
+                            <Outlet />
+                        </AppShell>
+                    }
                 </ThemeProvider>
                 <ScrollRestoration />
                 <Scripts />
