@@ -34,7 +34,7 @@ export default {
     'common.source': 'Source',
     'common.sources': 'Sources',
     'home.abstract.body':
-        'An exploratory questionnaire about artificial intelligence. Map what you expect to happen and what you think should happen — across a spectrum of beliefs and values.',
+        'The future is still taking comments. Take the questionnaire to map what you expect from AI and what you’d like to see happen.',
     'test.privacy': 'Your answers stay in this browser.',
     'test.restart': 'Restart questionnaire',
     'session.restart.heading': 'Start again?',
