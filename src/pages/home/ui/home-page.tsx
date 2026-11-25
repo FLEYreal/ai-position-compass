@@ -67,7 +67,7 @@ export default function Home({
     }
 
     const opening = (
-        <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 min-[851px]:grid-cols-[1.05fr_1fr]">
+        <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 lg:grid-cols-[1.05fr_1fr]">
             <div className="min-w-0 self-end">
                 <p className="mb-3 text-sm font-semibold tracking-wider text-[var(--orange-ink)] uppercase">
                     {copy['home.eyebrow']}
@@ -91,18 +91,6 @@ export default function Home({
                         </svg>
                     </span>
                 </h1>
-            </div>
-            <div className="min-w-0 max-[850px]:mx-auto max-[850px]:w-full max-[850px]:max-w-[480px] min-[851px]:col-start-2 min-[851px]:row-span-2 min-[851px]:row-start-1">
-                <Collage
-                    className="m-0"
-                    caption={common['artwork.caption']}
-                    messages={{
-                        description: common['artwork.description'],
-                        pauseAction: common['artwork.pause'],
-                        resumeAction: common['artwork.play'],
-                        punchcard: common['artwork.punchcard'],
-                    }}
-                />
             </div>
             <div className="min-w-0 self-start">
                 <section className="max-w-[40ch]">
@@ -161,6 +149,18 @@ export default function Home({
                         {copy['home.privacy']}
                     </li>
                 </ul>
+            </div>
+            <div className="mx-auto w-full min-w-0 max-w-[480px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:max-w-none">
+                <Collage
+                    className="m-0"
+                    caption={common['artwork.caption']}
+                    messages={{
+                        description: common['artwork.description'],
+                        pauseAction: common['artwork.pause'],
+                        resumeAction: common['artwork.play'],
+                        punchcard: common['artwork.punchcard'],
+                    }}
+                />
             </div>
         </section>
     );

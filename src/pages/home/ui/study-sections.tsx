@@ -163,44 +163,6 @@ export function StudySections({
                 </div>
             </section>
 
-            <section aria-labelledby="study-axes">
-                <Separator className="mb-6" />
-                <h2 id="study-axes" className={sectionHeading}>
-                    {axesCopy.heading}
-                </h2>
-                <p className="mt-3 max-w-[66ch] leading-relaxed text-muted-foreground">
-                    {axesCopy.introduction}
-                </p>
-                <div
-                    className="mt-7 grid gap-x-8 gap-y-5 md:grid-cols-3 md:grid-rows-[auto_repeat(var(--axis-rows),auto)] md:gap-y-0"
-                    style={{ '--axis-rows': axisRows } as CSSProperties}
-                >
-                    {axisGroups.map(({ heading, axes, description }) => (
-                        <div
-                            key={heading}
-                            className="min-w-0 md:row-span-full md:grid md:grid-rows-subgrid"
-                        >
-                            <div>
-                                <Separator />
-                                <h3 className="pt-3 font-heading text-2xl">
-                                    {heading}
-                                </h3>
-                                {description && (
-                                    <p className="mt-1 text-sm text-muted-foreground">
-                                        {description}
-                                    </p>
-                                )}
-                            </div>
-                            <AxisDefinitions
-                                axes={axes}
-                                names={axesCopy.axes}
-                                descriptions={axisDescriptions}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </section>
-
             <section aria-labelledby="study-camps">
                 <Separator className="mb-6" />
                 <h2 id="study-camps" className={sectionHeading}>
@@ -258,6 +220,44 @@ export function StudySections({
                                     );
                                 })}
                             </ul>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            <section aria-labelledby="study-axes">
+                <Separator className="mb-6" />
+                <h2 id="study-axes" className={sectionHeading}>
+                    {axesCopy.heading}
+                </h2>
+                <p className="mt-3 max-w-[66ch] leading-relaxed text-muted-foreground">
+                    {axesCopy.introduction}
+                </p>
+                <div
+                    className="mt-7 grid gap-x-8 gap-y-5 md:grid-cols-3 md:grid-rows-[auto_repeat(var(--axis-rows),auto)] md:gap-y-0"
+                    style={{ '--axis-rows': axisRows } as CSSProperties}
+                >
+                    {axisGroups.map(({ heading, axes, description }) => (
+                        <div
+                            key={heading}
+                            className="min-w-0 md:row-span-full md:grid md:grid-rows-subgrid"
+                        >
+                            <div>
+                                <Separator />
+                                <h3 className="pt-3 font-heading text-2xl">
+                                    {heading}
+                                </h3>
+                                {description && (
+                                    <p className="mt-1 text-sm text-muted-foreground">
+                                        {description}
+                                    </p>
+                                )}
+                            </div>
+                            <AxisDefinitions
+                                axes={axes}
+                                names={axesCopy.axes}
+                                descriptions={axisDescriptions}
+                            />
                         </div>
                     ))}
                 </div>
