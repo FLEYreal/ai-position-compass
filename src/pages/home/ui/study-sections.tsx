@@ -5,7 +5,12 @@ import {
     type CampId,
     type ModelId,
 } from '@/shared/config';
-import { AxisIcon, DeveloperCollage, PointingHandCollage } from '@/shared/ui';
+import {
+    AxisIcon,
+    DeveloperCollage,
+    PointingHandCollage,
+    Separator,
+} from '@/shared/ui';
 import { cn } from '@/shared/lib';
 import type { Messages as CommonMessages } from '@/shared/i18n';
 import type { Messages } from '../i18n';
@@ -47,7 +52,7 @@ export function StudySections({
 }) {
     const axesCopy = copy.axes;
     return (
-        <div className="mt-[clamp(6.5rem,12vw,11rem)] flex flex-col gap-[clamp(6.5rem,12vw,11rem)]">
+        <div className="flex flex-col gap-[clamp(4rem,7vw,6.5rem)]">
             <section
                 aria-labelledby="study-modules"
                 className="grid gap-y-6 md:grid-cols-[minmax(0,9fr)_minmax(0,11fr)] md:items-center md:gap-x-8 lg:gap-x-12"
@@ -60,7 +65,6 @@ export function StudySections({
                         {copy['study.modules.intro']}
                     </p>
                 </div>
-                <DeveloperCollage className="mx-auto w-full max-w-[380px] translate-y-3 md:col-start-1 md:row-span-2 md:row-start-1 xl:max-w-[480px]" />
                 <div className="min-w-0 self-start bg-[var(--paper-raised)] px-4 py-5 sm:px-6 md:col-start-2 md:row-start-2">
                     <div aria-hidden="true" className="mb-5 flex h-2.5 gap-1.5">
                         <span
@@ -103,7 +107,10 @@ export function StudySections({
                         </div>
                     </dl>
                 </div>
+                <DeveloperCollage className="mx-auto w-full max-w-[380px] translate-y-3 md:col-start-1 md:row-span-2 md:row-start-1 xl:max-w-[480px]" />
             </section>
+
+            <Separator />
 
             <section aria-labelledby="study-camps">
                 <h2 id="study-camps" className={sectionHeading}>
@@ -166,6 +173,8 @@ export function StudySections({
                 </div>
             </section>
 
+            <Separator />
+
             <section aria-labelledby="study-axes">
                 <header className="grid max-w-[60rem] grid-cols-[minmax(0,1fr)_clamp(5rem,22vw,18rem)] items-center gap-x-4 gap-y-3 sm:gap-x-8">
                     <h2 id="study-axes" className={sectionHeading}>
@@ -176,7 +185,7 @@ export function StudySections({
                         {axesCopy.introduction}
                     </p>
                 </header>
-                <dl className="my-8 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
+                <dl className="my-16 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
                     {axes.map(({ id, modelId }) => {
                         const token = id.replace(
                             /[A-Z]/g,

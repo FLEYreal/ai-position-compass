@@ -15,7 +15,7 @@ import {
     type Language,
 } from '@/shared/config';
 import type { Messages as CommonMessages } from '@/shared/i18n';
-import { Button, Collage } from '@/shared/ui';
+import { Button, Collage, Separator } from '@/shared/ui';
 import { StartDialog, type StartMessages } from '@/widgets/start-dialog';
 import type { Messages } from '../i18n';
 import { StudySections } from './study-sections';
@@ -67,7 +67,7 @@ export default function Home({
     }
 
     const opening = (
-        <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 lg:grid-cols-[1.05fr_1fr]">
+        <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 min-[801px]:grid-cols-[1.2fr_1fr] lg:grid-cols-[1.05fr_1fr]">
             <div className="min-w-0 self-end">
                 <p className="mb-3 text-sm font-semibold text-muted-foreground tracking-wider uppercase">
                     {copy['home.eyebrow']}
@@ -150,7 +150,7 @@ export default function Home({
                     </li>
                 </ul>
             </div>
-            <div className="mx-auto w-full min-w-0 max-w-[480px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:max-w-none">
+            <div className="mx-auto w-full min-w-0 max-w-[480px] min-[801px]:col-start-2 min-[801px]:row-span-2 min-[801px]:row-start-1 min-[801px]:max-w-none">
                 <Collage
                     className="m-0"
                     caption={common['artwork.caption']}
@@ -166,6 +166,7 @@ export default function Home({
     return (
         <>
             {opening}
+            <Separator className="my-[clamp(4rem,7vw,6.5rem)]" />
             <StudySections
                 copy={copy}
                 axisDescriptions={common.axisDescriptions}
