@@ -8,7 +8,7 @@ import {
     type CampId,
     type ModelId,
 } from '@/shared/config';
-import { AxisIcon, Separator } from '@/shared/ui';
+import { AxisIcon, DeveloperCollage, Separator } from '@/shared/ui';
 import { cn } from '@/shared/lib';
 import type { Messages as CommonMessages } from '@/shared/i18n';
 import type { Messages } from '../i18n';
@@ -108,18 +108,19 @@ export function StudySections({
         <div className="mt-[clamp(5rem,10vw,9rem)] flex flex-col gap-[clamp(5rem,10vw,9rem)]">
             <section
                 aria-labelledby="study-modules"
-                className="grid gap-x-7 gap-y-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:gap-x-12"
+                className="grid gap-y-6 md:grid-cols-[minmax(0,9fr)_minmax(0,11fr)] md:items-center md:gap-x-8 lg:gap-x-12"
             >
                 <Separator className="col-span-full" />
-                <div>
+                <div className="min-w-0 md:col-start-2 md:row-start-2 md:self-end">
                     <h2 id="study-modules" className={sectionHeading}>
                         {copy['study.modules.heading']}
                     </h2>
-                    <p className="mt-3 max-w-[44ch] leading-relaxed text-muted-foreground">
+                    <p className="mt-3 max-w-[58ch] leading-relaxed text-muted-foreground">
                         {copy['study.modules.intro']}
                     </p>
                 </div>
-                <div className="self-start bg-[var(--paper-raised)] px-4 py-5 sm:px-6">
+                <DeveloperCollage className="mx-auto max-w-[380px] translate-y-3 md:col-start-1 md:row-span-2 md:row-start-2 xl:max-w-[480px]" />
+                <div className="min-w-0 self-start bg-[var(--paper-raised)] px-4 py-5 sm:px-6 md:col-start-2 md:row-start-3">
                     <div aria-hidden="true" className="mb-5 flex h-2.5 gap-1.5">
                         <span
                             className="bg-foreground"

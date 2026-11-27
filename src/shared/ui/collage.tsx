@@ -113,10 +113,6 @@ export function Collage({
                         className="h-full w-full"
                         src={home ? nuclear : apollo}
                     />
-                    <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-[5px] bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
-                    />
                     <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono uppercase text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
                         {home ? 'GRABLE · 1953' : 'APOLLO 11 · 1969'}
                     </span>
@@ -129,10 +125,6 @@ export function Collage({
                         className="h-full w-full"
                         src={home ? apollo : courtroom}
                     />
-                    <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-[5px] bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
-                    />
                     <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono uppercase text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
                         {home ? 'APOLLO 11 · 1969' : 'COURTROOM · 1945'}
                     </span>
@@ -142,10 +134,6 @@ export function Collage({
                     className={`absolute bottom-[4%] left-[33%] w-[58%] transform-[rotate(5deg)] ${paperMotion} motion-safe:[animation-duration:10.4s]! motion-safe:[animation-delay:-6s]! motion-safe:[animation-direction:reverse]!`}
                 >
                     <EditorialPrint viewBox="0 0 2232 1004" src={punchcard} />
-                    <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(#1b1a17_0.55px,transparent_0.9px)] bg-size-[2.8px_2.8px] opacity-[0.22] mix-blend-multiply"
-                    />
                     <span className="absolute top-2 right-2 bg-[var(--photo-paper)] px-1 font-mono uppercase text-[length:var(--font-size-technical)] text-[var(--action-ink)]">
                         IBM · {messages.punchcard}
                     </span>

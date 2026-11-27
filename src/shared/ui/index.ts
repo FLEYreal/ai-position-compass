@@ -39,6 +39,7 @@ export { Mask } from './mascot';
 export { PaperClip } from './paper-clip';
 export { GitHubMark } from './github-mark';
 export { Collage } from './collage';
+export { DeveloperCollage } from './developer-collage';
 export { AxisIcon } from './axis-icon';
 export { AxisExplanation } from './axis-explanation';
 export { axisNodes, type AxisId } from './axis-presentation';

@@ -69,7 +69,7 @@ export default function Home({
     const opening = (
         <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 lg:grid-cols-[1.05fr_1fr]">
             <div className="min-w-0 self-end">
-                <p className="mb-3 text-sm font-semibold tracking-wider text-[var(--orange-ink)] uppercase">
+                <p className="mb-3 text-sm font-semibold text-muted-foreground tracking-wider uppercase">
                     {copy['home.eyebrow']}
                 </p>
                 <h1 className="font-heading text-[clamp(37px,6.7vw,96px)] leading-[var(--line-height-display)] font-semibold tracking-[var(--letter-spacing-display)] text-balance uppercase max-[560px]:text-[clamp(42px,10vw,65px)]">

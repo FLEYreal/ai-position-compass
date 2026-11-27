@@ -65,6 +65,7 @@ Source layout, slice dependencies, and how localized copy reaches the UI.
 
 - Follow FSD v2.1 pages-first structure and import downward through slice public APIs.
 - Use the route locale and typed EN/RU dictionaries with matching keys, without an i18n library. Shell wording lives in `src/app/i18n/`, slice wording in each slice's `i18n/`, and reusable labels and infrastructure in `src/shared/i18n/`. Each dictionary exposes its contract and locale loader through `index.ts`. Route modules load only the selected locale and required dictionaries using helpers shared by prerendering and browser navigation.
+- All current and future on-page editorial illustrations use the same [`EditorialPrint`](src/shared/ui/editorial-print.tsx) component in `src/shared/ui` for color and halftone. Keep that treatment in the shared component. Compositions own their source art, silhouettes, and backing paper.
 - Shared UI receives translated text, accessible names, and count formatters through props. Interpolate counts and `projectName` from typed configuration using complete messages and locale-specific grammar. Use distinct keys for distinct contexts or inflections.
 - Use `TRANSLATIONS.md` as the sole source for application copy. Semantic changes to question wording require owner approval.
 

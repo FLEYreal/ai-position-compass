@@ -10,11 +10,11 @@ export default {
     'session.resume.action': 'Continue questionnaire',
     'session.completed.view': 'View my results',
     'storage.reset': 'Clear saved progress',
-    'home.questions.core': '{count} core questions',
-    'home.duration.estimate': 'About {count} min',
-    'study.modules.heading': 'Core questionnaire and developer module',
+    'home.questions.core': '{count} questions',
+    'home.duration.estimate': '~{count} min',
+    'study.modules.heading': 'Your stack, your call',
     'study.modules.intro':
-        'You can add the developer module when you start the questionnaire.',
+        'What makes it into your stack? Which tasks would you hand off to AI? Add the developer module when you start to get a separate developer profile.',
     'study.module.core': 'Core questionnaire',
     'study.module.core.count': '{count} questions',
     'study.module.core.body':
