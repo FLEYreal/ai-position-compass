@@ -22,6 +22,8 @@ Resized and clipped to the computer's silhouette for the landing-page collage.
 https://commons.wikimedia.org/wiki/File:IBM_PC_XT_02.jpg
 https://creativecommons.org/publicdomain/zero/1.0/
 
+Pointing hand — generated with OpenAI ImageGen for the landing-page axes collage.
+
 Mask, bent-wire paperclips and cut-paper geometry were authored for the design prototype.
 The GitHub mark comes from Simple Icons, CC0; GitHub retains trademark rights.
 https://github.com/simple-icons/simple-icons/blob/develop/icons/github.svg

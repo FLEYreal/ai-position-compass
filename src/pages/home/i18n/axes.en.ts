@@ -1,13 +1,17 @@
 import type { AxisId } from '@/shared/config';
 
 export const axesCopy = {
-    heading: 'What the compass measures',
+    heading: 'What shapes your AI position?',
     introduction:
-        'Each axis measures one aspect of your views on AI. Values describe what you think should happen. Beliefs describe what you expect to happen. This lets your result show where you stand on each issue.',
-    values: 'Core values',
-    beliefs: 'Core beliefs',
-    developer: 'Developer axes',
-    developerDescription: 'Two values and one belief about software work.',
+        'Each axis captures one part of your view on AI. Values show what you think should happen, and beliefs show what you expect to happen. Three axes come from the optional developer module.',
+    module: {
+        core: 'Core axis',
+        dev: 'Developer axis',
+    },
+    construct: {
+        value: 'Value',
+        belief: 'Belief',
+    },
     axes: {
         regulation: 'Regulation',
         control: 'Control',
