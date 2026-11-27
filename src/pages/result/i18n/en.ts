@@ -8,6 +8,8 @@ export default {
     'result.primary': 'Closest match',
     'result.neighboring': 'Also close',
     'result.similarityLabel': 'Similarity',
+    'result.similarityExplanation':
+        'An axis score shows where you land on one issue. Camp similarity compares your profile across all axes with scores.',
     'result.neighboring.caption': 'Other points of overlap',
     'result.references': 'More sources',
     'result.match': '{score}% similarity',
