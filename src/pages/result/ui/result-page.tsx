@@ -143,16 +143,11 @@ export default function ResultPage({
                                 aria-hidden="true"
                                 className="h-1 w-24 bg-(--result-camp-ink)"
                             />
-                            <div className="space-y-2">
-                                <CampSimilarity
-                                    camp={primary}
-                                    copy={copy}
-                                    prominent
-                                />
-                                <p className="max-w-[50ch] text-sm text-muted-foreground">
-                                    {copy['result.similarityExplanation']}
-                                </p>
-                            </div>
+                            <CampSimilarity
+                                camp={primary}
+                                copy={copy}
+                                prominent
+                            />
                             <p className="max-w-[50ch] leading-relaxed italic">
                                 {primary.description}
                             </p>

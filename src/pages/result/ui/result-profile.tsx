@@ -1,7 +1,14 @@
 import { ArrowUpRight } from 'lucide-react';
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { Messages as CommonMessages } from '@/shared/i18n';
-import { AxisExplanation, AxisIcon, AxisScale } from '@/shared/ui';
+import {
+    AxisExplanation,
+    AxisIcon,
+    AxisScale,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/shared/ui';
 import type { Messages } from '../i18n';
 import type { ResultAxis, ResultCamp } from '../model/result-presentation';
 import { campPalette } from './camp-palette';
@@ -15,29 +22,44 @@ export function CampSimilarity({
     copy: Messages;
     prominent?: boolean;
 }) {
+    const [open, setOpen] = useState(false);
+
     return (
-        <p className="inline-flex items-baseline gap-2 text-(--result-camp-ink) tabular-nums">
-            <span className="sr-only">
-                {prominent && `${copy['result.primary']}. `}
-                {camp.similarity}
-            </span>
-            <strong
-                aria-hidden="true"
-                className={
-                    prominent ?
-                        'text-3xl leading-none font-medium sm:text-4xl'
-                    :   'text-base leading-none font-medium'
-                }
+        <Tooltip open={open} onOpenChange={setOpen}>
+            <TooltipTrigger
+                type="button"
+                className="inline-flex min-h-6 cursor-help items-baseline gap-2 text-(--result-camp-ink) tabular-nums"
+                onClick={(event) => {
+                    // Radix handles hover and focus. Keep the tip open on tap.
+                    event.preventDefault();
+                    setOpen(true);
+                }}
             >
-                {camp.score}%
-            </strong>
-            <span
-                aria-hidden="true"
-                className="text-[length:var(--font-size-technical)] tracking-wide uppercase"
-            >
-                {copy['result.similarityLabel']}
-            </span>
-        </p>
+                <span className="sr-only">
+                    {prominent && `${copy['result.primary']}. `}
+                    {camp.similarity}
+                </span>
+                <strong
+                    aria-hidden="true"
+                    className={
+                        prominent ?
+                            'text-3xl leading-none font-medium underline decoration-dotted decoration-1 underline-offset-4 sm:text-4xl'
+                        :   'text-base leading-none font-medium underline decoration-dotted decoration-1 underline-offset-4'
+                    }
+                >
+                    {camp.score}%
+                </strong>
+                <span
+                    aria-hidden="true"
+                    className="text-[length:var(--font-size-technical)] tracking-wide uppercase"
+                >
+                    {copy['result.similarityLabel']}
+                </span>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" align="start" collisionPadding={12}>
+                {copy['result.similarityExplanation']}
+            </TooltipContent>
+        </Tooltip>
     );
 }
 
