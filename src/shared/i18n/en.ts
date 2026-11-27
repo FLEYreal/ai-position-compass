@@ -25,8 +25,6 @@ export default {
     'artwork.caption': 'FIG. A / ARCHIVAL STUDY',
     'artwork.description':
         'Archival collage of technology, institutions, and public life.',
-    'artwork.pause': 'Pause',
-    'artwork.play': 'Resume',
     'artwork.punchcard': 'Punched card',
     'recovery.home': 'Back to Home',
     'common.close': 'Close',

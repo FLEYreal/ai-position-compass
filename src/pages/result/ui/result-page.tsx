@@ -176,8 +176,6 @@ export default function ResultPage({
                     variant="result"
                     messages={{
                         description: common['artwork.description'],
-                        pauseAction: common['artwork.pause'],
-                        resumeAction: common['artwork.play'],
                         punchcard: common['artwork.punchcard'],
                     }}
                     className="min-w-0 max-[799px]:mx-auto max-[799px]:max-w-[390px]"

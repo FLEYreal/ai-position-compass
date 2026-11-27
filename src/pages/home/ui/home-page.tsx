@@ -156,8 +156,6 @@ export default function Home({
                     caption={common['artwork.caption']}
                     messages={{
                         description: common['artwork.description'],
-                        pauseAction: common['artwork.pause'],
-                        resumeAction: common['artwork.play'],
                         punchcard: common['artwork.punchcard'],
                     }}
                 />

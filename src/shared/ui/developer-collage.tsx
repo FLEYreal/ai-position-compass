@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { cn } from '@/shared/lib';
+import { CollageMotion } from './collage-motion';
 import { EditorialPrint } from './editorial-print';
 import ibmPcXt from './collage-assets/ibm-pc-xt.webp';
 
@@ -8,25 +8,23 @@ export function DeveloperCollage({ className }: { className?: string }) {
     const clipId = `${silhouetteId}-clip`;
 
     return (
-        <svg
-            viewBox="-28 -6 724 728"
-            className={cn(
-                'block h-auto w-full drop-shadow-[0_4px_6px_#15120d26]',
-                className,
-            )}
-            aria-hidden="true"
-        >
-            <defs>
+        <CollageMotion className={className} aria-hidden="true">
+            <svg
+                viewBox="-28 -6 724 728"
+                className="block h-auto w-full drop-shadow-[0_4px_6px_#15120d26]"
+                data-collage-piece
+            >
+                <defs>
+                    <path
+                        id={silhouetteId}
+                        d="M172 105Q168 84 189 75L325 42L548 31Q553 32 555 41L565 202Q567 212 561 218L622 219Q627 219 626 228L625 282L544 462Q540 473 526 475L528 500L446 662Q442 671 433 667L66 524Q58 521 63 513L175 397Q182 392 189 396L176 325Q174 313 182 307L207 293Z"
+                    />
+                    <clipPath id={clipId}>
+                        <use href={`#${silhouetteId}`} />
+                    </clipPath>
+                </defs>
                 <path
-                    id={silhouetteId}
-                    d="M172 105Q168 84 189 75L325 42L548 31Q553 32 555 41L565 202Q567 212 561 218L622 219Q627 219 626 228L625 282L544 462Q540 473 526 475L528 500L446 662Q442 671 433 667L66 524Q58 521 63 513L175 397Q182 392 189 396L176 325Q174 313 182 307L207 293Z"
-                />
-                <clipPath id={clipId}>
-                    <use href={`#${silhouetteId}`} />
-                </clipPath>
-            </defs>
-            <path
-                d="M148 81
+                    d="M148 81
                    L164 61
                    L175 54 190 61 209 50 227 56 247 44 260 52 279 41 296 47 315 35 325 43 347 32 360 40 380 28 398 35 413 23 430 31 449 19 466 27 485 14 498 21 520 11 530 18 539 14
                    L550 14 560 25 565 25
@@ -45,29 +43,30 @@ export function DeveloperCollage({ className }: { className?: string }) {
                    L163 302 179 298 186 288
                    L178 276 184 262 172 244 178 228 166 207 172 193 160 172 165 156 152 138 159 121 147 106 152 88
                    Z"
-                transform="rotate(20 342 350)"
-                fill="var(--orange)"
-                stroke="var(--orange)"
-                strokeWidth={4}
-                strokeLinejoin="round"
-            />
-            <g transform="rotate(15 342 350)">
-                <use
-                    href={`#${silhouetteId}`}
-                    fill="var(--photo-paper)"
-                    stroke="var(--photo-paper)"
-                    strokeWidth={9}
+                    transform="rotate(20 342 350)"
+                    fill="var(--orange)"
+                    stroke="var(--orange)"
+                    strokeWidth={4}
                     strokeLinejoin="round"
                 />
-                <EditorialPrint width="100%" height="100%">
-                    <image
-                        href={ibmPcXt}
-                        width={700}
-                        height={686}
-                        clipPath={`url(#${clipId})`}
+                <g transform="rotate(15 342 350)">
+                    <use
+                        href={`#${silhouetteId}`}
+                        fill="var(--photo-paper)"
+                        stroke="var(--photo-paper)"
+                        strokeWidth={9}
+                        strokeLinejoin="round"
                     />
-                </EditorialPrint>
-            </g>
-        </svg>
+                    <EditorialPrint width="100%" height="100%">
+                        <image
+                            href={ibmPcXt}
+                            width={700}
+                            height={686}
+                            clipPath={`url(#${clipId})`}
+                        />
+                    </EditorialPrint>
+                </g>
+            </svg>
+        </CollageMotion>
     );
 }

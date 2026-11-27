@@ -119,7 +119,7 @@ export function StudySections({
                         {copy['study.modules.intro']}
                     </p>
                 </div>
-                <DeveloperCollage className="mx-auto max-w-[380px] translate-y-3 md:col-start-1 md:row-span-2 md:row-start-2 xl:max-w-[480px]" />
+                <DeveloperCollage className="mx-auto w-full max-w-[380px] translate-y-3 md:col-start-1 md:row-span-2 md:row-start-2 xl:max-w-[480px]" />
                 <div className="min-w-0 self-start bg-[var(--paper-raised)] px-4 py-5 sm:px-6 md:col-start-2 md:row-start-3">
                     <div aria-hidden="true" className="mb-5 flex h-2.5 gap-1.5">
                         <span

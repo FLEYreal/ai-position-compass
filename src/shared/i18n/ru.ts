@@ -27,8 +27,6 @@ export default {
     'artwork.caption': 'РИС. А / АРХИВНОЕ ИССЛЕДОВАНИЕ',
     'artwork.description':
         'Архивный коллаж, отражающий развитие технологий, институтов и общественной жизни.',
-    'artwork.pause': 'Пауза',
-    'artwork.play': 'Продолжить',
     'artwork.punchcard': 'Перфокарта',
     'recovery.home': 'На главную',
     'common.close': 'Закрыть',
