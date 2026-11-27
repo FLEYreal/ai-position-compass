@@ -1,7 +1,7 @@
 export type ModelId = 'dev' | 'core'; // Id of the questionnary
 export type QuestionKey = -1 | 1; // How question answer influences an axis position
 export type QuestionWeight = 0.5 | 1;
-export type CampPosition = 17 | 33 | 50 | 67 | 83; // What position on an axis satisfies the camp requirement
+export type CampPosition = 0 | 17 | 33 | 50 | 67 | 83 | 100; // What position on an axis satisfies the camp requirement
 
 /* --- AXES --- */
 export type CoreAxisDefinition = { readonly id: string };
