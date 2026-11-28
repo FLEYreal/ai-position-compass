@@ -68,11 +68,11 @@ export default function Home({
 
     const opening = (
         <section className="mx-auto grid items-center gap-x-[clamp(24px,5vw,72px)] gap-y-8 min-[801px]:grid-cols-[1.2fr_1fr] lg:grid-cols-[1.05fr_1fr]">
-            <div className="min-w-0 self-end">
+            <div className="min-w-0 self-end max-lg:text-center">
                 <p className="mb-3 text-sm font-semibold text-muted-foreground tracking-wider uppercase">
                     {copy['home.eyebrow']}
                 </p>
-                <h1 className="font-heading text-[clamp(37px,6.7vw,96px)] leading-[var(--line-height-display)] font-semibold tracking-[var(--letter-spacing-display)] text-balance uppercase max-[560px]:text-[clamp(42px,10vw,65px)]">
+                <h1 className="font-heading text-[clamp(37px,6.7vw,96px)] leading-[var(--line-height-display)] font-semibold tracking-[var(--letter-spacing-display)] text-balance uppercase max-[560px]:text-[clamp(46px,12vw,64px)]">
                     {lead} <span className="block">{question}</span>{' '}
                     <span className="relative inline-block max-w-full pb-[0.15em]">
                         {emphasis}
@@ -92,18 +92,18 @@ export default function Home({
                     </span>
                 </h1>
             </div>
-            <div className="min-w-0 self-start">
-                <section className="max-w-[40ch]">
-                    <h2 className="border-b border-border pb-2 font-sans text-[17px] leading-[1.7] font-medium max-[560px]:text-base">
+            <div className="min-w-0 self-start max-lg:text-center">
+                <section className="hidden max-w-[40ch] lg:block">
+                    <h2 className="border-b border-border pb-2 font-sans text-[17px] leading-[1.7] font-medium">
                         {copy['home.abstract.heading']}
                     </h2>
                     <p className="mt-3 leading-[1.85]">
                         {common['home.abstract.body']}
                     </p>
                 </section>
-                <div className="mt-6">
+                <div className="min-h-[52px] max-[560px]:min-h-15 max-[560px]:[--font-size-button:1rem] max-[560px]:*:min-h-15 max-[560px]:*:w-full max-[560px]:*:max-w-[17rem] max-[560px]:*:whitespace-normal lg:mt-6">
                     {storage === 'pending' ?
-                        <div aria-hidden="true" className="min-h-[52px]" />
+                        null
                     : status === 'finished' && !needsRecovery ?
                         <Button onClick={() => void viewResult()}>
                             {copy['session.completed.view']}
@@ -126,7 +126,7 @@ export default function Home({
                         />
                     }
                 </div>
-                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground max-lg:justify-center">
                     <li className="flex items-center gap-2">
                         <ListChecks aria-hidden="true" className="size-4" />
                         {copy['home.questions.core'].replace(
@@ -150,7 +150,7 @@ export default function Home({
                     </li>
                 </ul>
             </div>
-            <div className="mx-auto w-full min-w-0 max-w-[480px] min-[801px]:col-start-2 min-[801px]:row-span-2 min-[801px]:row-start-1 min-[801px]:max-w-none">
+            <div className="mx-auto w-full min-w-0 max-w-[480px] max-[560px]:mt-6 min-[801px]:col-start-2 min-[801px]:row-span-2 min-[801px]:row-start-1 min-[801px]:max-w-none">
                 <Collage
                     className="m-0"
                     caption={common['artwork.caption']}

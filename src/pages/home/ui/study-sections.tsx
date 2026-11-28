@@ -176,16 +176,16 @@ export function StudySections({
             <Separator />
 
             <section aria-labelledby="study-axes">
-                <header className="grid max-w-[60rem] grid-cols-[minmax(0,1fr)_clamp(5rem,22vw,18rem)] items-center gap-x-4 gap-y-3 sm:gap-x-8">
+                <header className="grid items-center gap-y-3 md:max-w-[66rem] md:grid-cols-[minmax(0,1fr)_min(26.4vw,21.6rem)] md:gap-x-8 lg:gap-x-12">
                     <h2 id="study-axes" className={sectionHeading}>
                         {axesCopy.heading}
                     </h2>
-                    <PointingHandCollage className="col-start-2 row-start-1 w-full sm:row-span-2" />
-                    <p className="col-span-2 max-w-[62ch] leading-relaxed text-muted-foreground sm:col-span-1">
+                    <PointingHandCollage className="hidden w-full transform-[rotate(-5deg)] md:col-start-2 md:row-span-2 md:row-start-1 md:block lg:translate-x-3" />
+                    <p className="leading-relaxed text-muted-foreground md:max-w-[62ch]">
                         {axesCopy.introduction}
                     </p>
                 </header>
-                <dl className="my-16 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
+                <dl className="my-16 grid grid-cols-1 gap-y-10 lg:grid-cols-3 lg:gap-x-8">
                     {axes.map(({ id, modelId }) => {
                         const token = id.replace(
                             /[A-Z]/g,
@@ -194,7 +194,7 @@ export function StudySections({
                         return (
                             <div
                                 key={id}
-                                className="flex min-w-0 flex-wrap content-start items-baseline gap-x-3 gap-y-1 border-t border-border pt-4 sm:[&:last-child:nth-child(3n+1)]:col-start-2"
+                                className="flex min-w-0 flex-wrap content-start items-baseline gap-x-3 gap-y-1 border-t border-border pt-4 lg:[&:last-child:nth-child(3n+1)]:col-start-2"
                             >
                                 <dt className="flex max-w-full items-start gap-2.5 font-semibold">
                                     <span
@@ -215,7 +215,7 @@ export function StudySections({
                                     </span>
                                 </dd>
                                 <dd className="mt-1 basis-full text-sm leading-relaxed">
-                                    <span className="block max-w-[36ch]">
+                                    <span className="block max-w-full lg:max-w-[36ch]">
                                         {axisDescriptions[id]}
                                     </span>
                                 </dd>
