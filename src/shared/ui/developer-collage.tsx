@@ -1,14 +1,18 @@
 import { useId } from 'react';
+import { cn } from '@/shared/lib';
 import { CollageMotion } from './collage-motion';
 import { EditorialPrint } from './editorial-print';
-import ibmPcXt from './collage-assets/ibm-pc-xt.webp';
+import ibmPcXt from './collage-assets/ibm-pc-xt-cutout.webp';
 
 export function DeveloperCollage({ className }: { className?: string }) {
     const silhouetteId = useId();
-    const clipId = `${silhouetteId}-clip`;
 
     return (
-        <CollageMotion className={className} aria-hidden="true">
+        <CollageMotion
+            deferArtwork
+            className={cn('aspect-[724/728]', className)}
+            aria-hidden="true"
+        >
             <svg
                 viewBox="-28 -6 724 728"
                 className="block h-auto w-full drop-shadow-[0_4px_6px_#15120d26]"
@@ -18,9 +22,6 @@ export function DeveloperCollage({ className }: { className?: string }) {
                         id={silhouetteId}
                         d="M172 105Q168 84 189 75L325 42L548 31Q553 32 555 41L565 202Q567 212 561 218L622 219Q627 219 626 228L625 282L544 462Q540 473 526 475L528 500L446 662Q442 671 433 667L66 524Q58 521 63 513L175 397Q182 392 189 396L176 325Q174 313 182 307L207 293Z"
                     />
-                    <clipPath id={clipId}>
-                        <use href={`#${silhouetteId}`} />
-                    </clipPath>
                 </defs>
                 <g
                     data-collage-piece
@@ -63,12 +64,7 @@ export function DeveloperCollage({ className }: { className?: string }) {
                             strokeLinejoin="round"
                         />
                         <EditorialPrint width="100%" height="100%">
-                            <image
-                                href={ibmPcXt}
-                                width={700}
-                                height={686}
-                                clipPath={`url(#${clipId})`}
-                            />
+                            <image href={ibmPcXt} width={700} height={686} />
                         </EditorialPrint>
                     </g>
                 </g>

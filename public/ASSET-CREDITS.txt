@@ -18,7 +18,8 @@ IBM-style blue punched card — Gwern, Arnold Reinhold and Bech; public-domain d
 https://commons.wikimedia.org/wiki/File:Blue-punch-card-front-horiz.png
 
 IBM PC XT — Hidalgo944, 2023; CC0 1.0 Universal Public Domain Dedication.
-Resized and clipped to the computer's silhouette for the landing-page collage.
+The landing-page WebP has a transparent cutout traced from the computer's
+silhouette. The opaque source is retained as ibm-pc-xt.webp in the repository.
 https://commons.wikimedia.org/wiki/File:IBM_PC_XT_02.jpg
 https://creativecommons.org/publicdomain/zero/1.0/
 

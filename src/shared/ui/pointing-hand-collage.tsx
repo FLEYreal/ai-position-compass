@@ -1,10 +1,15 @@
+import { cn } from '@/shared/lib';
 import { CollageMotion } from './collage-motion';
 import { EditorialPrint } from './editorial-print';
 import pointingHand from './collage-assets/pointing-hand.webp';
 
 export function PointingHandCollage({ className }: { className?: string }) {
     return (
-        <CollageMotion className={className} aria-hidden="true">
+        <CollageMotion
+            deferArtwork
+            className={cn('aspect-[792/419]', className)}
+            aria-hidden="true"
+        >
             <svg
                 viewBox="0 0 792 419"
                 className="block h-auto w-full drop-shadow-[0_4px_6px_#15120d26]"

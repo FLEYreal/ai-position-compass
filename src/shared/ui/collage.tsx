@@ -3,10 +3,10 @@ import { Mask } from './mascot';
 import { PaperClip } from './paper-clip';
 import { EditorialPrint } from './editorial-print';
 import { CollageMotion } from './collage-motion';
-import apollo from './collage-assets/apollo.jpg';
-import nuclear from './collage-assets/grable.jpg';
-import courtroom from './collage-assets/courtroom.jpg';
-import punchcard from './collage-assets/punchcard.png';
+import apollo from './collage-assets/apollo.webp';
+import nuclear from './collage-assets/grable.webp';
+import courtroom from './collage-assets/courtroom.webp';
+import punchcard from './collage-assets/punchcard.webp';
 
 export function Collage({
     variant = 'home',

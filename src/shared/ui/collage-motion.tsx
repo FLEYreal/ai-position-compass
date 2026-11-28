@@ -5,24 +5,36 @@ import { cn } from '@/shared/lib';
 export function CollageMotion({
     className,
     children,
+    deferArtwork = false,
     ...props
-}: ComponentProps<'div'>) {
+}: ComponentProps<'div'> & { deferArtwork?: boolean }) {
     const stageRef = useRef<HTMLDivElement>(null);
     const [playing, setPlaying] = useState(false);
+    const [hasEnteredViewport, setHasEnteredViewport] = useState(false);
 
     useEffect(() => {
         const stage = stageRef.current;
-        if (!stage || typeof IntersectionObserver === 'undefined') return;
+        if (!stage) return;
+        if (typeof IntersectionObserver === 'undefined') {
+            if (!deferArtwork) return;
+            const frame = requestAnimationFrame(() =>
+                setHasEnteredViewport(true),
+            );
+            return () => cancelAnimationFrame(frame);
+        }
 
         let inViewport = false;
         const update = () =>
             setPlaying(inViewport && document.visibilityState === 'visible');
         const observer = new IntersectionObserver(
             ([entry]) => {
+                if (deferArtwork && entry.isIntersecting) {
+                    setHasEnteredViewport(true);
+                }
                 inViewport = entry.intersectionRatio >= 0.1;
                 update();
             },
-            { threshold: 0.1 },
+            { threshold: deferArtwork ? [0, 0.1] : 0.1 },
         );
         observer.observe(stage);
         document.addEventListener('visibilitychange', update);
@@ -31,7 +43,7 @@ export function CollageMotion({
             observer.disconnect();
             document.removeEventListener('visibilitychange', update);
         };
-    }, []);
+    }, [deferArtwork]);
 
     return (
         <div
@@ -44,7 +56,7 @@ export function CollageMotion({
                 className,
             )}
         >
-            {children}
+            {(!deferArtwork || hasEnteredViewport) && children}
         </div>
     );
 }
