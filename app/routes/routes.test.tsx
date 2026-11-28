@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, test } from 'vitest';
+import { TooltipProvider } from '@/shared/ui';
 import Home, { loader as homeLoader } from './home';
 import ResultRoute, { loader as resultLoader } from './result';
 import TestRoute, { loader as testLoader } from './test';
@@ -55,6 +56,7 @@ describe('language routes', () => {
                         initialEntries: ['/en/result?r=AQEAAQsYITJDU2Nk_yo-'],
                     })}
                 />,
+                { wrapper: TooltipProvider },
             );
             expect(
                 await screen.findByRole('meter', { name: 'Regulation' }),
