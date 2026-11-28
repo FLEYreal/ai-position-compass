@@ -65,16 +65,17 @@ Source layout, slice dependencies, and how localized copy reaches the UI.
 
 - Follow FSD v2.1 pages-first structure and import downward through slice public APIs.
 - Use the route locale and typed EN/RU dictionaries with matching keys, without an i18n library. Shell wording lives in `src/app/i18n/`, slice wording in each slice's `i18n/`, and reusable labels and infrastructure in `src/shared/i18n/`. Each dictionary exposes its contract and locale loader through `index.ts`. Route modules load only the selected locale and required dictionaries using helpers shared by prerendering and browser navigation.
+- All current and future on-page editorial illustrations use the same [`EditorialPrint`](src/shared/ui/editorial-print.tsx) component in `src/shared/ui` for color and halftone. Keep that treatment in the shared component. Compositions own their source art, silhouettes, and backing paper.
+- All current and future collage components use the same [`CollageMotion`](src/shared/ui/collage-motion.tsx) component and held-pose animation. Loop the animation at a steady pace while visible. Suspend it offscreen and in hidden tabs, and respect reduced-motion preferences. Provide a site-wide pause control and retain its setting across navigation and reloads when browser storage is available.
 - Shared UI receives translated text, accessible names, and count formatters through props. Interpolate counts and `projectName` from typed configuration using complete messages and locale-specific grammar. Use distinct keys for distinct contexts or inflections.
-- Use `TRANSLATIONS.md` as the sole source for application copy. Semantic changes to question wording require owner approval.
+- Treat the owning EN/RU dictionaries as the source for application copy. Semantic changes to question wording require owner approval.
 
 #### Procedures
 
-**Add or revise localized wording.** When a screen needs new copy or an edit, use the worksheet to keep both languages consistent with the reviewed wording.
+**Add or revise localized wording.** Update the dictionaries that own the affected screen or component.
 
-1. Find the entry in the local `TRANSLATIONS.md` worksheet, including reviewed Russian spellings of public names where applicable.
-2. For missing, ambiguous, or placeholder copy, give the owner the key, full English message, UI context, and placeholder meanings. Leave the affected copy pending until reviewed wording is available. Keep both locales free of placeholders and silent English fallbacks.
-3. Copy the reviewed EN/RU entries into the owning dictionaries at development time. Preserve research IDs and worksheet keys.
+1. Update both locale entries together. Preserve research IDs, message keys, and established Russian spellings of public names.
+2. Verify both locales in context. Check interpolation, text fit, and accessible names. Keep both locales free of placeholders and silent English fallbacks.
 
 #### Context
 
@@ -87,7 +88,7 @@ Home entry, question order, navigation, developer opt-in, completion, and persis
 #### Rules
 
 - Use a fixed, interleaved question order across locales and reloads. Preserve answers and the current question on reload and when switching languages. Derive question counts from the selected modules. Base published duration estimates on timed observations.
-- Show one question at a time with Back and visible progress. Enable Next once the question has a response. Show all seven term hints inline with their questions. Include the sources provided by the research, and render glossary explanations without a source link when the research lists none.
+- Show one question at a time with Back and visible progress. Enable Next once the question has a response. Show every configured hint inline with its question. Include the sources provided by the research, and render glossary explanations without a source link when the research lists none.
 - Keep unanswered, Unsure, and neutral distinct. Completion requires a response to every selected question, including Unsure. Persist answers by question ID, current question ID, developer selection, start and completion status, and questionnaire version in localStorage via Zustand. Derive scores and matches. Version the storage schema separately from the questionnaire and scoring model.
 
 #### Procedures

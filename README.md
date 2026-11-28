@@ -6,6 +6,14 @@ AI Position Compass maps what you expect from artificial intelligence and what y
 
 [Take the test in English](https://fleyreal.github.io/ai-position-compass/en/) · [Пройти тест на русском](https://fleyreal.github.io/ai-position-compass/ru/)
 
+[Example result · Normal-technology camp with developer profile](https://fleyreal.github.io/ai-position-compass/en/result/?r=AQFEMEtcQBVGHTJSUEse)
+
+## Small note :)
+
+I’m FLEY. I spent quite some time researching how questionnaires like this work, the math behind them, and the rapidly evolving AI industry so I could build an accurate and engaging test.
+
+Implementing the scoring logic was quite a challenge. It took a few tries to get it working. I ran a pilot with beta testers, collected valuable feedback, and made changes here and there to improve the interface, the user experience, and the scoring logic. I hope you’ll like it!
+
 ## How results are calculated
 
 - **Axis scores.** The five agreement choices map to −1, −0.5, 0, 0.5, and 1. Neutral counts as a scored response. Unsure skips scoring. An axis needs scored answers to at least half of its primary questions, rounded up, including at least one question keyed in each direction. An axis with insufficient coverage is marked Undefined. Each response is multiplied by its question's direction and weighted at 1 for the primary axis or 0.5 for a configured secondary axis. The weighted average is mapped to 0–100 and rounded once.

@@ -68,7 +68,7 @@ describe('application shell', () => {
         const english = screen.getByRole('link', { name: 'EN' });
         expect(english).toHaveAttribute(
             'href',
-            '/ai-position-compass/en/result?r=payload#axes',
+            '/ai-position-compass/en/result/?r=payload#axes',
         );
         fireEvent.click(english);
         await screen.findByRole('group', { name: 'Language' });

@@ -11,10 +11,10 @@ export default {
     'session.completed.view': 'Посмотреть результаты',
     'storage.reset': 'Удалить сохранённый прогресс',
     'home.questions.core': 'Вопросы: {count}',
-    'home.duration.estimate': 'Около {count} мин',
-    'study.modules.heading': 'Основной тест и модуль для разработчиков',
+    'home.duration.estimate': '~{count} мин',
+    'study.modules.heading': 'Ваш стек — ваш выбор',
     'study.modules.intro':
-        'Модуль для разработчиков можно добавить перед началом теста.',
+        'Что вы добавили бы в свой стек? Какие задачи поручили бы ИИ? Подключите модуль перед началом теста, и в результатах появится отдельный профиль для разработчиков.',
     'study.module.core': 'Основной тест',
     'study.module.core.count': 'Вопросов: {count}',
     'study.module.core.body':

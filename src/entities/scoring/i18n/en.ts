@@ -1,15 +1,15 @@
 export default {
     // Questions — Regulation
     'research.questions.core.R1':
-        'Companies should need government approval before releasing their most powerful AI models.',
+        'Companies should need government approval before releasing their most advanced AI models.',
     'research.questions.core.R2':
-        'AI should be allowed to develop with as few rules as possible.',
+        'There should be as little regulation of AI development as possible.',
     'research.questions.core.R3':
-        'AI companies should be legally responsible for harm caused by their models, even if a user misuses them.',
+        'AI companies should be legally responsible for harm caused by their models, even when someone misuses them.',
     'research.questions.core.R4':
         'Strict AI rules would slow down useful inventions more than they would prevent harm.',
     'research.questions.core.R5':
-        'Some uses of AI should be banned outright, even if they would be profitable.',
+        'Some uses of AI, such as personalized pricing, should be banned even if they are profitable.',
     'research.questions.core.R6':
         'Small AI startups should be exempt from most AI regulations.',
     'research.questions.core.R7':
@@ -21,13 +21,13 @@ export default {
     'research.questions.core.C2':
         'AI companies should set their own safety standards.',
     'research.questions.core.C3':
-        'The most powerful AI systems should be under public ownership or direct public oversight.',
+        'Artificial general intelligence (AGI) should be publicly owned or directly overseen by public institutions.',
     'research.questions.core.C4':
         'Competition between companies keeps AI safer than government control would.',
     'research.questions.core.C5':
         'International organizations should be allowed to inspect AI labs.',
     'research.questions.core.C6':
-        'The best way to decide where AI goes is to let people choose which AI products to buy.',
+        'The best way to steer AI development is to let people choose which AI products they pay for. Their purchases show companies what customers want.',
     'research.questions.core.C7':
         'In a national emergency, the government should be able to take control of an AI company.',
 
@@ -37,25 +37,25 @@ export default {
     'research.questions.core.A2':
         'Rival countries should agree on limits for military AI, even at the risk of falling behind.',
     'research.questions.core.A3':
-        'Selling advanced AI chips to rival countries should be banned.',
+        'Selling high-performance chips used to train AI models to rival countries should be banned.',
     'research.questions.core.A4':
         'Countries should share AI safety research with each other, including with rivals.',
     'research.questions.core.A5':
         'My country should develop AI as fast as possible, even if other countries see it as a threat.',
     'research.questions.core.A6':
-        'A global AI treaty is worth giving up some national advantage.',
+        'Countries should be willing to give up some of their competitive edge in AI development to reach a global agreement on AI.',
     'research.questions.core.A7':
         'AI is too important for national security to be limited by international agreements.',
 
     // Questions — Openness
     'research.questions.core.O1':
-        'Anyone should be allowed to download a powerful AI model and run it on their own computer.',
+        'Anyone should be allowed to download a model with artificial superintelligence and run it on their own computer.',
     'research.questions.core.O2':
-        'Powerful AI should only be available through companies that can monitor how it is used.',
+        'AGI should be available only through companies that can monitor how people use it.',
     'research.questions.core.O3':
-        'Making AI freely available to everyone is one of the best ways to stop a few companies from controlling it.',
+        'Releasing AI models so anyone can modify them and share their own versions is one of the best ways to keep a few companies from controlling AI.',
     'research.questions.core.O4':
-        'Releasing a powerful AI model for anyone to download is too risky, even if most people would use it well.',
+        'Making an AGI model available for anyone to download is too risky, even if most people would use it responsibly.',
     'research.questions.core.O6':
         'Companies should be allowed to keep the inner workings of their AI secret.',
     'research.questions.core.O7':
@@ -75,7 +75,7 @@ export default {
     'research.questions.core.P6':
         'AI will turn out to be an ordinary tool, not a turning point in history.',
     'research.questions.core.P7':
-        'By 2035, AI systems will be able to design better AI systems with little or no human help.',
+        'By 2035, AI systems will be able to lead the design of a new, more capable generation of AI systems, with little or no help from people.',
 
     // Questions — Existential risk
     'research.questions.core.X1':
@@ -83,13 +83,13 @@ export default {
     'research.questions.core.X2':
         'Fears that AI could wipe out humanity are science fiction.',
     'research.questions.core.X3':
-        'Humans could permanently lose control of advanced AI systems.',
+        'People could permanently lose control of artificial superintelligence.',
     'research.questions.core.X4':
-        'If an advanced AI system became dangerous, we would be able to shut it down.',
+        'If a system with artificial superintelligence became dangerous, we would be able to shut it down.',
     'research.questions.core.X5':
         'Within the next 30 years, AI could cause a catastrophe that kills a large part of humanity.',
     'research.questions.core.X6':
-        'Advanced AI will end up sharing human values.',
+        'Over time, artificial superintelligence will act in line with human values, such as respect for privacy.',
     'research.questions.core.X7':
         'Nuclear weapons and natural pandemics are far more dangerous to humanity than AI.',
 

@@ -1,7 +1,7 @@
 export type ModelId = 'dev' | 'core'; // Id of the questionnary
 export type QuestionKey = -1 | 1; // How question answer influences an axis position
 export type QuestionWeight = 0.5 | 1;
-export type CampPosition = 17 | 33 | 50 | 67 | 83; // What position on an axis satisfies the camp requirement
+export type CampPosition = 0 | 17 | 33 | 50 | 67 | 83 | 100; // What position on an axis satisfies the camp requirement
 
 /* --- AXES --- */
 export type CoreAxisDefinition = { readonly id: string };
@@ -603,6 +603,13 @@ export type SuggestionDefinition = {
     }[];
 };
 
+const downloadableModelsSources = [
+    {
+        name: 'OpenAI',
+        url: 'https://openai.com/blog/introducing-gpt-oss',
+    },
+] as const;
+
 export const coreSuggestions = [
     {
         id: 'CS1',
@@ -617,12 +624,7 @@ export const coreSuggestions = [
     {
         id: 'CS2',
         questionId: 'O1',
-        sources: [
-            {
-                name: 'OpenAI',
-                url: 'https://openai.com/blog/introducing-gpt-oss',
-            },
-        ],
+        sources: downloadableModelsSources,
     },
     {
         id: 'CS3',
@@ -656,6 +658,45 @@ export const coreSuggestions = [
             {
                 name: 'OpenAI',
                 url: 'https://openai.com/index/hugging-face-incident-and-the-road-ahead/',
+            },
+        ],
+    },
+    {
+        id: 'CS7',
+        questionId: 'O3',
+        sources: downloadableModelsSources,
+    },
+    {
+        id: 'CS8',
+        questionId: 'X6',
+        sources: [
+            {
+                name: 'Wikipedia (EN)',
+                url: 'https://en.wikipedia.org/wiki/Superintelligence',
+            },
+            {
+                name: 'Википедия (RU)',
+                url: 'https://ru.wikipedia.org/wiki/Искусственный_сверхинтеллект',
+            },
+        ],
+    },
+    {
+        id: 'CS9',
+        questionId: 'C3',
+        sources: [
+            {
+                name: 'Levels of AGI',
+                url: 'https://proceedings.mlr.press/v235/morris24b.html',
+            },
+        ],
+    },
+    {
+        id: 'CS10',
+        questionId: 'R3',
+        sources: [
+            {
+                name: 'Anthropic',
+                url: 'https://www.anthropic.com/threat-intelligence-report-september-2026',
             },
         ],
     },
@@ -1348,7 +1389,7 @@ export const resultV1Scoring = {
 } as const;
 
 /* --- VERSION --- */
-export const questionnaireVersion: number = 1;
+export const questionnaireVersion: number = 2;
 
 /* --- CONFIG --- */
 export const scoringConfig = {
@@ -1377,7 +1418,7 @@ export function getQuestionCount(type?: ModelId) {
 
 // Returns in minutes
 export function getCompletionTime(type?: ModelId) {
-    const secondsMultiplier = 15; // Estimation on how many seconds it takes a user to complete one question.
+    const secondsMultiplier = 25; // Estimation on how many seconds it takes a user to complete one question.
     return Math.floor((getQuestionCount(type) * secondsMultiplier) / 60);
 }
 

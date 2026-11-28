@@ -1,6 +1,6 @@
 export { isLanguage, type Language } from './language';
 export { projectName } from './project';
-export { resultRoute } from './result-route';
+export { resultPath, resultRoute } from './result-route';
 export { languageFromPathname } from './language';
 export {
     type ModelId,

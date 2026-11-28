@@ -37,7 +37,7 @@ function tokenName(id: string) {
 function presentCamp(match: CampMatch, copy: Messages) {
     // Ranking and presentation use the same retained v1 camp definitions.
     const { id, key } = v1CampCopy.find(({ id }) => id === match.id)!;
-    const score = Math.round(match.match);
+    const score = match.match.toFixed(1);
     return {
         id,
         token: tokenName(id),
@@ -45,7 +45,7 @@ function presentCamp(match: CampMatch, copy: Messages) {
         description: copy[`${key}.description`],
         context: copy[`${key}.context`],
         score,
-        similarity: copy['result.match'].replace('{score}', String(score)),
+        similarity: copy['result.match'].replace('{score}', score),
         close: match.passesThreshold,
         voices: people
             .filter(({ campIds }) => campIds.some((campId) => campId === id))

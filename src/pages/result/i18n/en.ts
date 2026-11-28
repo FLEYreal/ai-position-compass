@@ -8,6 +8,8 @@ export default {
     'result.primary': 'Closest match',
     'result.neighboring': 'Also close',
     'result.similarityLabel': 'Similarity',
+    'result.similarityExplanation':
+        'The closer your scores are to a camp’s positions, the higher the similarity. Unscored axes are skipped.',
     'result.neighboring.caption': 'Other points of overlap',
     'result.references': 'More sources',
     'result.match': '{score}% similarity',

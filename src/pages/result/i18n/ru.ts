@@ -7,6 +7,8 @@ export default {
     'result.primary': 'Самый близкий лагерь',
     'result.neighboring': 'Также близко',
     'result.similarityLabel': 'Сходство',
+    'result.similarityExplanation':
+        'Чем ближе ваши оценки к позициям лагеря, тем выше сходство. Оси без оценки не учитываются.',
     'result.neighboring.caption': 'Другие точки пересечения',
     'result.references': 'Другие источники',
     'result.match': 'Сходство: {score}%',

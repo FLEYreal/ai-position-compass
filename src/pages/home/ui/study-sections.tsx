@@ -1,15 +1,18 @@
-import type { CSSProperties } from 'react';
 import {
     axisConstruct,
-    coreAxes,
-    devAxes,
+    axes,
     getQuestionCount,
-    type AxisId,
     type CampId,
     type ModelId,
 } from '@/shared/config';
-import { AxisIcon, Separator } from '@/shared/ui';
+import {
+    AxisIcon,
+    DeveloperCollage,
+    PointingHandCollage,
+    Separator,
+} from '@/shared/ui';
 import { cn } from '@/shared/lib';
+import type { Messages as CommonMessages } from '@/shared/i18n';
 import type { Messages } from '../i18n';
 
 const coreCount = getQuestionCount('core');
@@ -40,78 +43,29 @@ const campGroups = [
 const sectionHeading =
     'font-heading text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.12] font-medium tracking-tight text-balance';
 
-function AxisDefinitions({
-    axes,
-    definitions,
+export function StudySections({
+    copy,
+    axisDescriptions,
 }: {
-    axes: ReadonlyArray<{ id: AxisId }>;
-    definitions: Messages['axes']['axes'];
+    copy: Messages;
+    axisDescriptions: CommonMessages['axisDescriptions'];
 }) {
-    return (
-        <dl className="min-w-0 divide-y divide-border md:grid md:grid-rows-subgrid md:[grid-row:2/-1]">
-            {axes.map(({ id }) => {
-                const { name, description } = definitions[id];
-                const token = id.replace(
-                    /[A-Z]/g,
-                    (letter) => '-' + letter.toLowerCase(),
-                );
-                return (
-                    <div
-                        key={id}
-                        className="grid content-start grid-cols-[24px_minmax(0,1fr)] gap-x-2.5 gap-y-1 py-3.5"
-                    >
-                        <dt className="col-span-2 grid grid-cols-subgrid items-center font-semibold">
-                            <span style={{ color: `var(--axis-${token})` }}>
-                                <AxisIcon axis={id} />
-                            </span>
-                            <span>{name}</span>
-                        </dt>
-                        <dd className="col-start-2 text-sm leading-relaxed text-muted-foreground">
-                            {description}
-                        </dd>
-                    </div>
-                );
-            })}
-        </dl>
-    );
-}
-
-export function StudySections({ copy }: { copy: Messages }) {
     const axesCopy = copy.axes;
-    const axisGroups = [
-        {
-            heading: axesCopy.values,
-            axes: coreAxes.filter(({ id }) => axisConstruct[id] === 'value'),
-        },
-        {
-            heading: axesCopy.beliefs,
-            axes: coreAxes.filter(({ id }) => axisConstruct[id] === 'belief'),
-        },
-        {
-            heading: axesCopy.developer,
-            axes: devAxes,
-            description: axesCopy.developerDescription,
-        },
-    ];
-
-    const axisRows = Math.max(...axisGroups.map(({ axes }) => axes.length));
-
     return (
-        <div className="mt-[clamp(5rem,10vw,9rem)] flex flex-col gap-[clamp(5rem,10vw,9rem)]">
+        <div className="flex flex-col gap-[clamp(4rem,7vw,6.5rem)]">
             <section
                 aria-labelledby="study-modules"
-                className="grid gap-x-7 gap-y-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:gap-x-12"
+                className="grid gap-y-6 md:grid-cols-[minmax(0,9fr)_minmax(0,11fr)] md:items-center md:gap-x-8 lg:gap-x-12"
             >
-                <Separator className="col-span-full" />
-                <div>
+                <div className="min-w-0 md:col-start-2 md:row-start-1 md:self-end">
                     <h2 id="study-modules" className={sectionHeading}>
                         {copy['study.modules.heading']}
                     </h2>
-                    <p className="mt-3 max-w-[44ch] leading-relaxed text-muted-foreground">
+                    <p className="mt-3 max-w-[58ch] leading-relaxed text-muted-foreground">
                         {copy['study.modules.intro']}
                     </p>
                 </div>
-                <div className="self-start bg-[var(--paper-raised)] px-4 py-5 sm:px-6">
+                <div className="min-w-0 self-start bg-[var(--paper-raised)] px-4 py-5 sm:px-6 md:col-start-2 md:row-start-2">
                     <div aria-hidden="true" className="mb-5 flex h-2.5 gap-1.5">
                         <span
                             className="bg-foreground"
@@ -153,47 +107,12 @@ export function StudySections({ copy }: { copy: Messages }) {
                         </div>
                     </dl>
                 </div>
+                <DeveloperCollage className="mx-auto w-full max-w-[380px] translate-y-3 md:col-start-1 md:row-span-2 md:row-start-1 xl:max-w-[480px]" />
             </section>
 
-            <section aria-labelledby="study-axes">
-                <Separator className="mb-6" />
-                <h2 id="study-axes" className={sectionHeading}>
-                    {axesCopy.heading}
-                </h2>
-                <p className="mt-3 max-w-[66ch] leading-relaxed text-muted-foreground">
-                    {axesCopy.introduction}
-                </p>
-                <div
-                    className="mt-7 grid gap-x-8 gap-y-5 md:grid-cols-3 md:grid-rows-[auto_repeat(var(--axis-rows),auto)] md:gap-y-0"
-                    style={{ '--axis-rows': axisRows } as CSSProperties}
-                >
-                    {axisGroups.map(({ heading, axes, description }) => (
-                        <div
-                            key={heading}
-                            className="min-w-0 md:row-span-full md:grid md:grid-rows-subgrid"
-                        >
-                            <div>
-                                <Separator />
-                                <h3 className="pt-3 font-heading text-2xl">
-                                    {heading}
-                                </h3>
-                                {description && (
-                                    <p className="mt-1 text-sm text-muted-foreground">
-                                        {description}
-                                    </p>
-                                )}
-                            </div>
-                            <AxisDefinitions
-                                axes={axes}
-                                definitions={axesCopy.axes}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </section>
+            <Separator />
 
             <section aria-labelledby="study-camps">
-                <Separator className="mb-6" />
                 <h2 id="study-camps" className={sectionHeading}>
                     {copy['study.camps.heading']}
                 </h2>
@@ -252,6 +171,58 @@ export function StudySections({ copy }: { copy: Messages }) {
                         </div>
                     ))}
                 </div>
+            </section>
+
+            <Separator />
+
+            <section aria-labelledby="study-axes">
+                <header className="grid items-center gap-y-3 md:max-w-[66rem] md:grid-cols-[minmax(0,1fr)_min(26.4vw,21.6rem)] md:gap-x-8 lg:gap-x-12">
+                    <h2 id="study-axes" className={sectionHeading}>
+                        {axesCopy.heading}
+                    </h2>
+                    <PointingHandCollage className="hidden w-full transform-[rotate(-5deg)] md:col-start-2 md:row-span-2 md:row-start-1 md:block lg:translate-x-3" />
+                    <p className="leading-relaxed text-muted-foreground md:max-w-[62ch]">
+                        {axesCopy.introduction}
+                    </p>
+                </header>
+                <dl className="my-16 grid grid-cols-1 gap-y-10 lg:grid-cols-3 lg:gap-x-8">
+                    {axes.map(({ id, modelId }) => {
+                        const token = id.replace(
+                            /[A-Z]/g,
+                            (letter) => '-' + letter.toLowerCase(),
+                        );
+                        return (
+                            <div
+                                key={id}
+                                className="flex min-w-0 flex-wrap content-start items-baseline gap-x-3 gap-y-1 border-t border-border pt-4 lg:[&:last-child:nth-child(3n+1)]:col-start-2"
+                            >
+                                <dt className="flex max-w-full items-start gap-2.5 font-semibold">
+                                    <span
+                                        className="mt-0.5 shrink-0"
+                                        style={{
+                                            color: `var(--axis-${token})`,
+                                        }}
+                                    >
+                                        <AxisIcon axis={id} />
+                                    </span>
+                                    {axesCopy.axes[id]}
+                                </dt>
+                                <dd className="flex max-w-full flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+                                    <span>{axesCopy.module[modelId]}</span>
+                                    <span aria-hidden="true">·</span>
+                                    <span>
+                                        {axesCopy.construct[axisConstruct[id]]}
+                                    </span>
+                                </dd>
+                                <dd className="mt-1 basis-full text-sm leading-relaxed">
+                                    <span className="block max-w-full lg:max-w-[36ch]">
+                                        {axisDescriptions[id]}
+                                    </span>
+                                </dd>
+                            </div>
+                        );
+                    })}
+                </dl>
             </section>
         </div>
     );

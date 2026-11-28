@@ -5,7 +5,6 @@ import {
     encodeResultPayload,
     getLocalResultState,
     type LocalResultState,
-    type QuestionResponse,
     getSelectedQuestions,
     restoreQuestionnaireProgress,
     useQuestionnaireStorageStatus,
@@ -62,6 +61,8 @@ export default function TestPage({
         void restoreQuestionnaireProgress();
     }, []);
 
+    if (storage === 'pending') return null;
+
     const storageNotice =
         storage === 'unavailable' ? copy['storage.unavailable']
         : storage === 'save-failed' ? copy['storage.saveFailed']
@@ -107,10 +108,6 @@ export default function TestPage({
     );
 
     function renderQuestionnaire() {
-        if (storage === 'pending') {
-            return <p role="status">{copy['test.loadingSaved']}</p>;
-        }
-
         if (storage === 'invalid' || storage === 'incompatible') {
             const invalid = storage === 'invalid';
             const heading =
@@ -171,16 +168,6 @@ export default function TestPage({
         const answered = Object.keys(progress.answersById).length;
         const atLast = index === questions.length - 1;
 
-        function answer(response: QuestionResponse) {
-            progress.answerQuestion(question.id, response);
-            if (response !== 'unsure') return;
-            if (atLast) {
-                void handleCompletionOpenChange(true);
-            } else {
-                progress.nextQuestion();
-            }
-        }
-
         return (
             <Dialog
                 open={completion !== null}
@@ -218,6 +205,7 @@ export default function TestPage({
                     axisLabel={
                         copy[`research.axes.${question.axisId}`].split(' · ')[0]
                     }
+                    axisDescription={common.axisDescriptions[question.axisId]}
                     developerLabel={
                         question.modelId === 'dev' ?
                             copy['test.developerHeading']
@@ -252,7 +240,9 @@ export default function TestPage({
                     }}
                     atFirst={index === 0}
                     atLast={atLast}
-                    onAnswer={answer}
+                    onAnswer={(response) =>
+                        progress.answerQuestion(question.id, response)
+                    }
                     onBack={progress.previousQuestion}
                     onContinue={progress.nextQuestion}
                 />
@@ -326,17 +316,16 @@ export default function TestPage({
                 </p>
             )}
             {renderQuestionnaire()}
-            {storage !== 'pending' &&
-                (progress.status === 'not-started' ||
-                    storage === 'invalid' ||
-                    storage === 'incompatible') && (
-                    <Link
-                        className="block w-fit text-sm text-ring underline"
-                        to={`/${lang}/`}
-                    >
-                        {common['recovery.home']}
-                    </Link>
-                )}
+            {(progress.status === 'not-started' ||
+                storage === 'invalid' ||
+                storage === 'incompatible') && (
+                <Link
+                    className="block w-fit text-sm text-ring underline"
+                    to={`/${lang}/`}
+                >
+                    {common['recovery.home']}
+                </Link>
+            )}
         </div>
     );
 }

@@ -48,15 +48,7 @@ export default function ResultPage({
     const navigate = useNavigate();
     const [resetFailed, setResetFailed] = useState(false);
 
-    if (search === null) {
-        return (
-            <section className="space-y-4 py-10">
-                <title>{heading}</title>
-                <h1 className={sectionTitle}>{heading}</h1>
-                <p role="status">{common['common.loading']}</p>
-            </section>
-        );
-    }
+    if (search === null) return null;
 
     const decoded = readResultQuery(search);
     if (!decoded.ok) {
@@ -184,8 +176,6 @@ export default function ResultPage({
                     variant="result"
                     messages={{
                         description: common['artwork.description'],
-                        pauseAction: common['artwork.pause'],
-                        resumeAction: common['artwork.play'],
                         punchcard: common['artwork.punchcard'],
                     }}
                     className="min-w-0 max-[799px]:mx-auto max-[799px]:max-w-[390px]"
@@ -234,12 +224,14 @@ export default function ResultPage({
                     heading={copy['result.values.heading']}
                     axes={result.values}
                     copy={copy}
+                    axisDescriptions={common.axisDescriptions}
                     annotate
                 />
                 <AxisGroup
                     heading={copy['result.beliefs.heading']}
                     axes={result.beliefs}
                     copy={copy}
+                    axisDescriptions={common.axisDescriptions}
                 />
             </section>
 
@@ -298,7 +290,12 @@ export default function ResultPage({
                             </p>
                         </div>
                     :   null}
-                    <AxisList axes={developer.axes} copy={copy} showConstruct />
+                    <AxisList
+                        axes={developer.axes}
+                        copy={copy}
+                        axisDescriptions={common.axisDescriptions}
+                        showConstruct
+                    />
                 </section>
             :   <p className="text-sm text-muted-foreground">
                     {copy['result.developer.skipped']}

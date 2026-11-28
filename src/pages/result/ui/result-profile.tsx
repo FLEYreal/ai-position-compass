@@ -1,6 +1,14 @@
 import { ArrowUpRight } from 'lucide-react';
-import type { CSSProperties } from 'react';
-import { AxisIcon, AxisScale } from '@/shared/ui';
+import { useState, type CSSProperties } from 'react';
+import type { Messages as CommonMessages } from '@/shared/i18n';
+import {
+    AxisExplanation,
+    AxisIcon,
+    AxisScale,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/shared/ui';
 import type { Messages } from '../i18n';
 import type { ResultAxis, ResultCamp } from '../model/result-presentation';
 import { campPalette } from './camp-palette';
@@ -14,29 +22,44 @@ export function CampSimilarity({
     copy: Messages;
     prominent?: boolean;
 }) {
+    const [open, setOpen] = useState(false);
+
     return (
-        <p className="inline-flex items-baseline gap-2 text-(--result-camp-ink) tabular-nums">
-            <span className="sr-only">
-                {prominent && `${copy['result.primary']}. `}
-                {camp.similarity}
-            </span>
-            <strong
-                aria-hidden="true"
-                className={
-                    prominent ?
-                        'text-3xl leading-none font-medium sm:text-4xl'
-                    :   'text-base leading-none font-medium'
-                }
+        <Tooltip open={open} onOpenChange={setOpen}>
+            <TooltipTrigger
+                type="button"
+                className="inline-flex min-h-6 cursor-help items-baseline gap-2 text-(--result-camp-ink) tabular-nums"
+                onClick={(event) => {
+                    // Radix handles hover and focus. Keep the tip open on tap.
+                    event.preventDefault();
+                    setOpen(true);
+                }}
             >
-                {camp.score}%
-            </strong>
-            <span
-                aria-hidden="true"
-                className="text-[length:var(--font-size-technical)] tracking-wide uppercase"
-            >
-                {copy['result.similarityLabel']}
-            </span>
-        </p>
+                <span className="sr-only">
+                    {prominent && `${copy['result.primary']}. `}
+                    {camp.similarity}
+                </span>
+                <strong
+                    aria-hidden="true"
+                    className={
+                        prominent ?
+                            'text-3xl leading-none font-medium underline decoration-dotted decoration-1 underline-offset-4 sm:text-4xl'
+                        :   'text-base leading-none font-medium underline decoration-dotted decoration-1 underline-offset-4'
+                    }
+                >
+                    {camp.score}%
+                </strong>
+                <span
+                    aria-hidden="true"
+                    className="text-[length:var(--font-size-technical)] tracking-wide uppercase"
+                >
+                    {copy['result.similarityLabel']}
+                </span>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" align="start" collisionPadding={12}>
+                {copy['result.similarityExplanation']}
+            </TooltipContent>
+        </Tooltip>
     );
 }
 
@@ -164,11 +187,13 @@ export function AxisGroup({
     heading,
     axes,
     copy,
+    axisDescriptions,
     annotate = false,
 }: {
     heading: string;
     axes: ResultAxis[];
     copy: Messages;
+    axisDescriptions: CommonMessages['axisDescriptions'];
     annotate?: boolean;
 }) {
     const [title, note] = heading.split(' — ', 2);
@@ -183,7 +208,12 @@ export function AxisGroup({
                     </span>
                 )}
             </h3>
-            <AxisList axes={axes} copy={copy} annotate={annotate} />
+            <AxisList
+                axes={axes}
+                copy={copy}
+                axisDescriptions={axisDescriptions}
+                annotate={annotate}
+            />
         </section>
     );
 }
@@ -191,11 +221,13 @@ export function AxisGroup({
 export function AxisList({
     axes,
     copy,
+    axisDescriptions,
     annotate = false,
     showConstruct = false,
 }: {
     axes: ResultAxis[];
     copy: Messages;
+    axisDescriptions: CommonMessages['axisDescriptions'];
     annotate?: boolean;
     showConstruct?: boolean;
 }) {
@@ -211,18 +243,28 @@ export function AxisList({
                     }
                     className="grid min-w-0 items-end gap-y-2 py-3 min-[850px]:grid-cols-[minmax(160px,1fr)_minmax(0,4fr)] min-[850px]:gap-x-5"
                 >
-                    <div className="flex items-center gap-2.5 font-sans text-base font-semibold min-[850px]:pb-5">
-                        <span className="grid size-7 shrink-0 place-items-center rounded border border-current bg-[color-mix(in_srgb,var(--result-axis-ink)_8%,transparent)] text-(--result-axis-ink)">
-                            <AxisIcon axis={axis.id} size={16} />
-                        </span>
-                        <span>
-                            {axis.label}
-                            {showConstruct && (
-                                <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
-                                    {copy[`result.axis.${axis.construct}`]}
+                    <div className="min-[850px]:pb-5">
+                        <AxisExplanation
+                            label={axis.label}
+                            description={axisDescriptions[axis.id]}
+                        >
+                            <button
+                                type="button"
+                                className="group inline-flex min-h-7 min-w-0 cursor-pointer items-center gap-2.5 rounded text-start font-sans text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                            >
+                                <span className="grid size-7 shrink-0 place-items-center rounded border border-current bg-[color-mix(in_srgb,var(--result-axis-ink)_8%,transparent)] text-(--result-axis-ink) group-hover:bg-[color-mix(in_srgb,var(--result-axis-ink)_16%,transparent)]">
+                                    <AxisIcon axis={axis.id} size={16} />
                                 </span>
-                            )}
-                        </span>
+                                <span className="underline-offset-4 group-hover:underline group-aria-expanded:underline">
+                                    {axis.label}
+                                </span>
+                            </button>
+                        </AxisExplanation>
+                        {showConstruct && (
+                            <p className="ms-[2.375rem] mt-0.5 text-xs text-muted-foreground">
+                                {copy[`result.axis.${axis.construct}`]}
+                            </p>
+                        )}
                     </div>
                     <AxisScale
                         value={axis.score}
