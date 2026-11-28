@@ -1,0 +1,17 @@
+{
+    "description": "Keep agent work local; the owner pushes and merges.",
+    "hooks": {
+        "PreToolUse": [
+            {
+                "matcher": "Bash|exec_command|mcp__.*(GitKraken|github).*(push|create_commit|create_ref|update_ref|update_file|delete_ref|create_branch|merge_pull_request|enable_auto_merge)",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/git_guard.py\"",
+                        "statusMessage": "Checking local-only agent workflow"
+                    }
+                ]
+            }
+        ]
+    }
+}

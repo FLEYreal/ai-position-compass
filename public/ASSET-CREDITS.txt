@@ -1,0 +1,35 @@
+ARCHIVE ARTWORK CREDITS
+
+Images are stored locally. Adaptations are noted below.
+
+Upshot–Knothole Grable, 1953 — U.S. Department of Energy; public domain.
+https://commons.wikimedia.org/wiki/File:Upshot-Knothole_GRABLE.jpg
+
+Apollo 11 flight controllers during lunar-module descent, 20 July 1969 —
+NASA History Office and NASA JSC Media Services Center, image S69-39601.
+https://www.nasa.gov/wp-content/uploads/static/history/ap11ann/kippsphotos/apollo.html
+https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+Nuremberg courtroom, November 1945 — U.S. Army Signal Corps,
+Harry S. Truman Library & Museum, accession 2004-432; public domain.
+https://www.trumanlibrary.gov/photograph-records/2004-432
+
+IBM-style blue punched card — Gwern, Arnold Reinhold and Bech; public-domain dedication.
+https://commons.wikimedia.org/wiki/File:Blue-punch-card-front-horiz.png
+
+IBM PC XT — Hidalgo944, 2023; CC0 1.0 Universal Public Domain Dedication.
+The landing-page WebP has a transparent cutout traced from the computer's
+silhouette. The opaque source is retained as ibm-pc-xt.webp in the repository.
+https://commons.wikimedia.org/wiki/File:IBM_PC_XT_02.jpg
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Pointing hand — generated with OpenAI ImageGen for the landing-page axes collage.
+
+Mask, bent-wire paperclips and cut-paper geometry were authored for the design prototype.
+The GitHub mark comes from Simple Icons, CC0; GitHub retains trademark rights.
+https://github.com/simple-icons/simple-icons/blob/develop/icons/github.svg
+https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
+
+The original favicon artwork is copied unchanged from the design prototype.
+Browser, Apple touch, app, maskable and monochrome pinned-tab derivatives are
+generated from that SVG by scripts/generate-icons.mjs.

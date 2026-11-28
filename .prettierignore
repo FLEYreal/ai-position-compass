@@ -1,0 +1,6 @@
+# Local context and project instructions are maintained separately.
+/*.md
+/.agents/
+/pnpm-lock.yaml
+/.local/
+/.playwright-mcp/

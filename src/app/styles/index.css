@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/oswald';
+@import '@fontsource-variable/noto-serif';
+@import '@fontsource-variable/noto-serif/wght-italic.css';
+@import '@fontsource-variable/caveat';
+@import './tokens.css';
+
+/* Include page presentation maps in .ts as well as rendered .tsx components. */
+@source '../../pages';
+
+@custom-variant dark (&:is(.dark *, [data-theme='dark'] *));
+
+@theme inline {
+    --font-sans: var(--font-body);
+    --font-heading: var(--font-display);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-sm: var(--radius-control);
+    --radius-md: var(--radius-field);
+    --radius-lg: var(--radius-button);
+    --radius-xl: var(--radius-panel);
+}
+
+:root {
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: var(--paper-raised);
+    --card-foreground: var(--ink);
+    --popover: var(--paper-raised);
+    --popover-foreground: var(--ink);
+    --primary: var(--primary-color);
+    --primary-foreground: var(--primary-on-color);
+    --secondary: var(--paper-deep);
+    --secondary-foreground: var(--ink);
+    --muted: var(--paper-deep);
+    --muted-foreground: var(--muted-ink);
+    --accent: var(--soft-orange);
+    --accent-foreground: var(--ink);
+    --destructive: var(--orange-ink);
+    --border: var(--rule);
+    --input: var(--rule);
+    --ring: var(--orange-ink);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    html {
+        font-family: var(--font-body);
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-body);
+        line-height: var(--line-height-body);
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-display);
+    }
+
+    button:not(:disabled):not([aria-disabled='true']),
+    [role='button']:not([aria-disabled='true']) {
+        cursor: pointer;
+    }
+
+    button:disabled,
+    [aria-disabled='true'] {
+        cursor: not-allowed;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--orange-ink);
+        outline-offset: 5px;
+    }
+
+    html {
+        scrollbar-color: var(--rule) var(--paper);
+        caret-color: var(--orange-ink);
+    }
+
+    ::selection {
+        background: var(--soft-orange);
+        color: var(--ink);
+    }
+}

@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+__pycache__/
+*.pyc
 
 # Editor directories and files
 .vscode/*
@@ -24,15 +26,25 @@ dist-ssr
 *.sw?
 
 # Agents & Markdowns
-/*.md
+*.md
 !/README.md
 !/AGENTS.md
 !/CLAUDE.md
 !/SPEC.md
 !/WORKFLOW.md
 
+# Local review evidence and scratch files.
+/.local/
+
 # Archives
 /*.zip
 /*.7z
 /*.tar
 /*.tar.*
+
+# Backups
+*.bak
+
+# React Router build output
+.react-router
+build

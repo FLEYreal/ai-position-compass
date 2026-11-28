@@ -1,0 +1,294 @@
+/* Design tokens from DESIGN.md. Dark mappings share the same semantic names. */
+:root {
+    /* Project's Theme colors */
+    --paper: #eeeae0;
+    --paper-deep: #e1dbcf;
+    --paper-raised: #f7f3ea;
+    --ink: #23211c;
+    --muted-ink: #635e53;
+    --rule: #c4bdaf;
+    --primary-color: #df7648;
+    --primary-on-color: #1b1a17;
+    --primary-hover-color: #ed8756;
+    --orange: var(--primary-color);
+    --orange-ink: #994a27;
+    --soft-orange: #efd9ca;
+    --action-ink: #1b1a17;
+    --action-hover: #ed8756;
+    --print-shadow: #453c2e;
+    --print-highlight: #f0e2d1;
+    --photo-paper: #f0ece1;
+    --shadow-disclosure: 0 12px 34px #16130e26;
+
+    /* Distinct, neutral camp palettes: ink and surface pairs. */
+    --camp-accelerationists-ink: #6a332a;
+    --camp-accelerationists-surface: #f0e2e0;
+    --camp-securitists-ink: #2a4a6a;
+    --camp-securitists-surface: #e0e8f0;
+    --camp-safety-camp-ink: #2a6a52;
+    --camp-safety-camp-surface: #e0f0ea;
+    --camp-pause-camp-ink: #4c2a6a;
+    --camp-pause-camp-surface: #e9e0f0;
+    --camp-cautious-builders-ink: #3d6652;
+    --camp-cautious-builders-surface: #e3e9dd;
+    --camp-guarded-optimists-ink: #456a86;
+    --camp-guarded-optimists-surface: #e1e9ef;
+    --camp-ethics-camp-ink: #6a2a3a;
+    --camp-ethics-camp-surface: #f0e0e4;
+    --camp-normal-technology-camp-ink: #845c27;
+    --camp-normal-technology-camp-surface: #eee4d1;
+    --camp-hype-skeptics-ink: #2a5c6a;
+    --camp-hype-skeptics-surface: #e0edf0;
+    --camp-populists-ink: #6a3f2a;
+    --camp-populists-surface: #f0e5e0;
+    --camp-creatives-copyright-ink: #6a2a5f;
+    --camp-creatives-copyright-surface: #f0e0ed;
+    --camp-unconcerned-ink: #626a2a;
+    --camp-unconcerned-surface: #eef0e0;
+    --camp-existential-worriers-ink: #3c2a6a;
+    --camp-existential-worriers-surface: #e5e0f0;
+    --camp-labor-critics-ink: #6a482a;
+    --camp-labor-critics-surface: #f0e8e0;
+    --camp-surveillance-critics-ink: #2a646a;
+    --camp-surveillance-critics-surface: #e0eff0;
+    --camp-vibe-coders-ink: #6a2a4f;
+    --camp-vibe-coders-surface: #f0e0e9;
+    --camp-vibe-founders-ink: #6a2f2a;
+    --camp-vibe-founders-surface: #f0e1e0;
+    --camp-open-source-advocates-self-hosters-ink: #2c6a2a;
+    --camp-open-source-advocates-self-hosters-surface: #e1f0e0;
+    --camp-craftspeople-ink: #6a582a;
+    --camp-craftspeople-surface: #e5dbc1;
+    --camp-corporate-pragmatists-ink: #2a3a6a;
+    --camp-corporate-pragmatists-surface: #e0e4f0;
+    --camp-balanced-users-ink: #576a2a;
+    --camp-balanced-users-surface: #ebf0e0;
+    --camp-skeptics-ink: #2d2a6a;
+    --camp-skeptics-surface: #e1e0f0;
+
+    /* Primary color of each axis */
+    --axis-regulation-light: #64548c;
+    --axis-regulation: var(--axis-regulation-light);
+    --axis-control-light: #965274;
+    --axis-control: var(--axis-control-light);
+    --axis-geopolitics-light: #356e83;
+    --axis-geopolitics: var(--axis-geopolitics-light);
+    --axis-openness-light: #92702a;
+    --axis-openness: var(--axis-openness-light);
+    --axis-capability-light: #b45135;
+    --axis-capability: var(--axis-capability-light);
+    --axis-existential-risk-light: #6c6288;
+    --axis-existential-risk: var(--axis-existential-risk-light);
+    --axis-ecology-light: #4f7438;
+    --axis-ecology: var(--axis-ecology-light);
+    --axis-creativity-light: #945f8b;
+    --axis-creativity: var(--axis-creativity-light);
+    --axis-labor-light: #97602e;
+    --axis-labor: var(--axis-labor-light);
+    --axis-surveillance-light: #3e7181;
+    --axis-surveillance: var(--axis-surveillance-light);
+    --axis-open-source-preference-light: #4d7450;
+    --axis-open-source-preference: var(--axis-open-source-preference-light);
+    --axis-ai-delegation-light: #715c92;
+    --axis-ai-delegation: var(--axis-ai-delegation-light);
+    --axis-displacement-risk-light: #a25345;
+    --axis-displacement-risk: var(--axis-displacement-risk-light);
+
+    --share-paper: #f5f2e9;
+    --share-ink: #24261f;
+    --share-muted: #5e6558;
+    --share-rule: #b8beb0;
+    --share-tick: #dcdfd1;
+    --share-developer-ink: #87536d;
+    --space-micro: 5px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 25px;
+    --space-xl: 30px;
+    --space-spread: 35px;
+    --space-wide: 40px;
+    --radius-control: 3px;
+    --radius-field: 4px;
+    --radius-button: 5px;
+    --radius-panel: 12px;
+    --radius-popover: 10px;
+    --radius-circle: 50%;
+    --radius-answer: 6px;
+    --radius-question: 15px;
+    --radius-question-phone: 13px;
+    --radius-hint: 7px;
+    --radius-result-opening: 0 0 14px 14px;
+    --font-size-display: clamp(65px, 6.7vw, 96px);
+    --font-weight-display: 600;
+    --line-height-display: 1.075;
+    --letter-spacing-display: -0.03em;
+    --font-size-result-display: clamp(48px, 6vw, 78px);
+    --font-weight-result-display: 600;
+    --line-height-result-display: 1.05;
+    --letter-spacing-result-display: -0.025em;
+    --font-size-result-display-ru: clamp(40px, 5vw, 65px);
+    --font-weight-result-display-ru: 600;
+    --line-height-result-display-ru: 1.05;
+    --letter-spacing-result-display-ru: -0.025em;
+    --font-size-headline: 23px;
+    --font-weight-headline: 500;
+    --line-height-headline: 1.4;
+    --letter-spacing-headline: -0.01em;
+    --font-size-title: 27px;
+    --font-weight-title: 500;
+    --line-height-title: 1.2;
+    --letter-spacing-title: -0.015em;
+    --font-size-body: 16px;
+    --font-weight-body: 400;
+    --line-height-body: 1.7;
+    --font-size-question: clamp(24px, 2.4vw, 32px);
+    --font-weight-question: 500;
+    --line-height-question: 1.55;
+    --letter-spacing-question: -0.025em;
+    --font-size-label: 13px;
+    --font-weight-label: 400;
+    --line-height-label: 1.6;
+    --font-size-button: 15px;
+    --font-weight-button: 600;
+    --line-height-button: 1.5;
+    --font-size-annotation: 21px;
+    --font-weight-annotation: 500;
+    --line-height-annotation: 1;
+    --font-size-technical: 9px;
+    --font-weight-technical: 400;
+    --line-height-technical: 1.5;
+    --font-size-coordinate: 15px;
+    --font-weight-coordinate: 500;
+    --line-height-coordinate: 1.4;
+    --font-size-construct: 11px;
+    --font-weight-construct: 500;
+    --line-height-construct: 1.6;
+    --letter-spacing-construct: 0.02em;
+    --font-display: 'Oswald Variable', sans-serif;
+    --font-body: 'Noto Serif Variable', Georgia, serif;
+    --font-annotation: 'Caveat Variable', cursive;
+    --font-technical: ui-monospace, monospace;
+    color-scheme: light;
+}
+
+:root:is(.dark, [data-theme='dark']) {
+    /* Project's Theme colors */
+    --paper: #191814;
+    --paper-deep: #27251f;
+    --paper-raised: #24221c;
+    --ink: #ede7db;
+    --muted-ink: #b5ad9e;
+    --rule: #514b3e;
+    --primary-color: #e58b59;
+    --orange: var(--primary-color);
+    --orange-ink: #f4b186;
+    --soft-orange: #473023;
+
+    /* Camp palette overrides for dark mode. */
+    --camp-accelerationists-ink: #e2b7b1;
+    --camp-accelerationists-surface: #2f201e;
+    --camp-securitists-ink: #b1c9e2;
+    --camp-securitists-surface: #1e262f;
+    --camp-safety-camp-ink: #b1e2d0;
+    --camp-safety-camp-surface: #1e2f28;
+    --camp-pause-camp-ink: #cbb1e2;
+    --camp-pause-camp-surface: #271e2f;
+    --camp-cautious-builders-ink: #b0caa7;
+    --camp-cautious-builders-surface: #222c23;
+    --camp-guarded-optimists-ink: #aecce2;
+    --camp-guarded-optimists-surface: #222c34;
+    --camp-ethics-camp-ink: #e2b1bd;
+    --camp-ethics-camp-surface: #2f1e22;
+    --camp-normal-technology-camp-ink: #e0bd83;
+    --camp-normal-technology-camp-surface: #30291d;
+    --camp-hype-skeptics-ink: #b1d7e2;
+    --camp-hype-skeptics-surface: #1e2b2f;
+    --camp-populists-ink: #e2c1b1;
+    --camp-populists-surface: #2f231e;
+    --camp-creatives-copyright-ink: #e2b1da;
+    --camp-creatives-copyright-surface: #2f1e2c;
+    --camp-unconcerned-ink: #dce2b1;
+    --camp-unconcerned-surface: #2d2f1e;
+    --camp-existential-worriers-ink: #bfb1e2;
+    --camp-existential-worriers-surface: #231e2f;
+    --camp-labor-critics-ink: #e2c8b1;
+    --camp-labor-critics-surface: #2f261e;
+    --camp-surveillance-critics-ink: #b1dee2;
+    --camp-surveillance-critics-surface: #1e2d2f;
+    --camp-vibe-coders-ink: #e2b1ce;
+    --camp-vibe-coders-surface: #2f1e28;
+    --camp-vibe-founders-ink: #e2b5b1;
+    --camp-vibe-founders-surface: #2f1f1e;
+    --camp-open-source-advocates-self-hosters-ink: #b2e2b1;
+    --camp-open-source-advocates-self-hosters-surface: #1e2f1e;
+    --camp-craftspeople-ink: #e2d4b1;
+    --camp-craftspeople-surface: #2f2a1e;
+    --camp-corporate-pragmatists-ink: #b1bde2;
+    --camp-corporate-pragmatists-surface: #1e222f;
+    --camp-balanced-users-ink: #d3e2b1;
+    --camp-balanced-users-surface: #2a2f1e;
+    --camp-skeptics-ink: #b3b1e2;
+    --camp-skeptics-surface: #1f1e2f;
+
+    /* Primary color of each axis */
+    --axis-regulation: #c4adee;
+    --axis-control: #dfa2bf;
+    --axis-geopolitics: #89c4dc;
+    --axis-openness: #dec482;
+    --axis-capability: #f6ac8e;
+    --axis-existential-risk: #c5b6e6;
+    --axis-ecology: #acd389;
+    --axis-creativity: #ddb0d2;
+    --axis-labor: #e6b180;
+    --axis-surveillance: #96c5d1;
+    --axis-open-source-preference: #acd2af;
+    --axis-ai-delegation: #c8b2ea;
+    --axis-displacement-risk: #efb2a5;
+
+    --share-paper: var(--paper);
+    --share-ink: var(--ink);
+    --share-muted: var(--muted-ink);
+    --share-rule: var(--rule);
+    --share-tick: #3b3b31;
+    --share-developer-ink: #d3adc3;
+
+    color-scheme: dark;
+}
+
+/* Held poses for the shared collage animation. */
+@keyframes collage-poses {
+    0%,
+    100% {
+        rotate: 0deg;
+        translate: 0 0;
+    }
+    12.5% {
+        rotate: 0.2deg;
+        translate: 0.5px -0.5px;
+    }
+    25% {
+        rotate: -0.35deg;
+        translate: -0.5px 0.5px;
+    }
+    37.5% {
+        rotate: -0.1deg;
+        translate: 0 0.5px;
+    }
+    50% {
+        rotate: 0.4deg;
+        translate: 1px -1px;
+    }
+    62.5% {
+        rotate: 0.15deg;
+        translate: 0.5px 0;
+    }
+    75% {
+        rotate: -0.4deg;
+        translate: -1px 1px;
+    }
+    87.5% {
+        rotate: -0.15deg;
+        translate: -0.5px 0;
+    }
+}
