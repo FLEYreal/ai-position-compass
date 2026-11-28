@@ -56,7 +56,7 @@ Assignment context, linked worktrees, dependencies, and local servers.
 ### Rules
 
 - Use one feature branch and worktree per task at `../worktrees/<feature>/` relative to the original checkout. The owner establishes the remote and `dev`. Initializing shared branches requires explicit owner instruction.
-- Keep local sources in the original checkout. Link `PLAN.md`, `DEBT.md`, and `MEMORY.md` in same-machine worktrees using ignored symlinks. Also link `PRODUCT.md`, `DESIGN.md`, and `TRANSLATIONS.md` when present. Require them for tasks that depend on them.
+- Keep local sources in the original checkout. Link `PLAN.md`, `DEBT.md`, and `MEMORY.md` in same-machine worktrees using ignored symlinks. Also link `PRODUCT.md` and `DESIGN.md` when present. Require them for tasks that depend on them.
 - On another machine, the owner supplies ignored context as current files in its original checkout or as an explicit bundle.
 - Keep dependencies and build output per worktree. Use a distinct port per server and leave other checkouts and servers alone.
 - Keep both agent hooks active and preserve agent environment markers. Verify changed hooks against the worker tools and normal worktree use.

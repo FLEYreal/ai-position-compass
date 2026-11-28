@@ -81,7 +81,7 @@ export function Collage({
                 </div>
                 <div
                     data-collage-piece
-                    className={`absolute ${home ? 'top-[31%] left-[37%] w-[63%] transform-[rotate(8deg)]' : 'top-[35%] left-[43%] w-[57%] transform-[rotate(-6deg)]'} motion-safe:[animation-delay:-2.4s]!`}
+                    className={`absolute ${home ? 'top-[31%] left-[37%] w-[63%] transform-[rotate(8deg)] max-[560px]:left-[35.5%]' : 'top-[35%] left-[43%] w-[57%] transform-[rotate(-6deg)]'} motion-safe:[animation-delay:-2.4s]!`}
                 >
                     <EditorialPrint viewBox="0 0 340 340">
                         <Mask className="h-full w-full" />
@@ -151,7 +151,7 @@ export function Collage({
                 </div>
                 <div
                     data-collage-piece
-                    className="absolute top-[80%] right-[3%] z-10 w-[12%] transform-[rotate(65deg)] motion-safe:[animation-delay:-5.25s]!"
+                    className="absolute top-[80%] right-[3%] z-10 max-[560px]:right-[5%] w-[12%] transform-[rotate(65deg)] motion-safe:[animation-delay:-5.25s]!"
                 >
                     <EditorialPrint viewBox="0 0 76 158">
                         <PaperClip className="h-full w-full overflow-visible" />

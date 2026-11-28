@@ -1,10 +1,4 @@
-import {
-    ArrowLeft,
-    ArrowRight,
-    Check,
-    CircleHelp,
-    Command,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, CircleHelp } from 'lucide-react';
 import { useEffect, useId, useRef } from 'react';
 import type { AnswerValue, QuestionResponse } from '@/entities/scoring';
 import type { AxisId, SuggestionDefinition } from '@/shared/config';
@@ -260,10 +254,9 @@ export function QuestionSheet({
                                 </span>
                                 {choices[index]}
                                 <kbd
-                                    className="inline-flex items-center gap-1.5 px-1.5 py-0.5 font-mono text-xs text-muted-foreground"
+                                    className="inline-grid size-5 shrink-0 place-items-center rounded-xs border border-current font-mono text-xs text-muted-foreground"
                                     aria-hidden="true"
                                 >
-                                    <Command className="size-3.5" />
                                     {index + 1}
                                 </kbd>
                             </button>

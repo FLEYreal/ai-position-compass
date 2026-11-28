@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { resultPath } from '@/shared/config';
 
 export default function RedirectToEnglish() {
@@ -12,5 +12,13 @@ export default function RedirectToEnglish() {
     useEffect(() => {
         navigate(destination, { replace: true });
     }, [destination, navigate]);
-    return null;
+    return pathname === '/' ?
+            <noscript>
+                <main className="mx-auto max-w-xl p-6">
+                    <Link to="/en/" lang="en" className="text-ring underline">
+                        Open the English site
+                    </Link>
+                </main>
+            </noscript>
+        :   null;
 }

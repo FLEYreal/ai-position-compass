@@ -9,7 +9,7 @@ export default {
     'result.neighboring': 'Also close',
     'result.similarityLabel': 'Similarity',
     'result.similarityExplanation':
-        'An axis score shows where you land on one issue. Camp similarity compares your profile across all axes with scores.',
+        'The closer your scores are to a camp’s positions, the higher the similarity. Unscored axes are skipped.',
     'result.neighboring.caption': 'Other points of overlap',
     'result.references': 'More sources',
     'result.match': '{score}% similarity',

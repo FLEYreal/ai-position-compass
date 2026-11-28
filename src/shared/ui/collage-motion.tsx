@@ -52,7 +52,7 @@ export function CollageMotion({
             data-playing={playing}
             className={cn(
                 'motion-safe:[&_[data-collage-piece]]:animate-[collage-poses_10s_steps(1,end)_infinite]',
-                '[&_[data-collage-piece]]:[animation-play-state:paused]! data-[playing=true]:[&_[data-collage-piece]]:[animation-play-state:running]!',
+                '[&_[data-collage-piece]]:[animation-play-state:paused]! data-[playing=true]:[&_[data-collage-piece]]:[animation-play-state:var(--collage-play-state,running)]!',
                 className,
             )}
         >

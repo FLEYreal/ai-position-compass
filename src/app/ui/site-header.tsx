@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Pause, Play, Sun } from 'lucide-react';
 import { projectName, resultPath, type Language } from '@/shared/config';
 import { useTheme } from '@/shared/lib/theme';
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui';
@@ -8,9 +8,13 @@ import type { Messages } from '../i18n';
 export function SiteHeader({
     language,
     messages: copy,
+    collagePaused,
+    onToggleCollagePause,
 }: {
     language: Language;
     messages: Messages;
+    collagePaused: boolean;
+    onToggleCollagePause: () => void;
 }) {
     const { pathname, search, hash, state } = useLocation();
     const isResult = /^\/(?:en\/|ru\/)?result\/?$/.test(pathname);
@@ -24,6 +28,8 @@ export function SiteHeader({
         resolvedTheme === 'light' ?
             copy['theme.tooltip.toDark']
         :   copy['theme.tooltip.toLight'];
+    const motionLabel =
+        collagePaused ? copy['motion.resume'] : copy['motion.pause'];
     function languagePath(next: Language) {
         // Preserve the route and shared result payload; unknown routes stay unknown.
         if (isResult) return { pathname: resultPath(next), search, hash };
@@ -82,6 +88,22 @@ export function SiteHeader({
                         </Button>
                     ))}
                 </div>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={onToggleCollagePause}
+                            aria-label={motionLabel}
+                            className="size-9 motion-reduce:hidden max-[560px]:size-8"
+                        >
+                            {collagePaused ?
+                                <Play className="size-[18px]" />
+                            :   <Pause className="size-[18px]" />}
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>{motionLabel}</TooltipContent>
+                </Tooltip>
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
